@@ -1,0 +1,18 @@
+GEN		5
+SCALE		10
+Backgrnd_color	0 0 0
+COLOR_DEPTH	255
+in_file_folder	Initials
+in_file		Pulsar.txt
+out_file_folder	Images
+Pause_at_end	0
+
+
+||[PATTERNS]||
+
+GliderGun.txt
+DieHard.txt
+SpaceShip.txt
+Pulsar.txt
+StillLife_Boat.txt
+StillLife_Block.txt
