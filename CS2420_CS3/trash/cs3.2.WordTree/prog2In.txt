@@ -1,0 +1,12 @@
+lube 3 luce 1 luck 2 guck 1 gunk 0 lick 0 lude 2 lade 2 bade 0 cade 0 nude 1 nide 2 nine 4 kine 1 kins 1 dins 1 dens 1 dene 0 mine 1 mane 1 mare 0 pine 0 tine 2 tone 0 tune 0 vide 0 rube 0 
+mare 1 mane 1 mine 4 kine 1 kins 1 dins 1 dens 1 dene 0 nine 1 nide 2 nude 1 lude 3 lade 2 bade 0 cade 0 lube 1 rube 0 luce 1 luck 2 guck 1 gunk 0 lick 0 vide 0 pine 0 tine 2 tone 0 tune 0 
+mane 2 mare 0 mine 4 kine 1 kins 1 dins 1 dens 1 dene 0 nine 1 nide 2 nude 1 lude 3 lade 2 bade 0 cade 0 lube 1 rube 0 luce 1 luck 2 guck 1 gunk 0 lick 0 vide 0 pine 0 tine 2 tone 0 tune 0 
+reed 2 reel 1 weel 0 teed 0 
+rats 2 mats 2 math 2 lath 2 lakh 0 lati 2 lari 0 sati 0 mash 2 rash 1 resh 0 sash 0 maws 2 saws 1 sans 2 cans 1 caps 1 taps 1 tass 0 vans 0 yaws 1 yaks 0 rays 0 
+lazy 1 lacy 1 racy 0 
+racy 1 lacy 1 lazy 0  
+face 1 lace 1 lame 0  
+weel 1 reel 1 reed 1 teed 0 
+teed 1 reed 1 reel 1 weel 0 
+oops 4 cops 4 cobs 0 cods 0 cogs 0 coos 0 fops 3 fabs 0 foes 0 fogs 0 hops 3 haps 0 hips 0 hoes 0 mops 3 mope 0 moss 0 mows 0
+oops 4 cops 4 cots 0 cons 0 tops 0 coos 0 bops 3 bubs 0 foes 0 fogs 0 hops 3 haps 0 hips 0 hoes 0 mops 3 mope 0 moss 0 mows 0
