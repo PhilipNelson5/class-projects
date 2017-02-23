@@ -1,7 +1,7 @@
 # class-projects
 Computer Science Coursework  
-<div>  
-class-projects  
+
+<pre><code>class-projects  
 ├── CS1400_CS1  
 │   ├── 1-EggLaunch  
 │   ├── 2-DevilsDice  
@@ -36,4 +36,4 @@ class-projects
 │   └── 5-TheConchShell   
 └── CS3810_Computer_Architecture  
     └── BubbleSort  
-</div>
+</code></pre>
