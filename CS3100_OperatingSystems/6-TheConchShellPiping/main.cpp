@@ -172,53 +172,101 @@ void run(Command cmds)
       if (pid == 0)
       {
         /*********************************************/
-        /*               first command               */
+        /*               first and last              */
         /*********************************************/
-        if (i == 0)
+        if (cmds.cmd_c == 1)
         {
+          std::cerr << "FIRSTLAST: " << cmds.cmd_v[i][0] << std::endl;
+
           if (cmds.infile == "") // no in file
           {
-            dup2(fd[curr_out][WRITE_END], STDOUT_FILENO);
+            std::cerr << "NO INFILE" << std::endl;
+            // dup2(fd[curr_out][WRITE_END], STDOUT_FILENO);
           }
           else // in file
           {
-            std::cerr << "INT FILE: " << cmds.infile << std::endl;
-            int infd = open(cmds.infile.c_str(), O_RDWR, 0200 | 0400);
+            std::cerr << "IN FILE: " << cmds.infile << std::endl;
+            int infd = open(cmds.infile.c_str(), O_RDWR, S_IWUSR | S_IRUSR);
             dup2(infd, STDIN_FILENO);
-            dup2(fd[curr_out][WRITE_END], STDOUT_FILENO);
+            // dup2(fd[curr_out][WRITE_END], STDOUT_FILENO);
             close(infd);
           }
-        }
 
-        /*********************************************/
-        /*                last command               */
-        /*********************************************/
-        if (i == cmds.size() - 1)
-        {
           if (cmds.outfile == "") // no out file
           {
-            dup2(fd[curr_in][READ_END], STDIN_FILENO);
+            std::cerr << "NO OUTFILE" << std::endl;
+            // dup2(fd[curr_in][READ_END], STDIN_FILENO);
           }
           else // out file
           {
             std::cerr << "OUT FILE: " << cmds.outfile << std::endl;
-            int outfd = open(cmds.outfile.c_str(), O_RDWR | O_CREAT, 0200 | 0400);
+            int outfd = open(cmds.outfile.c_str(), O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
             dup2(outfd, STDOUT_FILENO);
+            // dup2(fd[curr_in][READ_END], STDIN_FILENO);
             close(outfd);
           }
         }
-        else // middle commmands
+
+        else
         {
+          /*********************************************/
+          /*               first command               */
+          /*********************************************/
+          if (i == 0)
+          {
+            std::cerr << "FIRST: " << cmds.cmd_v[i][0] << std::endl;
+            if (cmds.infile == "") // no in file
+            {
+              std::cerr << "NO INFILE" << std::endl;
+              dup2(fd[curr_out][WRITE_END], STDOUT_FILENO);
+            }
+            else // in file
+            {
+              std::cerr << "IN FILE: " << cmds.infile << std::endl;
+              int infd = open(cmds.infile.c_str(), O_RDWR, S_IWUSR | S_IRUSR);
+              dup2(infd, STDIN_FILENO);
+              dup2(fd[curr_out][WRITE_END], STDOUT_FILENO);
+              close(infd);
+            }
+          }
 
-          dup2(fd[curr_in][READ_END], STDIN_FILENO);
-          dup2(fd[curr_out][WRITE_END], STDOUT_FILENO);
-          close(fd[curr_in][WRITE_END]); //
-          close(fd[curr_out][WRITE_END]);
+          /*********************************************/
+          /*                last command               */
+          /*********************************************/
+          if (i == cmds.size() - 1)
+          {
+            std::cerr << "LAST: " << cmds.cmd_v[i][0] << std::endl;
+            if (cmds.outfile == "") // no out file
+            {
+              std::cerr << "NO OUTFILE" << std::endl;
+              dup2(fd[curr_in][READ_END], STDIN_FILENO);
+            }
+            else // out file
+            {
+              std::cerr << "OUT FILE: " << cmds.outfile << std::endl;
+              int outfd = open(cmds.outfile.c_str(), O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
+              dup2(outfd, STDOUT_FILENO);
+              dup2(fd[curr_in][READ_END], STDIN_FILENO);
+              close(outfd);
+            }
+          }
+
+          /*********************************************/
+          /*                mid command                */
+          /*********************************************/
+          if (i > 0 && i < cmds.size() - 1)
+          {
+            std::cerr << "MID CMD: " << cmds.cmd_v[i][0] << std::endl;
+            dup2(fd[curr_in][READ_END], STDIN_FILENO);
+            dup2(fd[curr_out][WRITE_END], STDOUT_FILENO);
+            close(fd[curr_in][WRITE_END]); //
+            close(fd[curr_out][WRITE_END]);
+          }
+
+          execvp(args[0], args);
+          perror(args[0]);
+          exit(EXIT_FAILURE);
         }
-
-        execvp(args[0], args);
-        perror(args[0]);
-        exit(EXIT_FAILURE);
       }
       /*********************************************/
       /*                  parent                   */

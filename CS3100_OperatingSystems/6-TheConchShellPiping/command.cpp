@@ -1,42 +1,46 @@
 #include "command.hpp"
 #include <algorithm>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
 
 Command::Command(std::string input) : line(input), infile(""), outfile(""), cmd_c(0)
 {
-	auto parsed = parse(line);
+  auto parsed = parse(line);
 
-	for(auto i = 0u; i < parsed.size(); ++i)
-	{
-		if(parsed[i][0]=="<")
-			infile = parsed[++i][0];
-		else if(parsed[i][0] == ">")
-			outfile = parsed[++i][0];
-		else if(parsed[i][0] == "|"){}
-		else
-		{
-			cmd_v.push_back(parsed[i]);
-			++cmd_c;
-		}
-	}
+  for (auto i = 0u; i < parsed.size(); ++i)
+  {
+    if (parsed[i][0] == "<")
+      infile = parsed[++i][0];
+    else if (parsed[i][0] == ">")
+      outfile = parsed[++i][0];
+    else if (parsed[i][0] == "|")
+    {
+    }
+    else
+    {
+      cmd_v.push_back(parsed[i]);
+      ++cmd_c;
+    }
+  }
+  std::cerr << "IN: " << infile << " OUT: " << outfile << " CMDS: " << cmd_c << std::endl;
 }
 
 std::string Command::toString()
 {
-	return line;
+  return line;
 }
 
 int Command::size()
 {
-	return cmd_c;
+  return cmd_c;
 }
 
 std::vector<std::vector<std::string>> Command::parse(std::string input)
 {
   /***************************************
-   *      Tokens of cmds and pipes 
+   *      Tokens of cmds and pipes
    **************************************/
 
   std::vector<std::string> cmds;
