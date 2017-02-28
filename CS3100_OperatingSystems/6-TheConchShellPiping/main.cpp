@@ -33,7 +33,7 @@ void load()
 {
   std::ifstream fin(".conchrc");
   if (!fin) return;
-  std::cerr << "loading aliases" << std::endl;
+  //std::cerr << "loading aliases" << std::endl;
   std::string line;
   while (std::getline(fin, line))
     alias.push_back(Command(line));
@@ -176,16 +176,16 @@ void run(Command cmds)
         /*********************************************/
         if (cmds.cmd_c == 1)
         {
-          std::cerr << "FIRSTLAST: " << cmds.cmd_v[i][0] << std::endl;
+          //std::cerr << "FIRSTLAST: " << cmds.cmd_v[i][0] << std::endl;
 
           if (cmds.infile == "") // no in file
           {
-            std::cerr << "NO INFILE" << std::endl;
+            //std::cerr << "NO INFILE" << std::endl;
             // dup2(fd[curr_out][WRITE_END], STDOUT_FILENO);
           }
           else // in file
           {
-            std::cerr << "IN FILE: " << cmds.infile << std::endl;
+            //std::cerr << "IN FILE: " << cmds.infile << std::endl;
             int infd = open(cmds.infile.c_str(), O_RDWR, S_IWUSR | S_IRUSR);
             dup2(infd, STDIN_FILENO);
             // dup2(fd[curr_out][WRITE_END], STDOUT_FILENO);
@@ -194,12 +194,12 @@ void run(Command cmds)
 
           if (cmds.outfile == "") // no out file
           {
-            std::cerr << "NO OUTFILE" << std::endl;
+            //std::cerr << "NO OUTFILE" << std::endl;
             // dup2(fd[curr_in][READ_END], STDIN_FILENO);
           }
           else // out file
           {
-            std::cerr << "OUT FILE: " << cmds.outfile << std::endl;
+            //std::cerr << "OUT FILE: " << cmds.outfile << std::endl;
             int outfd = open(cmds.outfile.c_str(), O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
             dup2(outfd, STDOUT_FILENO);
             // dup2(fd[curr_in][READ_END], STDIN_FILENO);
@@ -214,15 +214,15 @@ void run(Command cmds)
           /*********************************************/
           if (i == 0)
           {
-            std::cerr << "FIRST: " << cmds.cmd_v[i][0] << std::endl;
+            //std::cerr << "FIRST: " << cmds.cmd_v[i][0] << std::endl;
             if (cmds.infile == "") // no in file
             {
-              std::cerr << "NO INFILE" << std::endl;
+              //std::cerr << "NO INFILE" << std::endl;
               dup2(fd[curr_out][WRITE_END], STDOUT_FILENO);
             }
             else // in file
             {
-              std::cerr << "IN FILE: " << cmds.infile << std::endl;
+              //std::cerr << "IN FILE: " << cmds.infile << std::endl;
               int infd = open(cmds.infile.c_str(), O_RDWR, S_IWUSR | S_IRUSR);
               dup2(infd, STDIN_FILENO);
               dup2(fd[curr_out][WRITE_END], STDOUT_FILENO);
@@ -235,15 +235,15 @@ void run(Command cmds)
           /*********************************************/
           if (i == cmds.size() - 1)
           {
-            std::cerr << "LAST: " << cmds.cmd_v[i][0] << std::endl;
+            //std::cerr << "LAST: " << cmds.cmd_v[i][0] << std::endl;
             if (cmds.outfile == "") // no out file
             {
-              std::cerr << "NO OUTFILE" << std::endl;
+              //std::cerr << "NO OUTFILE" << std::endl;
               dup2(fd[curr_in][READ_END], STDIN_FILENO);
             }
             else // out file
             {
-              std::cerr << "OUT FILE: " << cmds.outfile << std::endl;
+              //std::cerr << "OUT FILE: " << cmds.outfile << std::endl;
               int outfd = open(cmds.outfile.c_str(), O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
               dup2(outfd, STDOUT_FILENO);
               dup2(fd[curr_in][READ_END], STDIN_FILENO);
@@ -256,7 +256,7 @@ void run(Command cmds)
           /*********************************************/
           if (i > 0 && i < cmds.size() - 1)
           {
-            std::cerr << "MID CMD: " << cmds.cmd_v[i][0] << std::endl;
+            //std::cerr << "MID CMD: " << cmds.cmd_v[i][0] << std::endl;
             dup2(fd[curr_in][READ_END], STDIN_FILENO);
             dup2(fd[curr_out][WRITE_END], STDOUT_FILENO);
             close(fd[curr_in][WRITE_END]); //

@@ -24,7 +24,7 @@ Command::Command(std::string input) : line(input), infile(""), outfile(""), cmd_
       ++cmd_c;
     }
   }
-  std::cerr << "IN: " << infile << " OUT: " << outfile << " CMDS: " << cmd_c << std::endl;
+  //std::cerr << "IN: " << infile << " OUT: " << outfile << " CMDS: " << cmd_c << std::endl;
 }
 
 std::string Command::toString()
