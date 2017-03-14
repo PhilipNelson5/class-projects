@@ -8,7 +8,7 @@
 	.data
 string1:	.asciiz	"Together the 2 zoos have 9 Zebras"
 string2:	.asciiz	"Uphfuifs uif 3 appt ibwf 0 Afcsbt"
-#string2:	.asciiz	"string two" # uncomment to test unequal strings
+#string2:	.asciiz	"string two" # un-comment to test unequal strings
 newline:	.asciiz "\n"
 str_equal:	.asciiz "Strings are equal!"
 str_nequal:	.asciiz "Strings are NOT equal!"
@@ -68,7 +68,7 @@ print_nequal:
 	jal	prints		# print string
 print_equal_end:
 
-	addi	$sp, $sp, -4	# decrement stack
+	addi	$sp, $sp, -4	# decrements stack
 	lw	$ra, 0($sp)	# reload return address
 	jr	$ra		# return
 
@@ -85,11 +85,11 @@ encode_loop:
 	or	$a0, $t3, $0	# load char to be encoded
 	jal	encodeChar	# encode chaar in $a0
 	sb	$v0, 0($t2)	# string[i] = encodeChar($t3)
-	addi	$t1, $t1, 1	# incrememnt counter
+	addi	$t1, $t1, 1	# increment counter
 	j	encode_loop	# loop
 	
 exit_encode_loop:
-	addi	$sp, $sp, -4	# decrement stack
+	addi	$sp, $sp, -4	# decrements stack
 	lw	$ra, 0($sp)	# reload return address
 	jr	$ra		# return
 
@@ -123,7 +123,7 @@ compare_loop:
 	bne	$t2, $t3, exit_compare_no # return no if($t3 != $t2) chars not equal
 	beq	$t2, $0, exit_compare_yes # return yes if ($t2 == 0) end of string1
 	
-	addi	$t1, $t1, 1	# increment coutnter
+	addi	$t1, $t1, 1	# increment counter
 	j	compare_loop
 
 exit_compare_yes:
