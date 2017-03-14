@@ -36,5 +36,6 @@
 │   ├── 5-TheConchShell
 │   ├── 6-TheConchShellPiping
 │   └── OPsys.5.TheConchShell
-└── CS3810_Computer_Architecture
-    └── BubbleSort
+└── CS3810_ComputerArchitecture
+    ├── BubbleSort
+    └── StringEncodeAndCompare
