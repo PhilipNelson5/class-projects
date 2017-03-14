@@ -5,18 +5,26 @@
 #include <string>
 #include <vector>
 
-Command::Command(std::string input) : line(input), infile(""), outfile(""), cmd_c(0)
+Command::Command(std::string input)
+  : line(input), infile(""), hasInFile(false), outfile(""), hasOutFile(false), cmd_c(0)
 {
   auto parsed = parse(line);
 
   for (auto i = 0u; i < parsed.size(); ++i)
   {
     if (parsed[i][0] == "<")
+    {
       infile = parsed[++i][0];
+      hasInFile = true;
+    }
     else if (parsed[i][0] == ">")
+    {
       outfile = parsed[++i][0];
+      hasOutFile = true;
+    }
     else if (parsed[i][0] == "|")
     {
+      continue;
     }
     else
     {
@@ -24,7 +32,7 @@ Command::Command(std::string input) : line(input), infile(""), outfile(""), cmd_
       ++cmd_c;
     }
   }
-  //std::cerr << "IN: " << infile << " OUT: " << outfile << " CMDS: " << cmd_c << std::endl;
+  // std::cerr << "IN: " << infile << " OUT: " << outfile << " CMDS: " << cmd_c << std::endl;
 }
 
 std::string Command::toString()

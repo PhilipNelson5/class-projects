@@ -10,7 +10,9 @@ public:
 	std::string line;
   std::vector<std::vector<std::string>> cmd_v;
   std::string infile;
+	bool hasInFile;
   std::string outfile;
+	bool hasOutFile;
 	int cmd_c;
 
 	std::string toString();

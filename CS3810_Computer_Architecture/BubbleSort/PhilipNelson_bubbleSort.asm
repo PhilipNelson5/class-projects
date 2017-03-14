@@ -16,8 +16,8 @@ is_sorted:	.asciiz		"\nSORTED\n"
 main:	lw	$a1, size #a1 size of array
 	la	$a2, list #a2 base of line array
 	
-	ori	$v0, $0,  4	# load instrtuction to print null terminated string
-	la	$a0, bubble	# load strig to be printed
+	ori	$v0, $0,  4	# load instruction to print null terminated string
+	la	$a0, bubble	# load string to be printed
 	syscall			# print string
 	
 	jal	print		# print list
@@ -52,7 +52,7 @@ isSorted:
 	ori	$t0, $0,  0	# bool done 
 	ori	$t1, $0,  0	# counter
 	ori	$t3, $0,  0 	# bool inorder
-	ori	$a3, $a1, 0	# coppy size
+	ori	$a3, $a1, 0	# copy size
 	addi	$a3, $a3, -1	# $a3 = size -1
 isSorted_loop:
 	sll	$t3, $t1, 2	# counter * 4
@@ -65,14 +65,14 @@ isSorted_loop:
 	bne	$t1, $a3, isSorted_loop	# if counter != size jump to isSorted_loop
 exit_isSorted_yes:
 	ori	$v1, $0,  1	# load result of isSorted 1 = true
-	ori	$v0, $0,  4	# load instrtuction to print null terminated string
-	la	$a0, is_sorted	# load strig to be printed
+	ori	$v0, $0,  4	# load instruction to print null terminated string
+	la	$a0, is_sorted	# load string to be printed
 	syscall			# print string
 	jr	$ra		# jump back
 exit_isSorted_no:
 	ori	$v1, $0,  0	# load result of isSorted 0 = false
-	ori	$v0, $0,  4	# load instrtuction to print null terminated string
-	la	$a0, not_sorted	# load strig to be printed
+	ori	$v0, $0,  4	# load instruction to print null terminated string
+	la	$a0, not_sorted	# load string to be printed
 	syscall			# print string
 	jr	$ra		# jump back
 	
@@ -80,7 +80,7 @@ exit_isSorted_no:
 bubbleSort:
 	ori	$t0, $0,  0	# bool done 
 	ori	$t1, $0,  0	# counter
-	ori	$a3, $a1, 0	# coppy size
+	ori	$a3, $a1, 0	# copy size
 	addi	$a3, $a3, -1	# $a3 = size -1
 	ori	$t7, $0,  0	# bool made swap
 bubbleSort_loop:
