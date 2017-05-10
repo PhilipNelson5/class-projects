@@ -1,0 +1,12 @@
+set args answers.txt
+break *explode_bomb
+break *phase_6
+define plist
+set var $n = $arg0
+while $n
+printf "node%d (%p_: =%#.3x, next=%p\n", *($n+0x4), $n, *$n, *($n+0x8)
+set var $n = *($n+0x8)
+end
+end
+layout asm
+run
