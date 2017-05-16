@@ -19,7 +19,10 @@
 │   ├── 2-FizzBuzz
 │   ├── 3-StudentDirectory
 │   ├── 4-URLimageViewer
-│   └── trash
+│   ├── 5-DrawingTablet
+│   ├── 6-PolyAbstraHeritance
+│   ├── 7-VideoPlayer
+│   └── 8-Minesweeper
 ├── CS2420_CS3
 │   ├── 1-WordLadder
 │   ├── 2-RecursionWordTree
@@ -34,8 +37,9 @@
 │   ├── 3-MandelbrotThreadPool
 │   ├── 4-ParallelSearchAndSort
 │   ├── 5-TheConchShell
-│   ├── 6-TheConchShellPiping
-│   └── OPsys.5.TheConchShell
+│   └── 6-TheConchShellPiping
 └── CS3810_ComputerArchitecture
+    ├── BombLab
     ├── BubbleSort
+    ├── StackAttack
     └── StringEncodeAndCompare
