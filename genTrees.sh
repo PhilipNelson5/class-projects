@@ -1,6 +1,9 @@
 #!/bin/bash
 # Updates the tree directories in the repo READMEs
 
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
 echo "Root dir:"
 echo ~~~~ > README.md
 tree -d -L 2 --noreport >> README.md
@@ -48,3 +51,12 @@ echo ~~~~ > README.md
 tree -d -L 2 --noreport >> README.md
 cat README.md
 echo " "
+
+echo "add"
+git add -u
+echo "commit"
+git commit -m "updated tree files"
+echo "push"
+git push origin master
+echo -e "${GREEN}[ DONE ]${NC}"
+echo " " 

@@ -37,7 +37,8 @@
 │   ├── 3-MandelbrotThreadPool
 │   ├── 4-ParallelSearchAndSort
 │   ├── 5-TheConchShell
-│   └── 6-TheConchShellPiping
+│   ├── 6-TheConchShellPiping
+│   └── 7-Scheduling
 └── CS3810_ComputerArchitecture
     ├── BombLab
     ├── BubbleSort
