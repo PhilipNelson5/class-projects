@@ -3,10 +3,8 @@
 ├── CS1400_CS1
 │   ├── 1-EggLaunch
 │   ├── 2-DevilsDice
-│   ├── 3-Mandelbrot
 │   ├── 4-TicTacToe
-│   ├── 5-ConwaysGameOfLife
-│   └── 6-LionHeart
+│   └── 5-ConwaysGameOfLife
 ├── CS1410_CS2
 │   ├── 1-RationalNumber
 │   ├── 2-Sorting
@@ -31,6 +29,8 @@
 │   ├── 5-PriorityQueue
 │   ├── 6-UnionFind
 │   └── 7-GraphCycles
+├── CS2610_WebDev
+│   └── notes
 ├── CS3100_OperatingSystems
 │   ├── 1-MandelbrotSerial
 │   ├── 2-MandelbrotParallel
@@ -39,8 +39,10 @@
 │   ├── 5-TheConchShell
 │   ├── 6-TheConchShellPiping
 │   └── 7-Scheduling
-└── CS3810_ComputerArchitecture
-    ├── BombLab
-    ├── BubbleSort
-    ├── StackAttack
-    └── StringEncodeAndCompare
+├── CS3810_ComputerArchitecture
+│   ├── BombLab
+│   ├── BubbleSort
+│   ├── StackAttack
+│   └── StringEncodeAndCompare
+└── ECE5930_NeuralNetworks
+    └── 1-perceptron
