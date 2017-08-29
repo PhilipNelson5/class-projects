@@ -14,18 +14,14 @@ def plot(x, y, color):
     cir.setOutline(color)
     cir.draw(win)
 
-def plotData():
-    infile = open("perceptrondat1","r")
-    for line in infile:
+def loadData(file, color):
+    dataSet = []
+    for line in open(file,"r"):
         point = line.split()
         point = [float(point[0]), float(point[1])]
-        plot(point[0], point[1], 'blue')
-
-    infile = open("perceptrondat2","r")
-    for line in infile:
-        point = line.split()
-        point = [float(point[0]), float(point[1])]
-        plot(point[0], point[1], 'black')
+        plot(point[0], point[1], color)
+        dataSet.append(point)
+    return dataSet
 
 #    for i in range(0,550,50):
 #        line = Line(Point(i, 500), Point(500-i, 0))
@@ -38,7 +34,8 @@ def main():
 
     win.setBackground("white")
 
-    plotData()
+    set1 = loadData("perceptrondat1", "blue")
+    set2 = loadData("perceptrondat2", "black")
 
     win.getKey()   # Pause until key press to view result
     win.close()    # Close window when done
