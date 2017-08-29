@@ -14,10 +14,7 @@ def plot(x, y, color):
     cir.setOutline(color)
     cir.draw(win)
 
-def main():
-
-    win.setBackground("white")
-
+def plotData():
     infile = open("perceptrondat1","r")
     for line in infile:
         point = line.split()
@@ -35,6 +32,13 @@ def main():
 #        line.draw(win)
 #        win.getKey()   # Pause until key press to view result
 #        line.undraw()
+
+
+def main():
+
+    win.setBackground("white")
+
+    plotData()
 
     win.getKey()   # Pause until key press to view result
     win.close()    # Close window when done
