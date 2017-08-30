@@ -39,7 +39,7 @@ cat README.md
 echo " "
 
 echo "CS2610_WebDev"
-cd ../2610_WebDev/
+cd ../CS2610_WebDev/
 echo ~~~~ > README.md
 tree -d -L 2 --noreport >> README.md
 cat README.md
