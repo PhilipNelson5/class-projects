@@ -2,8 +2,8 @@ from graphics import *
 import random
 import time
 
-height = 700
-width = 700
+height = 600
+width = 600
 minX = -5
 maxX = 5
 minY = -5
