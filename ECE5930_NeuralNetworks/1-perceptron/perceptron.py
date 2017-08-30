@@ -83,7 +83,19 @@ def main():
     win.setBackground("white")
 
     trainingData = loadData("perceptrondat1", 1, "black")
-    trainingData = loadData("perceptrondat2", -1,"black", trainingData)
+    trainingData = loadData("perceptrondat2", -1,"blue", trainingData)
+    random.shuffle(trainingData)
+
+    ptT = Point(width/2, 0)
+    ptB = Point(width/2, height)
+    ptL = Point(0, height/2)
+    ptR = Point(width, height/2)
+
+    lineTB = Line(ptT, ptB)
+    lineLR = Line(ptL, ptR)
+
+    lineTB.draw(win)
+    lineLR.draw(win)
 
     p = Perceptron(3)
 
@@ -107,14 +119,14 @@ def main():
             index = 0
             iters += 1
             if p.done:
-                print("iterations: " + str(iters))
                 break
             p.done = True
 
-        time.sleep(.05)
+        time.sleep(.025)
         line.undraw()
 
-
+    print("Line: y = " + str(p.weights[1]/p.weights[0]) + " x + " + str(p.weights[2]))
+    print("Iterations: " + str(iters))
 
     win.getKey()   # Pause until key press to view result
     win.close()    # Close window when done
