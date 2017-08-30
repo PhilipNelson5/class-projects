@@ -28,23 +28,24 @@ class MyPoint:
 def interp(x, x1, x2, y1, y2):
     return y1 + ((x-x1) * (y2-y1) / (x2-x1))
 
-def plot(x, y, outline, fill, size):
+def plot(x, y, outline, fill, size, width=1):
     cir = Circle(Point(x, y), size)
     cir.setOutline(outline)
     cir.setFill(fill)
+    cir.setWidth(width)
     cir.draw(win)
 
 def loadData(file, target, color, dataSet = []):
     for line in open(file,"r"):
         raw = line.split()
         p = MyPoint(float(raw[0]), float(raw[1]), 1, target)
-        plot(p.mapX(), p.mapY(), color, "white", 6)
+        plot(p.mapX(), p.mapY(), color, "white", 7, 3)
         dataSet.append(p)
     return dataSet
 
 class Perceptron:
     def __init__(self, numInputs):
-        self.lr = 0.1 # Learning Rate
+        self.lr = 0.05 # Learning Rate
         self.weights = [0 for i in range(numInputs)]
         for i in range (numInputs):
             self.weights[i] = random.uniform(-1, 1)
@@ -83,7 +84,7 @@ def main():
     win.setBackground("white")
 
     trainingData = loadData("perceptrondat1", 1, "black")
-    trainingData = loadData("perceptrondat2", -1,"blue", trainingData)
+    trainingData = loadData("perceptrondat2", -1,"gray", trainingData)
     random.shuffle(trainingData)
 
     ptT = Point(width/2, 0)
@@ -122,10 +123,10 @@ def main():
                 break
             p.done = True
 
-        time.sleep(.025)
+        time.sleep(.005)
         line.undraw()
 
-    print("Line: y = " + str(p.weights[1]/p.weights[0]) + " x + " + str(p.weights[2]))
+    print("Line: y = -" + str(p.weights[0]/p.weights[1]) + " x - " + str(p.weights[2]/p.weights[1]))
     print("Iterations: " + str(iters))
 
     win.getKey()   # Pause until key press to view result
