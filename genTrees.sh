@@ -52,6 +52,20 @@ tree -d -L 2 --noreport >> README.md
 cat README.md
 echo " "
 
+echo "CS4700_ProgrammingLanguages"
+cd ../CS4700_ProgrammingLanguages/
+echo ~~~~ > README.md
+tree -d -L 2 --noreport >> README.md
+cat README.md
+echo " "
+
+echo "ECE5930_NeuralNetworks"
+cd ../ECE5930_NeuralNetworks/
+echo ~~~~ > README.md
+tree -d -L 2 --noreport >> README.md
+cat README.md
+echo " "
+
 echo "add"
 git add -u
 echo "commit"
