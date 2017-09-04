@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Alice" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <title>git cheat sheet</title>
+  </head>
+  <body>
+    <h1>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Git-logo.svg/2000px-Git-logo.svg.png"
+           alt="git"
+           height=50
+           align="bottom">
+      Philip's git Cheat Sheet
+    </h1>
+    <h2>
+      This is a reference table of git commands
+    </h2>
+    <table>
+      <caption>git references</caption>
+      <thead>
+        <tr>
+          <th>Command</th>
+          <th>Description</th>
+          <th>Flags</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>clone</td>
+          <td>Clone a repository into a new directory</td>
+          <td>&nbsp;</td>
+          <td><pre>git clone "URL"</pre></td>
+        </tr>
+        <tr>
+          <td>add</td>
+          <td>Stage a file contents for commit</td>
+          <td>
+            -n Dry Run: doesn't actually add the files <br/>
+            -u Update: only files currently tracked <br/>
+            -A All: all files in the project
+          </td>
+          <td><pre>git add file.html</pre></td>
+        </tr>
+        <tr>
+          <td>commit</td>
+          <td>Record staged changes to the repository</td>
+          <td>-m &lt;msg&gt; Message: use the given &lt;msg&gt; as the commit message</td>
+          <td><pre>git commit -m"commit message"</pre></td>
+        </tr>
+        <tr>
+          <td>push</td>
+          <td>Update remote repository with committed files</td>
+          <td>origin &lt;branch name&gt;</td>
+          <td><pre>git push origin master</pre></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      <span>To learn more, checkout the git <a href="https://git-scm.com/documentation" >documentation</a> </span>
+    </p>
+  </body>
+</html>
+
+<!--
+  x <title>
+  x <p>
+  x <span>
+  x <h1>
+  x <h2>
+  x <table>
+  x <tbody>
+  x <th>
+  x <tr>
+  x <td>
+  x <a>
+  x <img>
+  <style>
+-->
