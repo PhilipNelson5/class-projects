@@ -21,36 +21,58 @@
     R r sub th cos mul R r sub r div th mul cos d mul add
     R r sub th sin mul R r sub r div th mul sin d mul sub
 
-  th 0 eq { moveto } { rlineto } ifelse 
+  th 0 eq { moveto } { lineto } ifelse 
 
 } for
 
 } def
 
-%5 inch 5 inch moveto
-%1.25 .25 1.5 hypo
-%1 1.4 5 13 div hypo
+4.25 inch 5.5 inch translate
+.45 .45 scale
 
-4.25 inch 6 inch translate
-.25 .25 scale
-
-0 .25 1
+/pokeball {
+/step .001 def 0 step 1
 {
   /i exch def
-  5 3 5 5 hypo fill
+
   i 0 0 setrgbcolor
-  i 360 mul rotate
+  i 360 mul 1 step div div rotate
+  6 inch 3 inch 5 inch 5 hypo stroke
+
 } for
-%.1 .1 scale
-%15 inch 15 inch translate
-%
-%0 .025 1
-%{
-%  /i exch def
-%
-%  i 0 0 setrgbcolor
-%  i 360 mul rotate
-%  5 3 5 5 hypo fill
-%
-%} for
+} def
+
+/5star {
+/step .001 def 0 step 1
+{
+  /i exch def
+
+  i 1 i sub .5 setrgbcolor
+  i 360 mul 1 step div div 2.5 div rotate
+  5 inch 3 inch 5 inch 5 hypo stroke
+
+} for
+} def
+
+/7flower {
+/step .001 def 0 step 1
+{
+  /i exch def
+
+  i 1 step sub gt
+  { 
+    1 1 1 setrgbcolor 
+    25 rotate
+  }
+  { 
+    i 0 0 setrgbcolor 
+    i 360 mul 1 step div div 3.5 div rotate
+  } ifelse
+    7 inch 3 inch 5 inch 5 hypo stroke
+
+} for
+} def
+
+new
+
 showpage
