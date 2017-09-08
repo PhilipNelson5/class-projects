@@ -1,0 +1,56 @@
+%!PS
+%
+% Generates Hypotrochoids
+%
+
+/inch {72 mul} def
+
+/hypo
+{ % Rad, rad, dist
+
+  /x exch def
+  /d exch def
+  /r exch def
+  /R exch def
+
+  newpath
+  0 1 360 x mul
+  {
+    /th exch def
+
+    R r sub th cos mul R r sub r div th mul cos d mul add
+    R r sub th sin mul R r sub r div th mul sin d mul sub
+
+  th 0 eq { moveto } { rlineto } ifelse 
+
+} for
+
+} def
+
+%5 inch 5 inch moveto
+%1.25 .25 1.5 hypo
+%1 1.4 5 13 div hypo
+
+4.25 inch 6 inch translate
+.25 .25 scale
+
+0 .25 1
+{
+  /i exch def
+  5 3 5 5 hypo fill
+  i 0 0 setrgbcolor
+  i 360 mul rotate
+} for
+%.1 .1 scale
+%15 inch 15 inch translate
+%
+%0 .025 1
+%{
+%  /i exch def
+%
+%  i 0 0 setrgbcolor
+%  i 360 mul rotate
+%  5 3 5 5 hypo fill
+%
+%} for
+showpage
