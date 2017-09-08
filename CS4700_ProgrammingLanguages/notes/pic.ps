@@ -1,0 +1,26 @@
+%!PS
+
+/inch {72 mul} def
+
+/square 
+{
+  /l exch def
+  newpath
+  0 0 moveto
+  0 l lineto
+  l l lineto
+  l 0 lineto
+  closepath
+} def
+
+3 inch 3 inch translate
+4 -.1 0 {
+  /i exch def
+  i 4 div 0.4 1
+  setrgbcolor
+  i inch square fill
+} for
+
+
+
+showpage
