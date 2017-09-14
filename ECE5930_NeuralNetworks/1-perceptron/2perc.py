@@ -8,7 +8,7 @@ def loadData(file, color):
     for line in open(file,"r"):
         raw = line.split()
         p = [1, float(raw[0]), float(raw[1])]
-        plt.plot(p[1],p[2], "o")
+        plt.scatter(p[1],p[2], 5, color, "o")
         dataSet.append(p)
     return dataSet
 
