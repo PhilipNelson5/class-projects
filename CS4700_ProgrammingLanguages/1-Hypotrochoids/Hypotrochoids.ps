@@ -93,13 +93,14 @@
 	grestore
 	8.5 2 div inch 11 2 div inch translate
 	.45 .45 scale
+	%/step .0025 def 0 step .8
 	/step .00025 def 0 step .8
 	{
 		/i exch def
 
 		i .8 step 3 mul sub gt
 		{ 
-			255 c 176 c 128 c setrgbcolor 
+			255 c 83 c 0 c setrgbcolor 
 		}
 		{ 
 			i 0 0 setrgbcolor 
@@ -160,7 +161,7 @@
 		/i exch def
 
 		1 i sub 1 i sub 1 setrgbcolor
-		i 360 mul 1 step div div 95 div rotate
+		i 360 mul 1 step div div 90 div rotate
 		35 inch 12 inch 30 inch 15 hypo stroke
 
 	} for
@@ -168,6 +169,8 @@
 
 0 0 0 background
 
+web2
+grestore
 7flower
 
 showpage
