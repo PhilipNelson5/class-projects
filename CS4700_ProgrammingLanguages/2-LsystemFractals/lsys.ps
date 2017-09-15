@@ -1,0 +1,81 @@
+%!PS
+
+/inch {72 mul} def
+/size 0 def
+/inc {size add /size exch def} def
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                 Konch Curve                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+/konchDraw
+{
+  /c exch def
+  c (F) eq
+  {
+    len 0 rlineto
+  } if
+
+  c (-) eq
+  {
+    -90 rotate
+  } if
+
+  c (+) eq
+  {
+    90 rotate
+  } if
+} def
+
+/konchRules
+{
+  /c exch def
+  c (F) eq
+  {
+    (F)(+)(F)(-)(F)(-)(F)(+)(F)
+    8 inc
+    size 9 roll
+  } if
+
+  c (-) eq
+  {
+    (-)
+    size 1 roll
+  } if
+
+  c (+) eq
+  {
+    (+)
+    size 1 roll
+  } if
+} def
+
+/konch
+{
+  /len exch def
+  /it exch def
+  (F)
+  1 inc
+  0 1 it 
+  {
+    pop
+    0 1 size 1 sub { pop konchRules } for
+  } for 
+
+  0 1 size 1 sub
+  {
+    pop
+    konchDraw
+  } for
+  stroke
+} def
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                    MAIN                                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+newpath
+0 11 inch moveto
+-90 rotate
+4 .045 inch konch
+stroke
+
+showpage
