@@ -2,6 +2,7 @@
 
 /inch {72 mul} def
 /inc {size add /size exch def} def
+/col { 360 div } def
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                 Konch Curve                                 %
@@ -126,7 +127,8 @@ c (+) eq
   stroke
 } def
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %                                Fractal Plant                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                Fractal Plant                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 /fractalPlantDraw
 {
@@ -206,7 +208,8 @@ c (]) eq
 stroke
 } def
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %                                Fractal Plant 2                              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                Fractal Plant 2                              %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 /fractalPlantDraw2
 {
@@ -233,6 +236,16 @@ stroke
   {
     grestore
   } if
+
+  c (A) eq
+  { 148 col 60 col 0 col setrgbcolor} if
+
+  c (B) eq
+  { 0 col 148 col 0 col setrgbcolor} if
+
+  c (C) eq
+  { 0 col 178 col 0 col setrgbcolor} if
+
 } def
 
 /fractalPlantRules2
@@ -240,9 +253,9 @@ stroke
   /c exch def
   c (X) eq
   {
-    (A)(F)(-)([)(B)([)(X)(])(+)(C)(X)(])(+)(C)(1)(F)([)(C)(+)(F)(X)(])(-)(X)
-  23 inc
-  size 24 roll
+    (A)(F)(-)([)(B)([)(X)(])(+)(C)(X)(])(+)(C)(F)([)(C)(+)(F)(X)(])(-)(X)
+    22 inc
+    size 23 roll
 } if
 
 c (F) eq
@@ -251,6 +264,15 @@ c (F) eq
   1 inc
   size 2 roll
 } if
+
+c (A) eq
+  { (A) size 1 roll } if
+
+c (B) eq
+  { (B) size 1 roll } if
+
+c (C) eq
+  { (C) size 1 roll } if
 
 c (-) eq
   { (-) size 1 roll } if
@@ -329,7 +351,7 @@ stroke
   newpath
   .5 inch -4.5 inch moveto
   % Iteration Linesize
-  4 .05 inch fractalPlant
+  0 .05 inch fractalPlant2
 } def
 
 %Sierpinski
