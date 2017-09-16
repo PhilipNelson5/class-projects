@@ -1,7 +1,6 @@
 %!PS
 
 /inch {72 mul} def
-/size 0 def
 /inc {size add /size exch def} def
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -16,21 +15,16 @@
   } if
 
   c (-) eq
-  {
-    -90 rotate
-  } if
+{ -90 rotate } if
 
-  c (+) eq
-  {
-    90 rotate
-  } if
+c (+) eq
+  { 90 rotate } if
 } def
 
 /konchRules
 {
   /c exch def
-  c (F) eq
-  {
+  c (F) eq {
     (F)(+)(F)(-)(F)(-)(F)(+)(F)
     8 inc
     size 9 roll
@@ -58,24 +52,285 @@
   0 1 it 
   {
     pop
-    0 1 size 1 sub { pop konchRules } for
+  0 1 size 1 sub { pop konchRules } for
+} for 
+
+0 1 size 1 sub
+{
+  pop
+  konchDraw
+} for
+stroke
+} def
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %                          Sierpinski Triangle Curve                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+/sierpCurveDraw
+{
+  /c exch def
+  c (A) eq
+  { len 0 rlineto } if
+
+c (B) eq
+  { len 0 rlineto } if
+
+  c (-) eq
+{ -60 rotate } if
+
+c (+) eq
+  { 60 rotate } if
+
+} def
+
+/sierpCurveRules
+{
+  /c exch def
+  c (A) eq
+  {
+    (B)(-)(A)(-)(B)
+    4 inc
+    size 5 roll
+  } if
+
+  c (B) eq
+  {
+    (A)(+)(B)(+)(A)
+    4 inc
+    size 5 roll
+  } if
+
+  c (-) eq
+  { (-) size 1 roll } if
+
+  c (+) eq
+  { (+) size 1 roll } if
+} def
+
+/sierpinski
+{
+  /len exch def
+  /it exch def
+  (A)
+  1 inc
+  0 1 it 
+  {
+    pop
+    0 1 size 1 sub { pop sierpCurveRules } for
   } for 
 
   0 1 size 1 sub
   {
     pop
-    konchDraw
+    sierpCurveDraw
   } for
   stroke
 } def
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %                                Fractal Plant                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+/fractalPlantDraw
+{
+  /c exch def
+
+  c (F) eq
+  { len 0 rlineto } if
+
+  c (-) eq
+  { -25 rotate } if
+
+  c (+) eq
+  { 25 rotate } if
+
+  c ([) eq
+  {
+    currentpoint
+    gsave
+    stroke
+    moveto
+  } if
+
+  c (]) eq
+  {
+    grestore
+  } if
+} def
+
+/fractalPlantRules
+{
+  /c exch def
+  c (X) eq
+  {
+    (X)(F)(+)(])(X)(-)([)(F)(])(X)([)(])(X)(-)([)(F)
+  15 inc
+  size 16 roll
+} if
+
+c (F) eq
+{
+  (F)(F)
+  1 inc
+  size 2 roll
+} if
+
+c (-) eq
+  { (-) size 1 roll } if
+
+  c (+) eq
+{ (+) size 1 roll } if
+
+c ([) eq
+  { ([) size 1 roll } if
+
+c (]) eq
+  { (]) size 1 roll } if
+
+} def
+
+/fractalPlant
+{
+  /len exch def
+  /it exch def
+  (X)
+  1 inc
+  0 1 it 
+  {
+    pop
+    0 1 size 1 sub { pop fractalPlantRules } for
+} for 
+
+0 1 size 1 sub
+{
+  pop
+  fractalPlantDraw
+} for
+stroke
+} def
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %                                Fractal Plant 2                              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+/fractalPlantDraw2
+{
+  /c exch def
+
+  c (F) eq
+  { len 0 rlineto } if
+
+  c (-) eq
+  { -25 rotate } if
+
+  c (+) eq
+  { 25 rotate } if
+
+  c ([) eq
+  {
+    currentpoint
+    gsave
+    stroke
+    moveto
+  } if
+
+  c (]) eq
+  {
+    grestore
+  } if
+} def
+
+/fractalPlantRules2
+{
+  /c exch def
+  c (X) eq
+  {
+    (A)(F)(-)([)(B)([)(X)(])(+)(C)(X)(])(+)(C)(1)(F)([)(C)(+)(F)(X)(])(-)(X)
+  23 inc
+  size 24 roll
+} if
+
+c (F) eq
+{
+  (F)(F)
+  1 inc
+  size 2 roll
+} if
+
+c (-) eq
+  { (-) size 1 roll } if
+
+  c (+) eq
+{ (+) size 1 roll } if
+
+c ([) eq
+  { ([) size 1 roll } if
+
+c (]) eq
+  { (]) size 1 roll } if
+
+} def
+
+/fractalPlant2
+{
+  /len exch def
+  /it exch def
+  (X)
+  1 inc
+  0 1 it 
+  {
+    pop
+    0 1 size 1 sub { pop fractalPlantRules2 } for
+} for 
+
+0 1 size 1 sub
+{
+  pop
+  fractalPlantDraw2
+} for
+stroke
+} def
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                    MAIN                                     %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-newpath
-0 11 inch moveto
--90 rotate
-4 .045 inch konch
-stroke
+/Konch {
+  %Koch Curve
+  /size 0 def
+  newpath
+  0 11 inch moveto
+  -90 rotate
+  %Iterations Linesize
+  4 .045 inch konch
+  closepath
+} def
 
-showpage
+/Sierpinski {
+  %Sierpinski Triangle Curve
+  /size 0 def
+  newpath
+  1 inch 1 inch moveto
+  60 rotate
+  % Iteration Linesize
+  6 .05 inch sierpinski
+  closepath
+} def
+
+/FractalPlant {
+  %Fractal Plant
+  /size 0 def
+  90 rotate
+  newpath
+  .5 inch -4.5 inch moveto
+  % Iteration Linesize
+  5 .05 inch fractalPlant
+} def
+
+/FractalPlant2 {
+  %Fractal Plant
+  /size 0 def
+  90 rotate
+  newpath
+  .5 inch -4.5 inch moveto
+  % Iteration Linesize
+  4 .05 inch fractalPlant
+} def
+
+%Sierpinski
+FractalPlant2
