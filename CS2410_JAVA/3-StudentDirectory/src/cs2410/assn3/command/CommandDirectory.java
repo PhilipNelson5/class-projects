@@ -30,7 +30,7 @@ public class CommandDirectory {
                     cmdir.addStudent();
                     break;
                 case 3:
-                    System.out.printf("%s %.2f\n\n", "Agerage student age is: ", cmdir.getAve());
+                    System.out.printf("%s %.2f\n\n", "Average student age is: ", cmdir.getAve());
                     break;
                 case 4:
                     System.exit(1);

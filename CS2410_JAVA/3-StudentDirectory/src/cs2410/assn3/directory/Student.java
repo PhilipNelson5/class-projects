@@ -51,7 +51,7 @@ public class Student {
     /**
      * gets age
      *
-     * @return studnet age
+     * @return student age
      */
     public int getAge() {
         return age;

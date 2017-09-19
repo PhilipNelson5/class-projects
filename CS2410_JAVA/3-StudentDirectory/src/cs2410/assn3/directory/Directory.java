@@ -47,7 +47,7 @@ public class Directory {
     ArrayList<Student> dir;
 
     /**
-     * turns directory inro a string
+     * turns directory into a string
      *
      * @return the directory as a string
      */

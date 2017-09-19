@@ -16,9 +16,9 @@ import java.util.Optional;
 public class GUIDirectory extends Application {
 
     /**
-     * Launces GUI application
+     * Launches GUI application
      *
-     * @param args command line argumetns
+     * @param args command line arguments
      */
     public static void main(String[] args) {
         Application.launch(GUIDirectory.class);
@@ -39,7 +39,7 @@ public class GUIDirectory extends Application {
             ArrayList<String> list = new ArrayList();
             list.add("List directory");
             list.add("Add student");
-            list.add("Display averate age");
+            list.add("Display average age");
             list.add("Quit");
 
             ChoiceDialog choice = new ChoiceDialog("Quit", list);
