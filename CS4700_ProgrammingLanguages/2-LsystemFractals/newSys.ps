@@ -1,0 +1,23 @@
+%!PS
+
+/in { 72 mul } def
+/a 30 def
+/d 10 def
+
+/X { dup 0 ne { 1 sub 8 {dup} repeat F X - F X + + F X - F X } { pop } ifelse } def
+
+/F { 0 eq { 72 0 rmoveto stroke } if } def
+
+/+ { a rotate } def
+
+/- { a neg rotate } def
+
+newpath
+
+1 in 1 in moveto
+
+0 X
+
+stroke
+
+showpage

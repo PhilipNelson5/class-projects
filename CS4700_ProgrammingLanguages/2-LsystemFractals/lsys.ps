@@ -2,12 +2,12 @@
 
 /inch {72 mul} def
 /inc {size add /size exch def} def
-/col { 360 div } def
+/col { 255 div } def
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                 Konch Curve                                 %
+%                                 Koch Curve                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-/konchDraw
+/kochDraw
 {
   /c exch def
   c (F) eq
@@ -22,7 +22,7 @@ c (+) eq
   { 90 rotate } if
 } def
 
-/konchRules
+/kochRules
 {
   /c exch def
   c (F) eq {
@@ -44,7 +44,7 @@ c (+) eq
   } if
 } def
 
-/konch
+/koch
 {
   /len exch def
   /it exch def
@@ -53,18 +53,19 @@ c (+) eq
   0 1 it 
   {
     pop
-  0 1 size 1 sub { pop konchRules } for
+  0 1 size 1 sub { pop kochRules } for
 } for 
 
 0 1 size 1 sub
 {
   pop
-  konchDraw
+  kochDraw
 } for
 stroke
 } def
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %                          Sierpinski Triangle Curve                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                          Sierpinski Triangle Curve                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 /sierpCurveDraw
 {
@@ -128,9 +129,9 @@ c (+) eq
 } def
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                Fractal Plant                                %
+%                                     Weed                                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-/fractalPlantDraw
+/weedDraw
 {
   /c exch def
 
@@ -142,6 +143,88 @@ c (+) eq
 
   c (+) eq
   { 25 rotate } if
+
+  c ([) eq
+  {
+    currentpoint
+    gsave
+    stroke
+    moveto
+  } if
+
+  c (]) eq
+  {
+    grestore
+  } if
+} def
+
+/weedRules
+{
+  /c exch def
+  c (X) eq
+  {
+    (X)(F)(])(X)(-)([)(])(X)(+)([)(F)
+  10 inc
+  size 11 roll
+} if
+
+c (F) eq
+{
+  (F)(F)
+  1 inc
+  size 2 roll
+} if
+
+c (-) eq
+  { (-) size 1 roll } if
+
+  c (+) eq
+{ (+) size 1 roll } if
+
+c ([) eq
+  { ([) size 1 roll } if
+
+c (]) eq
+  { (]) size 1 roll } if
+
+} def
+
+/weed
+{
+  /len exch def
+  /a exch def
+  /it exch def
+  (X)
+  1 inc
+  0 1 it 
+  {
+    pop
+    0 1 size 1 sub { pop weedRules } for
+  } for 
+
+  0 1 size 1 sub
+  {
+    pop
+    weedDraw
+  } for
+  stroke
+} def
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                Fractal Plant                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+/fractalPlantDraw
+{
+  /c exch def
+
+  c (F) eq
+  { len 0 rlineto } if
+
+  c (-) eq
+  { a neg rotate } if
+
+  c (+) eq
+  { a rotate } if
 
   c ([) eq
   {
@@ -191,6 +274,7 @@ c (]) eq
 /fractalPlant
 {
   /len exch def
+  /a exch def
   /it exch def
   (X)
   1 inc
@@ -216,34 +300,41 @@ stroke
   /c exch def
 
   c (F) eq
-  { len 0 rlineto } if
+  { 0 len rlineto } if
 
   c (-) eq
-  { -25 rotate } if
+  { a neg rotate } if
 
   c (+) eq
-  { 25 rotate } if
+  { a rotate } if
 
   c ([) eq
   {
+    currentrgbcolor
     currentpoint
     gsave
     stroke
     moveto
+    setrgbcolor
   } if
 
   c (]) eq
   {
+    currentrgbcolor
     grestore
+    setrgbcolor
   } if
 
   c (A) eq
-  { 148 col 60 col 0 col setrgbcolor} if
+  { 0 col 0 col 255 col setrgbcolor} if
+  %{ 148 col 60 col 0 col setrgbcolor} if
 
   c (B) eq
-  { 0 col 148 col 0 col setrgbcolor} if
+  { 255 col 0 col 0 col setrgbcolor} if
+  %{ 0 col 148 col 0 col setrgbcolor} if
 
   c (C) eq
+  %{ 0 col 0 col 0 col setrgbcolor} if
   { 0 col 178 col 0 col setrgbcolor} if
 
 } def
@@ -253,7 +344,7 @@ stroke
   /c exch def
   c (X) eq
   {
-    (A)(F)(-)([)(B)([)(X)(])(+)(C)(X)(])(+)(C)(F)([)(C)(+)(F)(X)(])(-)(X)
+    (X)(-)(])(X)(F)(+)(C)([)(F)(A)(+)(])(X)(C)(+)(])(X)([)(B)([)(-)(F)(A)
     22 inc
     size 23 roll
 } if
@@ -291,6 +382,7 @@ c (]) eq
 /fractalPlant2
 {
   /len exch def
+  /a exch def
   /it exch def
   (X)
   1 inc
@@ -299,7 +391,7 @@ c (]) eq
     pop
     0 1 size 1 sub { pop fractalPlantRules2 } for
 } for 
-
+stack
 0 1 size 1 sub
 {
   pop
@@ -309,17 +401,92 @@ stroke
 } def
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                    MAIN                                     %
+%                                 Binary Tree                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+/binaryDraw
+{
+  /c exch def
+
+  c (0) eq
+  { len 0 rlineto stroke} if
+
+  c (1) eq
+  { len 0 rlineto } if
+
+  c ([) eq
+  {
+    currentpoint
+    gsave
+    stroke
+    moveto
+    a rotate
+  } if
+
+  c (]) eq
+  {
+    grestore
+    a neg rotate
+  } if
+} def
+
+/binaryRules
+{
+  /c exch def
+  c (0) eq
+  {
+    (0)(])(0)([)(1)
+  4 inc
+  size 5 roll
+} if
+
+c (1) eq
+{
+  (1)(1)
+  1 inc
+  size 2 roll
+} if
+
+c ([) eq
+  { ([) size 1 roll } if
+
+c (]) eq
+  { (]) size 1 roll } if
+
+} def
+
+/binary
+{
+  /len exch def
+  /a exch def
+  /it exch def
+  (0)
+  1 inc
+  0 1 it 
+  {
+    pop
+    0 1 size 1 sub { pop binaryRules } for
+  } for 
+
+  0 1 size 1 sub
+  {
+    pop
+    binaryDraw
+  } for
+stroke
+} def
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                   FRACTALS                                  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-/Konch {
+/Koch {
   %Koch Curve
   /size 0 def
   newpath
   0 11 inch moveto
   -90 rotate
   %Iterations Linesize
-  4 .045 inch konch
+  4 .045 inch koch
   closepath
 } def
 
@@ -334,6 +501,16 @@ stroke
   closepath
 } def
 
+/Weed {
+  %Fractal Plant
+  /size 0 def
+  newpath
+  4.25 inch 1 inch moveto
+  90 rotate
+  % Iteration Angle Linesize
+  5 25 .07 inch weed
+} def
+
 /FractalPlant {
   %Fractal Plant
   /size 0 def
@@ -341,18 +518,33 @@ stroke
   newpath
   .5 inch -4.5 inch moveto
   % Iteration Linesize
-  5 .05 inch fractalPlant
+  4 .05 inch fractalPlant
 } def
 
 /FractalPlant2 {
   %Fractal Plant
   /size 0 def
-  90 rotate
   newpath
-  .5 inch -4.5 inch moveto
-  % Iteration Linesize
-  0 .05 inch fractalPlant2
+  4.5 inch .5 inch moveto
+  % Iteration Angle Linesize
+  4 25 .1 inch fractalPlant2
 } def
 
+/Binary {
+  %Binary Tree
+  /size 0 def
+  90 rotate
+  newpath
+  1 inch -4.25 inch moveto
+  % Iteration Angle Linesize
+  8 90 .01 inch binary
+} def
+
+%Koch
 %Sierpinski
-FractalPlant2
+%Weed
+%FractalPlant
+%FractalPlant2
+Binary
+
+showpage
