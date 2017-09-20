@@ -293,114 +293,6 @@ stroke
 } def
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                Fractal Plant 2                              %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-/fractalPlantDraw2
-{
-  /c exch def
-
-  c (F) eq
-  { 0 len rlineto } if
-
-  c (-) eq
-  { a neg rotate } if
-
-  c (+) eq
-  { a rotate } if
-
-  c ([) eq
-  {
-    currentrgbcolor
-    currentpoint
-    gsave
-    stroke
-    moveto
-    setrgbcolor
-  } if
-
-  c (]) eq
-  {
-    currentrgbcolor
-    grestore
-    setrgbcolor
-  } if
-
-  c (A) eq
-  { 0 col 0 col 255 col setrgbcolor} if
-  %{ 148 col 60 col 0 col setrgbcolor} if
-
-  c (B) eq
-  { 255 col 0 col 0 col setrgbcolor} if
-  %{ 0 col 148 col 0 col setrgbcolor} if
-
-  c (C) eq
-  %{ 0 col 0 col 0 col setrgbcolor} if
-  { 0 col 178 col 0 col setrgbcolor} if
-
-} def
-
-/fractalPlantRules2
-{
-  /c exch def
-  c (X) eq
-  {
-    (X)(-)(])(X)(F)(+)(C)([)(F)(A)(+)(])(X)(C)(+)(])(X)([)(B)([)(-)(F)(A)
-    22 inc
-    size 23 roll
-} if
-
-c (F) eq
-{
-  (F)(F)
-  1 inc
-  size 2 roll
-} if
-
-c (A) eq
-  { (A) size 1 roll } if
-
-c (B) eq
-  { (B) size 1 roll } if
-
-c (C) eq
-  { (C) size 1 roll } if
-
-c (-) eq
-  { (-) size 1 roll } if
-
-  c (+) eq
-{ (+) size 1 roll } if
-
-c ([) eq
-  { ([) size 1 roll } if
-
-c (]) eq
-  { (]) size 1 roll } if
-
-} def
-
-/fractalPlant2
-{
-  /len exch def
-  /a exch def
-  /it exch def
-  (X)
-  1 inc
-  0 1 it 
-  {
-    pop
-    0 1 size 1 sub { pop fractalPlantRules2 } for
-} for 
-stack
-0 1 size 1 sub
-{
-  pop
-  fractalPlantDraw2
-} for
-stroke
-} def
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                 Binary Tree                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 /binaryDraw
@@ -483,10 +375,10 @@ stroke
   %Koch Curve
   /size 0 def
   newpath
-  0 11 inch moveto
-  -90 rotate
+  0 0 moveto
+  0 rotate
   %Iterations Linesize
-  4 .045 inch koch
+  4 .035 inch koch
   closepath
 } def
 
@@ -505,7 +397,7 @@ stroke
   %Fractal Plant
   /size 0 def
   newpath
-  4.25 inch 1 inch moveto
+  6.15 inch 1 inch moveto
   90 rotate
   % Iteration Angle Linesize
   5 25 .07 inch weed
@@ -535,16 +427,20 @@ stroke
   /size 0 def
   90 rotate
   newpath
-  1 inch -4.25 inch moveto
+  1 inch -2.35 inch moveto
   % Iteration Angle Linesize
-  8 90 .01 inch binary
+  8 30 .01 inch binary
 } def
 
-%Koch
+8 col 101 col 0 col setrgbcolor
+Koch
 %Sierpinski
-%Weed
+grestore
+176 col 128 col 0 col setrgbcolor
+Weed
+grestore
 %FractalPlant
-%FractalPlant2
+86 col 176 col 0 col setrgbcolor
 Binary
 
 showpage
