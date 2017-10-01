@@ -157,7 +157,7 @@ name(_,"").
 
 short_desc(animal_science,"a cozy-looking, white-bricked old building.").
 short_desc(avenue,"").
-short_desc(bedroom,"").
+short_desc(bedroom,"My bedroom, a place where many hard fought battles were waged over Dr. Sundberg's homework").
 short_desc(potion,"An oily black potion").
 short_desc(bone,"a large dark stone").
 short_desc(charged_bone,"A small piece of 'dragon' bone").
@@ -185,7 +185,7 @@ short_desc(kitchen,"").
 short_desc(large_disk,"a large disk glowing with alien energy").
 short_desc(laser,"Pulsating with energy, this laser could be used to imbue something with energy").
 short_desc(laser_lab,"Lasers shine in a beautiful array of cornea charing horror, good thing you have goggles on!").
-short_desc(library,"Endless floors of books full of knowledge. A smiling librarian greets you as you enter, "welcome to the library" she says.").
+short_desc(library,"Endless floors of books full of knowledge. A smiling librarian greets you as you enter, 'welcome to the library' she says.").
 short_desc(medium_disk,"a medium sized disk glowing with alien energy").
 short_desc(note,"a handwritten note from your roommate").
 short_desc(observatory,"").
@@ -216,7 +216,7 @@ long_desc(bone,"").
 long_desc(book_a,"An ancient work on alchemy containing many magical formulae.").
 long_desc(book_b,"A seemingly very old copy of War and Peace. A classic story about a Russian family during the invasion of Napoleon Bonaparte.").
 long_desc(book_c,"").
-long_desc(bunsen_burner,"").
+long_desc(bunsen_burner,"A Bunsen burner, named after Robert Bunsen, is a common piece of laboratory equipment that produces a single open gas flame, which is used for heating, sterilization, and combustion.").
 long_desc(chemistry_lab,"").
 long_desc(closet,"").
 long_desc(coat,"").

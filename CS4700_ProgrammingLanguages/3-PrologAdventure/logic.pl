@@ -14,7 +14,7 @@ clear   :- write("\033[2J").
 connected(X,Y) :- door(X,Y).
 connected(X,Y) :- door(Y,X).
 
-look(Place):-room(Place), descriptionShort(Place), listConnecions(Place), listItems(Place), !.
+look(Place):-room(Place), yellow, write("Location:\n"), reset, descriptionShort(Place), listConnecions(Place), listItems(Place), !.
 look(_).
 
 search(Object):-container(Object), printName(Object), write(": "), long_desc(Object, Descript), write(Descript), nl, magenta, write("\nContains:\n"), reset, listContainter(Object), !.
@@ -42,5 +42,3 @@ listItems(Place):-room(Place), red, write("\nItems:\n"), reset, location(Item, P
 listItems(_).
 
 printName(Thing):- name(Thing, Name), green, write(Name), reset, !.
-
-
