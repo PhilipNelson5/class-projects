@@ -17,12 +17,12 @@ connected(X,Y) :- door(Y,X).
 look(Place):-room(Place), yellow, write("Location:\n"), reset, descriptionShort(Place), listConnecions(Place), listItems(Place), !.
 look(_).
 
-search(Object):-container(Object), printName(Object), write(": "), long_desc(Object, Descript), write(Descript), nl, magenta, write("\nContains:\n"), reset, listContainter(Object), !.
-search(Object):-location(Object, _), long_desc(Object, Descript), write(Descript), nl, fail.
-search(_).
+study(Object):-container(Object), yellow, write("Container:\n"), reset, descriptionLong(Object), nl, magenta, write("\nContains:\n"), reset, listContainter(Object), !.
+study(Object):-location(Object, _), descriptionLong(Object), nl, fail.
+study(_).
 
 /* List contents of a container */
-listContainter(Container):-location(Item, Container), descriptionLong(Item), nl, fail.
+listContainter(Container):-location(Item, Container), descriptionShort(Item), nl, fail.
 listContainter(_).
 
 /* List connections from a room */
@@ -41,4 +41,4 @@ descriptionShort(_).
 listItems(Place):-room(Place), red, write("\nItems:\n"), reset, location(Item, Place), descriptionShort(Item), nl, fail.
 listItems(_).
 
-printName(Thing):- name(Thing, Name), green, write(Name), reset, !.
+printName(Thing):- name(Thing, Name), white, write(Name), reset, !.
