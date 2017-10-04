@@ -14,6 +14,8 @@ clear   :- write("\033[2J").
 connected(X,Y):- door(X,Y).
 connected(X,Y):- door(Y,X).
 
+% HW2 --------------------------------------------------------------------------------------------------------------------------------
+
 inventory:- blue, write("Inventory:"), nl, reset, has(Item), printName(Item), nl, fail.
 inventory:- true.
 
@@ -33,7 +35,7 @@ existsHere(Place1, Place2):- Place1 == Place2, !.
 existsHere(Place1, Place2):- location(Place1, Place2), !.
 existsHere(Place1, Place2):- location(Place1, Place3), existsHere(Place3, Place2).
 
-%-----------------------------------------------------------------------------------------------------------------------------------------
+% HW1 --------------------------------------------------------------------------------------------------------------------------------
 
 look(Place):- room(Place), yellow, write("Location:\n"), reset, descriptionShort(Place), listConnecions(Place), listItems(Place), !.
 look(Place):- location(Place, _), descriptionShort(Place), !.
