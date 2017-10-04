@@ -11,9 +11,14 @@ white   :- write("\033[37m").
 bold    :- write("\033[1m").
 clear   :- write("\033[2J").
 
+has(key).
+has(goggles).
 connected(X,Y) :- door(X,Y).
 connected(X,Y) :- door(Y,X).
 
+inventory :- blue, write("Inventory:"), nl, reset, has(Item), printName(Item), nl, fail.
+inventory :- true.
+%-----------------------------------------------------------------------------------------------------------------------------------------
 look(Place):-room(Place), yellow, write("Location:\n"), reset, descriptionShort(Place), listConnecions(Place), listItems(Place), !.
 look(_).
 
