@@ -11,30 +11,37 @@ white   :- write("\033[37m").
 bold    :- write("\033[1m").
 clear   :- write("\033[2J").
 
-has(key).
-has(goggles).
-connected(X,Y) :- door(X,Y).
-connected(X,Y) :- door(Y,X).
+connected(X,Y):- door(X,Y).
+connected(X,Y):- door(Y,X).
 
-inventory :- blue, write("Inventory:"), nl, reset, has(Item), printName(Item), nl, fail.
-inventory :- true.
+inventory:- blue, write("Inventory:"), nl, reset, has(Item), printName(Item), nl, fail.
+inventory:- true.
 
-move(Place) :- here(Cur), retract(here(Loc)), asserta(here(Place)), look(Place), !.
-checkMove(Place) :- here(Cur), connected(Place, Cur), move(Place), !.
+move(Place):- here(Cur), retract(here(Cur)), asserta(here(Place)), look(Place), !.
+checkMove(Place):- here(Cur), connected(Place, Cur), move(Place), !.
+
+take(Item):- location(Item,Loc), retract(location(Item, Loc)), asserta(has(Item)), inventory.
+checkTake(Item):- here(Cur), isHere(Item, Cur), not(heavy(Item)), take(Item).
+
+isHere(Item, Place):- location(Item, Place), !.
+isHere(Item, Place):- location(Item, Container), isHere(Container, Place).
+
 %-----------------------------------------------------------------------------------------------------------------------------------------
-look(Place):-room(Place), yellow, write("Location:\n"), reset, descriptionShort(Place), listConnecions(Place), listItems(Place), !.
+
+look(Place):- room(Place), yellow, write("Location:\n"), reset, descriptionShort(Place), listConnecions(Place), listItems(Place), !.
+look(Place):- location(Place, _), descriptionShort(Place), !.
 look(_).
 
-study(Object):-container(Object), yellow, write("Container:\n"), reset, descriptionLong(Object), nl, magenta, write("\nContains:\n"), reset, listContainter(Object), !.
-study(Object):-location(Object, _), descriptionLong(Object), nl, fail.
+study(Object):- container(Object), yellow, write("Container:\n"), reset, descriptionLong(Object), nl, magenta, write("\nContains:\n"), reset, listContainter(Object), !.
+study(Object):- location(Object, _), descriptionLong(Object), nl, fail.
 study(_).
 
 /* List contents of a container */
-listContainter(Container):-location(Item, Container), descriptionShort(Item), nl, fail.
+listContainter(Container):- location(Item, Container), descriptionShort(Item), nl, fail.
 listContainter(_).
 
 /* List connections from a room */
-listConnecions(Place):-room(Place), cyan, write("\n\nConnections:\n"), reset, connected(Place,X), descriptionShort(X), nl, fail.
+listConnecions(Place):- room(Place), cyan, write("\n\nConnections:\n"), reset, connected(Place,X), descriptionShort(X), nl, fail.
 listConnecions(_).
 
 /* Display the long description of a room */
@@ -46,7 +53,7 @@ descriptionShort(Place):- printName(Place), write(": "), short_desc(Place, Descr
 descriptionShort(_).
 
 /* List the items in a room */
-listItems(Place):-room(Place), red, write("\nItems:\n"), reset, location(Item, Place), descriptionShort(Item), nl, fail.
+listItems(Place):- room(Place), red, write("\nItems:\n"), reset, location(Item, Place), descriptionShort(Item), nl, fail.
 listItems(_).
 
 printName(Thing):- name(Thing, Name), white, write(Name), reset, !.

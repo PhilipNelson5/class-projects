@@ -1,6 +1,7 @@
 :- dynamic here/1.
 :- dynamic has/1.
 :- dynamic location/2.
+
 here(bedroom).
 
 room(animal_science).
@@ -9,9 +10,9 @@ room(bedroom).
 room(chemistry_lab).
 room(common_room).
 room(computer_lab).
+room(elevator).
 room(eslc_north).
 room(eslc_south).
-room(elevator).
 room(geology_building).
 room(green_beam).
 room(hall).
@@ -25,9 +26,9 @@ room(plaza).
 room(quad).
 room(roof).
 room(roommate_room).
+room(secret_lab).
 room(ser_1st_floor).
 room(ser_2nd_floor).
-room(secret_lab).
 room(special_collections).
 room(tsc_patio).
 room(tunnels_east).
@@ -102,6 +103,13 @@ equipment(bunsen_burner).
 create_recipe(laser,[bone],charged_bone).
 create_recipe(bunsen_burner,[flask,charged_bone,fly],potion).
 
+heavy(laser).
+heavy(bunsen_burner).
+heavy(closet).
+heavy(pylon_a).
+heavy(pylon_b).
+heavy(pylon_c).
+
 name(animal_science,"Animal Science Building").
 name(avenue,"A tree lined avenue").
 name(bedroom,"Your bedroom").
@@ -156,22 +164,22 @@ name(tsc_patio,"Patio of the TSC").
 name(tunnels_east,"Underground Tunnels").
 name(tunnels_north,"Underground Tunnels").
 name(tunnels_west,"Underground Tunnels").
-name(_,"foo").
+name(_,"").
 short_desc(animal_science,"a cozy-looking, white-bricked old building.").
 short_desc(avenue,"A broad walkway lined with trees.").
 short_desc(bedroom,"your bedroom - complete with dirty laundry and heaps of old homework, the sad remains of many hard fought battles waged over Dr. Sundberg's homework").
 short_desc(potion,"An oily black potion").
-short_desc(bone,"a large dark stone").
+short_desc(bone,"a large dark bone").
 short_desc(charged_bone,"A small piece of 'dragon' bone").
 short_desc(book_a,"a copy of 'Corpus Hermiticum' a book on alchemy").
 short_desc(book_b,"a copy of 'War and Peace'").
 short_desc(book_c,"a copy of 'Great Expectations'").
-short_desc(bunsen_burner,"A stand with a tube connected to a natural gas supply").
+short_desc(bunsen_burner,"Piece of equipment commonly found in a laboratory.  It produces a single open gas flame.").
 short_desc(chemistry_lab,"A lab with fume hoods and various chemical instuments").
-short_desc(closet,"Basically a hole in a wall").
+short_desc(closet,"The equipment closet used to store extra materials for science experiments").
 short_desc(coat,"A large white lab coat with lots of pockets").
-short_desc(common_room,"A typical scene of college living, an ever growing pile of pizza boxes in the corner, you know they will not be thrown out until they begin to develop consciousness.").
-short_desc(computer_lab,"Many computers lined up and a desk at front of room").
+short_desc(common_room,"A place where students gather for homework, food, and naps").
+short_desc(computer_lab,"Many computers lined up together and a desk at the front of the room").
 short_desc(elevator,"You are in a plain metal box.  There are buttons labeled with various locations.").
 short_desc(eslc_north,"You are on the north side of the ESLC.").
 short_desc(eslc_south,"You are on the south side of the ESLC.").
@@ -197,22 +205,21 @@ short_desc(plaza,"A large open space between engineering buildings").
 short_desc(pylon_a,"a glowing red pyramid shaped structure").
 short_desc(pylon_b,"a glowing blue pyramid shaped structure").
 short_desc(pylon_c,"a glowing green pyramid shaped structure").
-short_desc(quad,"A large open field split into four even sections").
+short_desc(quad,"four large fields split up by sidewalks").
 short_desc(recipe,"a page from 'Corpus Hermiticum' containing a recipe for an invisibility potion").
-short_desc(roof,"It's a long way down, don't fall off.").
-short_desc(roommate_room,"Its pretty messy. A computer light is blinking and there are textbooks near by.").
-short_desc(secret_lab,"foo").
-short_desc(ser_1st_floor,"foo").
-short_desc(ser_2nd_floor,"foo").
+short_desc(roof,"the roof of the dorm building.").
+short_desc(roommate_room,"its even messier than your room!").
+short_desc(secret_lab,"a secret lab?! This must be where Dr. Sundberg is hiding his secret!").
+short_desc(ser_1st_floor,"The bottom floor of the SER building. Nothing too exciting is happening here.").
+short_desc(ser_2nd_floor,"The 2nd floor of the SER building. You can see flashing lights near the laser lab room.").
 short_desc(small_disk,"a small disk glowing with alien energy").
-short_desc(special_collections,"Only the rarest books are kept here, who knows what secrets they might hold?").
-short_desc(tsc_patio,"A concrete patio with a water feature and multiple paths").
+short_desc(special_collections,"the 'special' section of the library. Holds the more important and classical books.").
+short_desc(tsc_patio,"a place to sit an study or eat outside the TSC.").
 short_desc(tunnels_east,"The underground tunnels are a confusing place.  I hope you don't get lost.").
 short_desc(tunnels_north,"The underground tunnels are a confusing place.  I hope you don't get lost.").
 short_desc(tunnels_west,"The underground tunnels are a confusing place.  I hope you don't get lost.").
-short_desc(_,"foo").
+short_desc(_,"").
 
-long_desc(animal_science,"The early twentieth-century edifice has a certain charm to it; the worn white bricks, coral roof tiling, and neo-classical columns adorning the entrance lend themselves to a certain prideful, nostalgic semblence of old academia. A laminated banner with the words 'Animal Science' is sloppily taped above the front doors. Inside, however, you are surprised to only be met with fluorescent lighting, disjointed rennovations, and caffeine-dependent mathematicians.").
 long_desc(avenue,"A myriad of people walk every which way along the avenue.  All are seemingly unaware of their imminent destruction at Dr.Sundberg's hand.").
 long_desc(bone,"The femur bone from a dragon discovered in the hills of St. Ignatius, Montana.").
 long_desc(bedroom,"The college dorm room where you currently reside. These walls have witnessed more late night study sessions than you care to consider. The bed is soaked with the dried tears of uncounted tests failed. Fortunately, the building is aired frequently enough that you can't still smell the years of dirty laundry that have sat in the closet.").
@@ -220,50 +227,50 @@ long_desc(book_a,"An ancient work on alchemy containing many magical formulae.")
 long_desc(book_b,"A seemingly very old copy of War and Peace. A classic story about a Russian family during the invasion of Napoleon Bonaparte.").
 long_desc(book_c,"The classic story of an orphan boy named Pip from the marshes of Kent.").
 long_desc(bunsen_burner,"A Bunsen burner, named after Robert Bunsen, is a common piece of laboratory equipment that produces a single open gas flame, which is used for heating, sterilization, and combustion.").
-long_desc(chemistry_lab,"foo").
-long_desc(closet,"foo").
+long_desc(chemistry_lab,"A laboratory for research in chemistry. You see a few goofy looking students with big green goggles mixing chemicals.").
+long_desc(closet,"Amid all the extra equipment and junk in the closet, you notice some saftey goggles that are just your size.").
 long_desc(coat,"A spiffy looking lab coat. The pockets are lined with some kind of residue from Dr. Sundberg's experiments. It smells like aliens... Gross!").
-long_desc(common_room,"foo").
+long_desc(common_room,"The common room in the SER building. You see a few scattered couches, benches, and tables. It smells like Little Cesears Pizza here...").
 long_desc(computer_lab,"The room is filled with the glow and hum of many computers and the feverish typing of college students.").
 long_desc(elevator,"A large metal container used to transport people and large objects to different floors in a building.").
-long_desc(eslc_north,"foo").
-long_desc(eslc_south,"foo").
+long_desc(eslc_north,"A large open area where you can see chemistry labs , and the doors out to the TSC patio.").
+long_desc(eslc_south,"Smaller area lined with classrooms, labs, and closets. You notice a lot of students are wearing lab coats and goggles.").
 long_desc(figurine,"Your roommate's alien figurine.  He's been obsessed with aliens since you met him.  You always wondered why, but after reading that note about Dr.Sundberg, it is all beginning to make sense.").
 long_desc(flask,"A small container made of glass that is wide at the base and narrow at the neck.  A purple liquid seems to have been left over from a previous experiment.").
 long_desc(fly,"Scientifically known as Syrphus Ribessi, this nuisance enjoys long buzzes around human faces and landing on perfectly good food. This particular house fly met an untimely death by squishing.").
-long_desc(geology_building,"foo").
-long_desc(goggles,"foo").
-long_desc(green_beam,"foo").
+long_desc(geology_building,"An old looking building that secretly hides the math department. The only reason people want to go in, is to see the large 'dinosaur' bone exhibit they have in there.").
+long_desc(goggles,"Specialized Eclipse goggles that allow you to stare at the sun, or intense lasers without going blind.").
+long_desc(green_beam,"Dr. Sundberg is standing at a large machine which is emitting a bright beam of green light.  You overhear a conversation indicating that he has set up a wormhole generator in his secret lab.  This will allow the alien invasion force to reach earth.").
 long_desc(hall,"A narrow area or passage that connects rooms of an edifice.  The passage is laid with dark red carpeting with pictures hanging on its walls.").
-long_desc(hub,"foo").
-long_desc(key,"foo").
-long_desc(kitchen,"foo").
-long_desc(large_disk,"foo").
+long_desc(hub,"Choose from 9 different areas to eat at while enjoying a large seating area, which is perfect for hanging out and studying.").
+long_desc(key,"You feel the alien energy flowing from the key. Could it be? Have you been chosen as the next wielder of the Keyblade? You hold out your hand to the side, but sadly, nothing happens. It's just a normal alien key....").
+long_desc(kitchen,"There are an assortment of pots and pans. Someone is cooking your favorite food but it doesn't look like they are going to share.").
+long_desc(large_disk,"a large disk on the bottom of the red pylon. You worked out today so if there isn't anything on top of it, you could probably move it...").
 long_desc(laser,"A rather powerful laser for research. Probably shouldnt look into it.").
-long_desc(laser_lab,"foo").
-long_desc(library,"foo").
-long_desc(medium_disk,"foo").
+long_desc(laser_lab,"You imagine yourself as a secret agent in Mission Impossible flipping and sliding around the room to avoid the lasers....maybe then you could get a girlfriend...").
+long_desc(library,"Endless floors of books full of knowledge. A smiling librarian greets you as you enter, 'Welcome to the library!'").
+long_desc(medium_disk,"a medium sized disk in between the small and large disks on the red pylon. It looks like you can move it if there isn't anything on top of it...").
 long_desc(note,"In the handwriting of your room mate is hastily scrawled: 'You've got to help.  Dr. Sundberg is an alien and wants to take over the world.  I think he is on to me, you are the only hope left! Try to find out what he is doing with the green beam.'").
-long_desc(observatory,"foo").
-long_desc(old_main,"The building has four floors, and is the location of much pain during the Evil Dr. Sundber's class.").
-long_desc(plaza,"foo").
-long_desc(pylon_a,"foo").
-long_desc(pylon_b,"foo").
-long_desc(pylon_c,"foo").
+long_desc(observatory,"Welcome to the Atmospheric Lidar Observatory. Here you will find information about the 'Green Beam' at Utah State University.").
+long_desc(old_main,"The building has four floors, and is the location of much pain during the Evil Dr. Sundber's class.  Few can navigate their way to the 4th floor where dreams become computer programs.").
+long_desc(plaza,"A well known spot for Pokemon Go players. It is home to 2 Gyms and 3 pokestops. Terf wars have been known to occur here, so avoid wearing solid blue, yellow or red clothes to avoid potential conflict.").
+long_desc(pylon_a,"A red platform with a rod coming out of the middle that comes up to your chest. There are three disks that have been placed here on the rod from smallest to biggest forming a pyramid.").
+long_desc(pylon_b,"A blue platform with a rod coming out of the middle that comes up to your chest. It looks like you could put something on the rod...").
+long_desc(pylon_c,"A green platform with a rod coming out of the middle that comes up to your chest. It looks like you could put something on the rod...").
 long_desc(quad,"A large grass field quarted by concrete sidewalks and bordered by large trees. A favorite destination of students and pets alike. Multiple buildings face into the field, most of them quite historic looking.").
 long_desc(recipe,"A potion for invisibility: Bathe the bone of a dragon in pure light.  Distill charged bone with the wings of a fly.  Let cool before quaffing.").
 long_desc(roof,"Not a place to be caught in a windstorm - the shingles are slippery and cracked.").
-long_desc(roommate_room,"foo").
-long_desc(secret_lab,"foo").
-long_desc(ser_1st_floor,"foo").
-long_desc(ser_2nd_floor,"foo").
+long_desc(roommate_room,"Not quite as messey as yours, your roommate's room has a mini fridge stocked with Dr. Pepper. You see the sun shining through the locked window. ").
+long_desc(secret_lab,"You notice your surroundings are almost identical to the cartoon Dexter's laboratory. There are many experiments being done around the room.").
+long_desc(ser_1st_floor,"...even though I said nothing exciting happens here, you want to know more? Sorry, I got nothing...").
+long_desc(ser_2nd_floor,"The main part of the 2nd floor is the laser lab. The students in there experiment with what they can cut, burn, or imbue with magical energy with lasers.").
 long_desc(small_disk,"A small disk pulsates in your hand, glowing an toxic green color as it breathes slowly, a slight warm gasey feel pukes from the disk.").
-long_desc(special_collections,"foo").
+long_desc(special_collections,"a small section of the library that is home to all sorts of extrordiary books. You can read up on Russian Literature, Classic Dickens, Alchemy, and even more!").
 long_desc(tsc_patio,"An open area with birds chirping and hipsters drinking their coffee. You won't find any CS majors here as they're all in cavedwelling in Old Main.").
-long_desc(tunnels_east,"foo").
-long_desc(tunnels_north,"foo").
-long_desc(tunnels_west,"foo").
-long_desc(_,"foo").
+long_desc(tunnels_east,"The tunnel seems to go on forever. Its dark and you are having a hard time seeing anything. You try to not let your imagination take over as you think you hear someone following you...").
+long_desc(tunnels_north,"The tunnel seems to go on forever. Its dark and you are having a hard time seeing anything. You try to not let your imagination take over as you think you hear someone following you...").
+long_desc(tunnels_west,"The tunnel seems to go on forever. Its dark but you see what looks like a door off to your right. You try to not let your imagination take over as you think you hear someone following you...").
+long_desc(_,"").
 
 puzzle(laser_lab):-has(goggles),!.
 puzzle(laser_lab):-write("It is too dangerous to go in without eye protection."),nl,!,fail.
