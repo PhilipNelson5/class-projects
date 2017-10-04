@@ -18,6 +18,9 @@ connected(X,Y) :- door(Y,X).
 
 inventory :- blue, write("Inventory:"), nl, reset, has(Item), printName(Item), nl, fail.
 inventory :- true.
+
+move(Place) :- here(Cur), retract(here(Loc)), asserta(here(Place)), look(Place), !.
+checkMove(Place) :- here(Cur), connected(Place, Cur), move(Place), !.
 %-----------------------------------------------------------------------------------------------------------------------------------------
 look(Place):-room(Place), yellow, write("Location:\n"), reset, descriptionShort(Place), listConnecions(Place), listItems(Place), !.
 look(_).
