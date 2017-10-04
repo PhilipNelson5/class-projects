@@ -26,6 +26,13 @@ checkTake(Item):- here(Cur), isHere(Item, Cur), not(heavy(Item)), take(Item).
 isHere(Item, Place):- location(Item, Place), !.
 isHere(Item, Place):- location(Item, Container), isHere(Container, Place).
 
+put(Item, Loc):- retract(has(Item)), asserta(location(Item, Loc)).
+checkPut(Item, Loc):- here(Cur), existsHere(Loc, Cur), put(Item, Location).
+
+existsHere(Place1, Place2):- Place1 == Place2, !.
+existsHere(Place1, Place2):- location(Place1, Place2), !.
+existsHere(Place1, Place2):- location(Place1, Place3), existsHere(Place3, Place2).
+
 %-----------------------------------------------------------------------------------------------------------------------------------------
 
 look(Place):- room(Place), yellow, write("Location:\n"), reset, descriptionShort(Place), listConnecions(Place), listItems(Place), !.
