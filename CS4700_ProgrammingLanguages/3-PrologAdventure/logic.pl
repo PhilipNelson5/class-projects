@@ -15,7 +15,14 @@ connected(X,Y):- door(X,Y).
 connected(X,Y):- door(Y,X).
 
 % HW2 --------------------------------------------------------------------------------------------------------------------------------
+look:- here(X), look(X), !.
+checkLook(Place):- here(Location), existsHere(Place, Location), look(Place).
+checkLook(Object):- has(Object), look(Object).
 
+checkStudy(Object):- here(Location), existsHere(Object, Location), study(Object), write("1"), !.
+checkStudy(Thing):- has(Thing), study(Thing), write("2"), !.
+
+checkInventory:- inventory.
 inventory:- blue, write("Inventory:"), nl, reset, has(Item), printName(Item), nl, fail.
 inventory:- true.
 
@@ -29,7 +36,7 @@ isHere(Item, Place):- location(Item, Place), !.
 isHere(Item, Place):- location(Item, Container), isHere(Container, Place).
 
 put(Item, Loc):- retract(has(Item)), asserta(location(Item, Loc)).
-checkPut(Item, Loc):- here(Cur), existsHere(Loc, Cur), put(Item, Location).
+checkPut(Item, Loc):- (room(Loc); container(Loc)), here(Cur), existsHere(Loc, Cur), put(Item, Loc).
 
 existsHere(Place1, Place2):- Place1 == Place2, !.
 existsHere(Place1, Place2):- location(Place1, Place2), !.
@@ -42,7 +49,7 @@ look(Place):- location(Place, _), descriptionShort(Place), !.
 look(_).
 
 study(Object):- container(Object), yellow, write("Container:\n"), reset, descriptionLong(Object), nl, magenta, write("\nContains:\n"), reset, listContainter(Object), !.
-study(Object):- location(Object, _), descriptionLong(Object), nl, fail.
+study(Object):- descriptionLong(Object), nl, fail.
 study(_).
 
 /* List contents of a container */

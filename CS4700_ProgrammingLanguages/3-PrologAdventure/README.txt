@@ -8,12 +8,28 @@ A list of items in the room with their respective short descriptions
 look(item)
 The item's name and associated short description
 
+checkLook(room)
+Check the room is the current room
+
+checkLook(item)
+Check the item is in sight (in the room / in inventory)
+Call study(item)
+
 study(item)
 The name of the item and it's long description
 
 study(container)
 The name of the container and its long description
 a list of items it contains with their respective short descriptions
+Call study(container)
+
+checkStudy(item)
+Check the item is in sight (in the room / in inventory)
+Call study(item)
+
+checkStudy(container)
+Check the container is in sight (in the roomy)
+Call study(container)
 
 inventory
 List the items contained in the inventory
