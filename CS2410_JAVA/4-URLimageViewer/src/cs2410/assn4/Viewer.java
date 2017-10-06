@@ -88,7 +88,7 @@ public class Viewer extends Application implements EventHandler<ActionEvent> {
     /**
      * prompts user for a URL and adds the image to the viewer
      *
-     * @return New image to be displated
+     * @return New image to be displayed
      */
     private Image addNewImage() {
         TextInputDialog dialog;
@@ -109,7 +109,7 @@ public class Viewer extends Application implements EventHandler<ActionEvent> {
 
     /**
      * removes the current image
-     * disables butons when necessary
+     * disables buttons when necessary
      *
      * @return New image to be displayed
      */
