@@ -68,27 +68,27 @@ door(roof,green_beam).
 door(roof,elevator).
 door(roof,observatory).
 
-location(bone,geology_building).
+location(closet,eslc_south).
+location(goggles,closet).
+location(note,bedroom).
 location(book_a,special_collections).
 location(book_b,special_collections).
 location(book_c,special_collections).
-location(bunsen_burner,chemistry_lab).
-location(closet,eslc_south).
-location(coat,green_beam).
+location(recipe,book_a).
+location(bone,geology_building).
 location(figurine,bedroom).
-location(flask,chemistry_lab).
 location(fly,roommate_room).
-location(goggles,closet).
 location(key,coat).
+location(coat,green_beam).
 location(large_disk,pylon_a).
-location(laser,laser_lab).
 location(medium_disk,pylon_a).
-location(note,bedroom).
+location(small_disk,pylon_a).
 location(pylon_a,secret_lab).
 location(pylon_b,secret_lab).
 location(pylon_c,secret_lab).
-location(recipe,book_a).
-location(small_disk,pylon_a).
+location(flask,chemistry_lab).
+location(bunsen_burner,chemistry_lab).
+location(laser,laser_lab).
 
 container(closet).
 container(coat).

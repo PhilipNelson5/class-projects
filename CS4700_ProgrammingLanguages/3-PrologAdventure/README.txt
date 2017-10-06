@@ -1,5 +1,8 @@
 Author: Philip Nelson
 
+To play, load logic.pl in a prolog interpreter.
+For best results, use a terminal that supports colors
+
 look.
 Look at the current room
 
