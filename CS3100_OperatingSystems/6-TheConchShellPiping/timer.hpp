@@ -1,7 +1,7 @@
 #ifndef TIMER_HPP
 #define TIMER_HPP
 
-#include <algorithm>
+#include <numeric>
 #include <chrono>
 #include <cmath>
 #include <iostream>
