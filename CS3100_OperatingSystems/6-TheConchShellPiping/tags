@@ -1,0 +1,78 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BLACK	termColors.hpp	/^const std::string BLACK = "\\033[30m";   \/* Black *\/$/;"	v
+BLUE	termColors.hpp	/^const std::string BLUE = "\\033[34m";    \/* Blue *\/$/;"	v
+BOLDBLACK	termColors.hpp	/^const std::string BOLDBLACK = "\\033[1m\\033[30m";   \/* Bold Black *\/$/;"	v
+BOLDBLUE	termColors.hpp	/^const std::string BOLDBLUE = "\\033[1m\\033[34m";    \/* Bold Blue *\/$/;"	v
+BOLDCYAN	termColors.hpp	/^const std::string BOLDCYAN = "\\033[1m\\033[36m";    \/* Bold Cyan *\/$/;"	v
+BOLDGREEN	termColors.hpp	/^const std::string BOLDGREEN = "\\033[1m\\033[32m";   \/* Bold Green *\/$/;"	v
+BOLDMAGENTA	termColors.hpp	/^const std::string BOLDMAGENTA = "\\033[1m\\033[35m"; \/* Bold Magenta *\/$/;"	v
+BOLDRED	termColors.hpp	/^const std::string BOLDRED = "\\033[1m\\033[31m";     \/* Bold Red *\/$/;"	v
+BOLDWHITE	termColors.hpp	/^const std::string BOLDWHITE = "\\033[1m\\033[37m";   \/* Bold White *\/$/;"	v
+BOLDYELLOW	termColors.hpp	/^const std::string BOLDYELLOW = "\\033[1m\\033[33m";  \/* Bold Yellow *\/$/;"	v
+CC	Makefile	/^CC = g++$/;"	m
+CLEAR	termColors.hpp	/^const std::string CLEAR = "\\033[2J"; \/\/ clear screen escape code$/;"	v
+COMMAND_HPP	command.hpp	2;"	d
+CYAN	termColors.hpp	/^const std::string CYAN = "\\033[36m";    \/* Cyan *\/$/;"	v
+Command	command.cpp	/^Command::Command(std::string input)$/;"	f	class:Command
+Command	command.hpp	/^class Command$/;"	c
+DEBUG_FLAGS	Makefile	/^DEBUG_FLAGS = -O0 -g3 -fsanitize=thread$/;"	m
+FLAGS	Makefile	/^FLAGS = -std=c++14 -Wall -Wextra #-Werror #-pie$/;"	m
+GREEN	termColors.hpp	/^const std::string GREEN = "\\033[32m";   \/* Green *\/$/;"	v
+MAGENTA	termColors.hpp	/^const std::string MAGENTA = "\\033[35m"; \/* Magenta *\/$/;"	v
+OBJS	Makefile	/^OBJS = main.cpp path.hpp termColors.hpp command.hpp command.cpp$/;"	m
+PATHS_HPP	path.hpp	2;"	d
+READ_END	main.cpp	19;"	d	file:
+RED	termColors.hpp	/^const std::string RED = "\\033[31m";     \/* Red *\/$/;"	v
+RELEASE_FLAGS	Makefile	/^RELEASE_FLAGS = -O3 -g0$/;"	m
+RESET	termColors.hpp	/^const std::string RESET = "\\033[0m";$/;"	v
+TERM_COLORS_CPP	termColors.hpp	2;"	d
+TIMER_HPP	timer.hpp	2;"	d
+Timer	timer.hpp	/^  Timer() : total(0), average(0) {}$/;"	f	class:Timer
+Timer	timer.hpp	/^class Timer$/;"	c
+WHITE	termColors.hpp	/^const std::string WHITE = "\\033[37m";   \/* White *\/$/;"	v
+WRITE_END	main.cpp	20;"	d	file:
+YELLOW	termColors.hpp	/^const std::string YELLOW = "\\033[33m";  \/* Yellow *\/$/;"	v
+_end	timer.hpp	/^  std::chrono::time_point<std::chrono::system_clock> _start, _end;$/;"	m	class:Timer
+_start	timer.hpp	/^  std::chrono::time_point<std::chrono::system_clock> _start, _end;$/;"	m	class:Timer
+alias	main.cpp	/^  std::vector<Command> alias;$/;"	m	namespace:__anon1	file:
+aliases	main.cpp	/^bool aliases(std::vector<std::string> &words)$/;"	f
+average	timer.hpp	/^  double average;$/;"	m	class:Timer
+buildArgs	main.cpp	/^char *const *buildArgs(const std::vector<std::string> &words)$/;"	f
+cd	main.cpp	/^void cd(std::vector<std::string> &words)$/;"	f
+cmd_c	command.hpp	/^	int cmd_c;$/;"	m	class:Command
+cmd_v	command.hpp	/^  std::vector<std::vector<std::string>> cmd_v;$/;"	m	class:Command
+color	main.cpp	/^void color(std::vector<std::string> &words)$/;"	f
+exec	main.cpp	/^void exec(char *const *&args)$/;"	f
+getAverage	timer.hpp	/^  double getAverage()$/;"	f	class:Timer
+getCWD	path.hpp	/^std::string getCWD()$/;"	f
+getExePath	path.hpp	/^std::string getExePath()$/;"	f
+getHostName	path.hpp	/^std::string getHostName()$/;"	f
+getLogin	path.hpp	/^std::string getLogin()$/;"	f
+getStdDev	timer.hpp	/^  double getStdDev()$/;"	f	class:Timer
+getTime	timer.hpp	/^  double getTime() { return total; }$/;"	f	class:Timer
+hasInFile	command.hpp	/^	bool hasInFile;$/;"	m	class:Command
+hasOutFile	command.hpp	/^	bool hasOutFile;$/;"	m	class:Command
+hist	main.cpp	/^void hist(const std::vector<Command> &history)$/;"	f
+history	main.cpp	/^  std::vector<Command> history;$/;"	m	namespace:__anon1	file:
+infile	command.hpp	/^  std::string infile;$/;"	m	class:Command
+line	command.hpp	/^	std::string line;$/;"	m	class:Command
+load	main.cpp	/^void load()$/;"	f
+main	main.cpp	/^int main()$/;"	f
+outfile	command.hpp	/^  std::string outfile;$/;"	m	class:Command
+parse	command.cpp	/^std::vector<std::vector<std::string>> Command::parse(std::string input)$/;"	f	class:Command
+ptime	timer.hpp	/^  std::string ptime()$/;"	f	class:Timer
+reset	timer.hpp	/^  void reset()$/;"	f	class:Timer
+run	main.cpp	/^void run(Command cmds)$/;"	f
+save	timer.hpp	/^  void save()$/;"	f	class:Timer
+size	command.cpp	/^int Command::size()$/;"	f	class:Command
+t	main.cpp	/^  Timer t;$/;"	m	namespace:__anon1	file:
+time	timer.hpp	/^  auto time(F f)$/;"	f	class:Timer
+times	timer.hpp	/^  std::vector<double> times;$/;"	m	class:Timer
+toString	command.cpp	/^std::string Command::toString()$/;"	f	class:Command
+total	timer.hpp	/^  double total;$/;"	m	class:Timer
+txtcolor	main.cpp	/^  std::string txtcolor = BLUE;$/;"	m	namespace:__anon1	file:
