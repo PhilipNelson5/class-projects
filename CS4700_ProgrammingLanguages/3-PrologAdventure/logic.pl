@@ -14,7 +14,12 @@ clear   :- write("\033[2J").
 connected(X,Y):- door(X,Y).
 connected(X,Y):- door(Y,X).
 
+% HW3 --------------------------------------------------------------------------------------------------------------------------------
+
+
+
 % HW2 --------------------------------------------------------------------------------------------------------------------------------
+
 look:- here(X), look(X), !.
 checkLook(Place):- here(Location), existsHere(Place, Location), look(Place).
 checkLook(Object):- has(Object), look(Object).
@@ -27,7 +32,7 @@ inventory:- blue, write("Inventory:"), nl, reset, has(Item), printName(Item), nl
 inventory:- true.
 
 move(Place):- here(Cur), retract(here(Cur)), asserta(here(Place)), look(Place), !.
-checkMove(Place):- here(Cur), connected(Place, Cur), move(Place), !.
+checkMove(Place):- here(Cur), connected(Place, Cur), puzzle(Place), move(Place), !.
 
 take(Item):- location(Item,Loc), retract(location(Item, Loc)), asserta(has(Item)), inventory.
 checkTake(Item):- here(Cur), isHere(Item, Cur), not(heavy(Item)), take(Item).
