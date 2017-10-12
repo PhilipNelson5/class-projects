@@ -16,7 +16,18 @@ connected(X,Y):- door(Y,X).
 
 % HW3 --------------------------------------------------------------------------------------------------------------------------------
 
+give(Item):- asserta(has(Item)).
 
+transfer(Disk, Pylon2):- location(Disk, Pylon1), retract(location(Disk, Pylon1)), asserta(location(Disk, Pylon2)), hanoi, win.
+ct(Disk, Pylon_f):- location(Pylon_f, _), Disk == small_disk, transfer(Disk, Pylon_f), !.
+ct(Disk, Pylon_f):- location(Pylon_f, _), Disk == medium_disk, location(medium_disk, Pylon_m), not(location(small_disk, Pylon_m)), not(location(small_disk, Pylon_f)), transfer(Disk, Pylon_f), !.
+ct(Disk, Pylon_f):- location(Pylon_f, _), Disk == large_disk, location(large_disk, Pylon_l), not(location(small_disk, Pylon_l)), not(location(medium_disk, Pylon_l)), not(location(small_disk, Pylon_f)), not(location(medium_disk, Pylon_f)), transfer(Disk, Pylon_f), !.
+
+hanoi:- write("\nred pylon: "), printPylon(pylon_a), write("\nblue pylon: "), printPylon(pylon_b), write("\ngreen pylon: "), printPylon(pylon_c), nl,nl, !.
+printPylon(Pylon):- location(Disk, Pylon), write("| "), printNameNC(Disk), write(" | "), fail.
+printPylon(_).
+
+win:-  location(large_disk, pylon_c), location(medium_disk, pylon_c), location(small_disk, pylon_c), nl, write("You foiled the evil Dr. Sundberg!"),nl, nl.
 
 % HW2 --------------------------------------------------------------------------------------------------------------------------------
 
@@ -24,8 +35,8 @@ look:- here(X), look(X), !.
 checkLook(Place):- here(Location), existsHere(Place, Location), look(Place).
 checkLook(Object):- has(Object), look(Object).
 
-checkStudy(Object):- here(Location), existsHere(Object, Location), study(Object), write("1"), !.
-checkStudy(Thing):- has(Thing), study(Thing), write("2"), !.
+checkStudy(Object):- here(Location), existsHere(Object, Location), study(Object), !.
+checkStudy(Thing):- has(Thing), study(Thing), !.
 
 checkInventory:- inventory.
 inventory:- blue, write("Inventory:"), nl, reset, has(Item), printName(Item), nl, fail.
@@ -78,3 +89,4 @@ listItems(Place):- room(Place), red, write("\nItems:\n"), reset, location(Item, 
 listItems(_).
 
 printName(Thing):- name(Thing, Name), white, write(Name), reset, !.
+printNameNC(Thing):- name(Thing, Name), write(Name), reset, !.

@@ -45,6 +45,7 @@ Retracts the current location and asserts Place
 
 checkMove(Place).
 Checks if the Place is connected to the current place
+check for a puzzle in the current room
 Calls move(Place)
 
 take(Item).
@@ -62,3 +63,12 @@ Retract has(Item) then assert location(Item, Location)
 checkPut(Item, Location).
 Checks if the location IS the current location, if it is not, it checks if the location is IN the current location
 Calls put(Item, Location)
+
+give(Item)
+asserts that the player has the item
+
+transfer(Disk, Pylon1, Pylon2)
+moves the disk from pylon1 to pylon2
+
+hanoi
+prints the pylons and the disks on them
