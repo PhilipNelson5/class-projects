@@ -23,36 +23,45 @@ ct(Disk, Pylon_f):- location(Pylon_f, _), Disk == small_disk, transfer(Disk, Pyl
 ct(Disk, Pylon_f):- location(Pylon_f, _), Disk == medium_disk, location(medium_disk, Pylon_m), not(location(small_disk, Pylon_m)), not(location(small_disk, Pylon_f)), transfer(Disk, Pylon_f), !.
 ct(Disk, Pylon_f):- location(Pylon_f, _), Disk == large_disk, location(large_disk, Pylon_l), not(location(small_disk, Pylon_l)), not(location(medium_disk, Pylon_l)), not(location(small_disk, Pylon_f)), not(location(medium_disk, Pylon_f)), transfer(Disk, Pylon_f), !.
 
-hanoi:- write("\nred pylon: "), printPylon(pylon_a), write("\nblue pylon: "), printPylon(pylon_b), write("\ngreen pylon: "), printPylon(pylon_c), nl,nl, !.
-printPylon(Pylon):- location(Disk, Pylon), write("| "), printNameNC(Disk), write(" | "), fail.
+hanoi:- red, write("\nred pylon: "), reset, printPylon(pylon_a), nl, blue, write("\nblue pylon: "), reset, printPylon(pylon_b), nl, green, write("\ngreen pylon: "), reset, printPylon(pylon_c), reset, nl,nl, !.
+printPylon(Pylon):- location(Disk, Pylon), write(" < "), printNameNC(Disk), write(" > "), fail.
 printPylon(_).
+
+make(Product):- create_recipe(_, List, Product), use(List), asserta(has(Product)).
+checkMake(Product):- create_recipe(Device, List, Product), here(Here), location(Device, Here), hasAll(List), make(product).
+
+hasAll([]).
+hasAll([H|T]):- has(H), hasAll(T).
+
+use([]).
+use([H|T]):- has(H), retract(has(H)), use(T).
 
 win:-  location(large_disk, pylon_c), location(medium_disk, pylon_c), location(small_disk, pylon_c), nl, write("You foiled the evil Dr. Sundberg!"),nl, nl.
 
 % HW2 --------------------------------------------------------------------------------------------------------------------------------
 
 look:- here(X), look(X), !.
-checkLook(Place):- here(Location), existsHere(Place, Location), look(Place).
-checkLook(Object):- has(Object), look(Object).
+checkLook(Place):- here(Here), existsHere(Place, Here), look(Place), !.
+checkLook(Object):- has(Object), look(Object), !.
 
-checkStudy(Object):- here(Location), existsHere(Object, Location), study(Object), !.
+checkStudy(Object):- here(Here), existsHere(Object, Here), study(Object), !.
 checkStudy(Thing):- has(Thing), study(Thing), !.
 
 checkInventory:- inventory.
 inventory:- blue, write("Inventory:"), nl, reset, has(Item), printName(Item), nl, fail.
 inventory:- true.
 
-move(Place):- here(Cur), retract(here(Cur)), asserta(here(Place)), look(Place), !.
-checkMove(Place):- here(Cur), connected(Place, Cur), puzzle(Place), move(Place), !.
+move(Place):- here(Here), retract(here(Here)), asserta(here(Place)), look(Place), !.
+checkMove(Place):- here(Here), connected(Place, Here), puzzle(Place), move(Place), !.
 
 take(Item):- location(Item,Loc), retract(location(Item, Loc)), asserta(has(Item)), inventory.
-checkTake(Item):- here(Cur), isHere(Item, Cur), not(heavy(Item)), take(Item).
+checkTake(Item):- here(Here), isHere(Item, Here), not(heavy(Item)), take(Item).
 
 isHere(Item, Place):- location(Item, Place), !.
 isHere(Item, Place):- location(Item, Container), isHere(Container, Place).
 
 put(Item, Loc):- retract(has(Item)), asserta(location(Item, Loc)).
-checkPut(Item, Loc):- (room(Loc); container(Loc)), here(Cur), existsHere(Loc, Cur), put(Item, Loc).
+checkPut(Item, Loc):- (room(Loc); container(Loc)), here(Here), existsHere(Loc, Here), put(Item, Loc), !.
 
 existsHere(Place1, Place2):- Place1 == Place2, !.
 existsHere(Place1, Place2):- location(Place1, Place2), !.
