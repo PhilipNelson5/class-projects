@@ -18,10 +18,12 @@ connected(X,Y):- door(Y,X).
 
 give(Item):- asserta(has(Item)).
 
-transfer(Disk, Pylon2):- location(Disk, Pylon1), retract(location(Disk, Pylon1)), asserta(location(Disk, Pylon2)), hanoi, win.
-ct(Disk, Pylon_f):- location(Pylon_f, _), Disk == small_disk, transfer(Disk, Pylon_f), !.
-ct(Disk, Pylon_f):- location(Pylon_f, _), Disk == medium_disk, location(medium_disk, Pylon_m), not(location(small_disk, Pylon_m)), not(location(small_disk, Pylon_f)), transfer(Disk, Pylon_f), !.
-ct(Disk, Pylon_f):- location(Pylon_f, _), Disk == large_disk, location(large_disk, Pylon_l), not(location(small_disk, Pylon_l)), not(location(medium_disk, Pylon_l)), not(location(small_disk, Pylon_f)), not(location(medium_disk, Pylon_f)), transfer(Disk, Pylon_f), !.
+isIn(Room):- here(Here), Here == Room.
+
+transfer(Disk, Pylon2):- location(Disk, Pylon1), retract(location(Disk, Pylon1)), asserta(location(Disk, Pylon2)), printTowers, win.
+ct(Disk, Pylon_f):- isIn(secret_lab), location(Pylon_f, _), Disk == small_disk, transfer(Disk, Pylon_f), !.
+ct(Disk, Pylon_f):- isIn(secret_lab), location(Pylon_f, _), Disk == medium_disk, location(medium_disk, Pylon_m), not(location(small_disk, Pylon_m)), not(location(small_disk, Pylon_f)), transfer(Disk, Pylon_f), !.
+ct(Disk, Pylon_f):- isIn(secret_lab), location(Pylon_f, _), Disk == large_disk, location(large_disk, Pylon_l), not(location(small_disk, Pylon_l)), not(location(medium_disk, Pylon_l)), not(location(small_disk, Pylon_f)), not(location(medium_disk, Pylon_f)), transfer(Disk, Pylon_f), !.
 
 hanoi:- red, write("\nred pylon: "), reset, printPylon(pylon_a), nl, blue, write("\nblue pylon: "), reset, printPylon(pylon_b), nl, green, write("\ngreen pylon: "), reset, printPylon(pylon_c), reset, nl,nl, !.
 printPylon(Pylon):- location(Disk, Pylon), write(" < "), printNameNC(Disk), write(" > "), fail.
@@ -37,6 +39,25 @@ use([]).
 use([H|T]):- has(H), retract(has(H)), use(T).
 
 win:-  location(large_disk, pylon_c), location(medium_disk, pylon_c), location(small_disk, pylon_c), nl, write("You foiled the evil Dr. Sundberg!"),nl, nl.
+
+printTowers:- hanoiTop, nl, hanoiMid, nl, hanoiBot, nl, hanoiLables.
+
+hanoiTop:- red, pylonHas3(pylon_a), blue, pylonHas3(pylon_b), green, pylonHas3(pylon_c).
+pylonHas3(Pylon):- location(small_disk, Pylon), location(medium_disk, Pylon), location(large_disk, Pylon), write("   (_)   "), !.
+pylonHas3(_):- write("    |    ").
+
+hanoiMid:- red, pylonHas2(pylon_a), blue, pylonHas2(pylon_b), green, pylonHas3(pylon_c).
+pylonHas2(Pylon):- location(small_disk, Pylon), location(medium_disk, Pylon), not(location(large_disk, Pylon)), write("   (_)   "), !.
+pylonHas2(Pylon):- location(medium_disk, Pylon), location(large_disk, Pylon), write("  (___)  "), !.
+pylonHas2(_):- write("    |    ").
+
+hanoiBot:- red, pylonHas1(pylon_a), blue, pylonHas1(pylon_b), green, pylonHas1(pylon_c).
+pylonHas1(Pylon):- location(small_disk, Pylon), not(location(medium_disk, Pylon)), not(location(large_disk, Pylon)), write("   (_)   "), !.
+pylonHas1(Pylon):- location(medium_disk, Pylon), not(location(large_disk, Pylon)), write("  (___)  "), !.
+pylonHas1(Pylon):- location(large_disk, Pylon), write(" (_____) "), !.
+pylonHas1(_):- write("    |    ").
+
+hanoiLables:- red, write("¯¯¯¯¯¯¯¯¯"), blue, write("¯¯¯¯¯¯¯¯¯"), green, write("¯¯¯¯¯¯¯¯¯").
 
 % HW2 --------------------------------------------------------------------------------------------------------------------------------
 
