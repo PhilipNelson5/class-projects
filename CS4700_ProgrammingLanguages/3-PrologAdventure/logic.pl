@@ -11,10 +11,7 @@ white   :- write("\033[37m").
 bold    :- write("\033[1m").
 clear   :- write("\033[2J").
 
-connected(X,Y):- door(X,Y).
-connected(X,Y):- door(Y,X).
-
-% HW3 --------------------------------------------------------------------------------------------------------------------------------
+% HW3 -------------------------------------------------------------------------------------------------------------------------
 
 give(Item):- asserta(has(Item)).
 
@@ -59,9 +56,10 @@ pylonHas1(_):- write("    |    ").
 
 hanoiLables:- red, write("¯¯¯¯¯¯¯¯¯"), blue, write("¯¯¯¯¯¯¯¯¯"), green, write("¯¯¯¯¯¯¯¯¯").
 
-% HW2 --------------------------------------------------------------------------------------------------------------------------------
+% HW2 -------------------------------------------------------------------------------------------------------------------------
 
 look:- here(X), look(X), !.
+
 checkLook(Place):- here(Here), existsHere(Place, Here), look(Place), !.
 checkLook(Object):- has(Object), look(Object), !.
 
@@ -88,7 +86,10 @@ existsHere(Place1, Place2):- Place1 == Place2, !.
 existsHere(Place1, Place2):- location(Place1, Place2), !.
 existsHere(Place1, Place2):- location(Place1, Place3), existsHere(Place3, Place2).
 
-% HW1 --------------------------------------------------------------------------------------------------------------------------------
+% HW1 -------------------------------------------------------------------------------------------------------------------------
+
+connected(X,Y):- door(X,Y).
+connected(X,Y):- door(Y,X).
 
 look(Place):- room(Place), yellow, write("Location:\n"), reset, descriptionShort(Place), listConnecions(Place), listItems(Place), !.
 look(Place):- location(Place, _), descriptionShort(Place), !.
