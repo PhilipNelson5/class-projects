@@ -18,9 +18,9 @@ give(Item):- asserta(has(Item)).
 isIn(Room):- here(Here), Here == Room.
 
 transfer(Disk, Pylon2):- location(Disk, Pylon1), retract(location(Disk, Pylon1)), asserta(location(Disk, Pylon2)), printTowers, win.
-ct(Disk, Pylon_f):- isIn(secret_lab), location(Pylon_f, _), Disk == small_disk, transfer(Disk, Pylon_f), !.
-ct(Disk, Pylon_f):- isIn(secret_lab), location(Pylon_f, _), Disk == medium_disk, location(medium_disk, Pylon_m), not(location(small_disk, Pylon_m)), not(location(small_disk, Pylon_f)), transfer(Disk, Pylon_f), !.
-ct(Disk, Pylon_f):- isIn(secret_lab), location(Pylon_f, _), Disk == large_disk, location(large_disk, Pylon_l), not(location(small_disk, Pylon_l)), not(location(medium_disk, Pylon_l)), not(location(small_disk, Pylon_f)), not(location(medium_disk, Pylon_f)), transfer(Disk, Pylon_f), !.
+checkTransfer(Disk, Pylon_f):- isIn(secret_lab), location(Pylon_f, _), Disk == small_disk, transfer(Disk, Pylon_f), !.
+checkTransfer(Disk, Pylon_f):- isIn(secret_lab), location(Pylon_f, _), Disk == medium_disk, location(medium_disk, Pylon_m), not(location(small_disk, Pylon_m)), not(location(small_disk, Pylon_f)), transfer(Disk, Pylon_f), !.
+checkTransfer(Disk, Pylon_f):- isIn(secret_lab), location(Pylon_f, _), Disk == large_disk, location(large_disk, Pylon_l), not(location(small_disk, Pylon_l)), not(location(medium_disk, Pylon_l)), not(location(small_disk, Pylon_f)), not(location(medium_disk, Pylon_f)), transfer(Disk, Pylon_f), !.
 
 hanoi:- red, write("\nred pylon: "), reset, printPylon(pylon_a), nl, blue, write("\nblue pylon: "), reset, printPylon(pylon_b), nl, green, write("\ngreen pylon: "), reset, printPylon(pylon_c), reset, nl,nl, !.
 printPylon(Pylon):- location(Disk, Pylon), write(" < "), printNameNC(Disk), write(" > "), fail.
@@ -43,7 +43,7 @@ hanoiTop:- red, pylonHas3(pylon_a), blue, pylonHas3(pylon_b), green, pylonHas3(p
 pylonHas3(Pylon):- location(small_disk, Pylon), location(medium_disk, Pylon), location(large_disk, Pylon), write("   (_)   "), !.
 pylonHas3(_):- write("    |    ").
 
-hanoiMid:- red, pylonHas2(pylon_a), blue, pylonHas2(pylon_b), green, pylonHas3(pylon_c).
+hanoiMid:- red, pylonHas2(pylon_a), blue, pylonHas2(pylon_b), green, pylonHas2(pylon_c).
 pylonHas2(Pylon):- location(small_disk, Pylon), location(medium_disk, Pylon), not(location(large_disk, Pylon)), write("   (_)   "), !.
 pylonHas2(Pylon):- location(medium_disk, Pylon), location(large_disk, Pylon), write("  (___)  "), !.
 pylonHas2(_):- write("    |    ").
