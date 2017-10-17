@@ -32,6 +32,9 @@ room(roommate_room).
 room(secret_lab).
 room(ser_1st_floor).
 room(ser_2nd_floor).
+room(ser_basement).
+room(ser_conference).
+room(gas_lab).
 room(special_collections).
 room(tsc_patio).
 room(tsc).
@@ -67,6 +70,9 @@ door(roof,green_beam).
 door(roof,observatory).
 door(ser_1st_floor,elevator).
 door(ser_2nd_floor,elevator).
+door(ser_2nd_floor,ser_conference).
+door(ser_basement,elevator).
+door(ser_basement,gas_lab).
 door(ser_2nd_floor,laser_lab).
 door(tsc,hub).
 door(tsc_patio,tsc).
@@ -83,6 +89,7 @@ location(book_c,special_collections).
 location(bunsen_burner,chemistry_lab).
 location(closet,eslc_south).
 location(coat,green_beam).
+location(note1_gas,ser_conference).
 location(dirty_clothes, bedroom_closet).
 location(figurine,bedroom).
 location(flask,chemistry_lab).
@@ -100,7 +107,6 @@ location(pylon_b,secret_lab).
 location(pylon_c,secret_lab).
 location(recipe,book_a).
 location(small_disk,pylon_a).
-
 
 container(closet).
 container(coat).
@@ -151,6 +157,7 @@ name(eslc_south,"Eccels Science Learning Center").
 name(figurine,"alien figurine").
 name(flask,"glass flask").
 name(fly,"dead fly").
+name(gas_lab, "The Get Away Special Lab").
 name(geology_building,"Geology Building").
 name(goggles,"dark saftey goggles").
 name(green_beam,"The 'Grean Beam' enclosure").
@@ -167,6 +174,7 @@ name(lost_homework,"Some student's lost geometry homework.").
 name(medium_disk,"medium energy disk").
 name(movie, "Men in Black").
 name(note,"note").
+name(note1_gas,"Note 1 GAS").
 name(observatory,"Observatory").
 name(old_main,"Old Main").
 name(plaza,"Engineering plaza").
@@ -181,6 +189,8 @@ name(roommate_room,"Your dormmate's room").
 name(secret_lab,"Dr. Sundberg's Secret Lab").
 name(ser_1st_floor,"1st Floor of SER Building").
 name(ser_2nd_floor,"2nd Floor of SER Building").
+name(ser_basement,"Basement of the SER Building").
+name(ser_conference,"The SER Conference Room").
 name(small_disk,"small energy disk").
 name(special_collections,"Special Collections Room").
 name(tsc,"Taggart Student Center").
@@ -215,6 +225,7 @@ short_desc(eslc_south,"You are on the south side of the ESLC.").
 short_desc(figurine,"Your roommate's alien figurine sitting atop a shelf.").
 short_desc(flask,"a glass flask suitable for mixing reagents").
 short_desc(fly,"the partially squished body of a dead house fly").
+short_desc(gas_lab, "A place of space research and friendship").
 short_desc(geology_building,"Large building with rocks and trees surrounding it").
 short_desc(goggles,"dark eye protection left over from the 'Great American Eclipse'").
 short_desc(green_beam,"Dr. Sundberg is standing at a large machine which is emitting a bright beam of green light.  You overhear a conversation indicating that he has set up a wormhole generator in his secret lab.  This will allow the alien invasion force to reach earth.").
@@ -230,6 +241,7 @@ short_desc(lost_homework,"The abandoned pages call out to a grader, a grader who
 short_desc(medium_disk,"a medium sized disk glowing with alien energy").
 short_desc(movie, "A movie about policing and monitoring aliens").
 short_desc(note,"a handwritten note from your roommate").
+short_desc(note1_gas,"A scrap of paper with a sequence of numbers scribbled on it").
 short_desc(observatory,"A tower where you can stargaze.").
 short_desc(old_main,"The building is full of nerdy looking people.").
 short_desc(plaza,"A large open space between engineering buildings").
@@ -244,6 +256,8 @@ short_desc(roommate_room,"its even messier than your room!").
 short_desc(secret_lab,"a secret lab?! This must be where Dr. Sundberg is hiding his secret!").
 short_desc(ser_1st_floor,"The bottom floor of the SER building. Nothing too exciting is happening here.").
 short_desc(ser_2nd_floor,"The 2nd floor of the SER building. You can see flashing lights near the laser lab room.").
+short_desc(ser_basement,"The SER basement, it's full of labs.").
+short_desc(ser_conference,"A long table surrounded by green chairs fills the center of the room.").
 short_desc(small_disk,"a small disk glowing with alien energy").
 short_desc(special_collections,"the 'special' section of the library. Holds the more important and classical books.").
 short_desc(tsc,"community center for students, faculty, and alumni").
@@ -252,7 +266,6 @@ short_desc(tunnels_east,"The underground tunnels are a confusing place.  I hope 
 short_desc(tunnels_north,"The underground tunnels are a confusing place.  I hope you don't get lost.").
 short_desc(tunnels_west,"The underground tunnels are a confusing place.  I hope you don't get lost.").
 short_desc(_,"").
-
 
 long_desc(agricultural_science, "There is a line of students waiting to eat at the cafe. Everyone seems to be in a hurry.").
 long_desc(avenue,"A myriad of people walk every which way along the avenue.  All are seemingly unaware of their imminent destruction at Dr.Sundberg's hand.").
@@ -277,6 +290,7 @@ long_desc(eslc_south,"Smaller area lined with classrooms, labs, and closets. You
 long_desc(figurine,"Your roommate's alien figurine.  They've been obsessed with aliens since you first met.  You always wondered why, but after reading that note about Dr.Sundberg, it is all beginning to make sense.").
 long_desc(flask,"A small container made of glass that is wide at the base and narrow at the neck.  A purple liquid seems to have been left over from a previous experiment.").
 long_desc(fly,"Scientifically known as Syrphus Ribessi, this nuisance enjoys long buzzes around human faces and landing on perfectly good food. This particular house fly met an untimely death by squishing.").
+long_desc(gas_lab,"Founded in 1976, the Get Away Special team is a student-driven, space research team which has established and upheld Utah State University's reputation as the university that has flown more experiments into space than any other university in the world.").
 long_desc(geology_building,"An old looking building that secretly hides the math department. The only reason people want to go in, is to see the large 'dinosaur' bone exhibit they have in there.").
 long_desc(goggles,"Specialized Eclipse goggles that allow you to stare at the sun, or intense lasers without going blind.").
 long_desc(green_beam,"Dr. Sundberg is standing at a large machine which is emitting a bright beam of green light.  You overhear a conversation indicating that he has set up a wormhole generator in his secret lab.  This will allow the alien invasion force to reach earth.").
@@ -292,6 +306,7 @@ long_desc(lost_homework,"This homework appears to be a geometric proof of the or
 long_desc(medium_disk,"a medium sized disk in between the small and large disks on the red pylon. It looks like you can move it if there isn't anything on top of it...").
 long_desc(movie, "Stars Will Smith and Tommy Lee Jones as members of a secret task force dedicated to protecting earth from alien invaders and earth's inhabitants from any knowledge of aliens. Your dormmate must have been conducting research").
 long_desc(note,"In the handwriting of your roommate is hastily scrawled: 'You've got to help.  Dr. Sundberg is an alien and wants to take over the world.  I think he is on to me, you are the only hope left! Try to find out what he is doing with the green beam.'").
+long_desc(note1_gas,"At the top is the word GAS LAB and below it are the numbers 1-2-3-5-6").
 long_desc(observatory,"Welcome to the Atmospheric Lidar Observatory. Here you will find information about the 'Green Beam' at Utah State University.").
 long_desc(old_main,"The building has four floors, and is the location of much pain during the Evil Dr. Sundber's class.  Few can navigate their way to the 4th floor where dreams become computer programs.").
 long_desc(plaza,"A well known spot for Pokemon Go players. It is home to 2 Gyms and 3 pokestops. Terf wars have been known to occur here, so avoid wearing solid blue, yellow or red clothes to avoid potential conflict.").
@@ -305,6 +320,8 @@ long_desc(roommate_room,"Not quite as messey as yours, your roommate's room has 
 long_desc(secret_lab,"You notice your surroundings are almost identical to the cartoon Dexter's laboratory. There are many experiments being done around the room.").
 long_desc(ser_1st_floor,"...even though I said nothing exciting happens here, you want to know more? Sorry, I got nothing...").
 long_desc(ser_2nd_floor,"The main part of the 2nd floor is the laser lab. The students in there experiment with what they can cut, burn, or imbue with magical energy with lasers.").
+long_desc(ser_basement,"Behind every door is another laboratory. The hallways are strewn with machines that appear to belong to a mad scientist although it's probably only Dr. JR Dennison").
+long_desc(ser_conference,"This is the location of many faculty meetings and of the USU Get Away Special Team.").
 long_desc(small_disk,"A small disk pulsates in your hand, glowing an toxic green color as it breathes slowly, a slight warm gasey feel pukes from the disk.").
 long_desc(special_collections,"a small section of the library that is home to all sorts of extrordiary books. You can read up on Russian Literature, Classic Dickens, Alchemy, and even more!").
 long_desc(tsc,"This massive building is the perfect place to go to spend way too much money on overpriced things... You'll find students eating, studying, socializing, and lamenting their massive student debts.").
@@ -318,6 +335,8 @@ puzzle(laser_lab):-has(goggles),!.
 puzzle(laser_lab):-write("It is too dangerous to go in without eye protection."),nl,!,fail.
 puzzle(secret_lab):-has(key),!.
 puzzle(secret_lab):-write("The door is locked, so you can't get in"),nl,!,fail.
+puzzle(gas_lab):-has(note1_gas), write("That note must have had the combination written on it"), nl, !.
+puzzle(gas_lab):-write("The light's are off and the door is locked. There must not be any friends in the GAS Lab right now, you need the combination to unlock the door"),nl,!,fail.
 puzzle(green_beam):-has(potion),write("You quaff some potion so that Dr. Sundberg can't see you."),nl.
 puzzle(green_beam):-write("Dr. Sundberg escorts you out saying 'Sorry, this is a restricted area'."),nl,!,fail.
 puzzle(_).
