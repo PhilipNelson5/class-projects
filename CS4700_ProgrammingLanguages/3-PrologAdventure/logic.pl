@@ -1,4 +1,5 @@
 :-include(adventure).
+:-dynamic theEnd/1.
 reset   :- write("\033[0m").
 black   :- write("\033[30m").
 red     :- write("\033[31m").
@@ -10,6 +11,163 @@ cyan    :- write("\033[36m").
 white   :- write("\033[37m").
 bold    :- write("\033[1m").
 clear   :- write("\033[2J").
+
+theEnd(no).
+
+% HW4 -------------------------------------------------------------------------------------------------------------------------
+
+play:-repeat, write("\nWhat do you want to do? "), read_words(W), clear, parse(C,W), do(C), win, !.
+
+parse([V],Input):- verb(V,Input-[]).
+parse([V,O],Input):- verb(V,Input-NounPhrase), noun(O, NounPhrase-[]).
+
+verb(quit,["quit"|X]-X).
+
+verb(look, ["look","at"|X]-X).
+verb(look, ["look","in"|X]-X).
+verb(look, ["look","at","the"|X]-X).
+verb(look, ["look","in","the"|X]-X).
+
+verb(move, ["warp"|X]-X).
+
+verb(look, ["look"|X]-X).
+verb(look, ["look","here"|X]-X).
+
+verb(checkMove, ["go"|X]-X).
+verb(checkMove, ["walk"|X]-X).
+verb(checkMove, ["go","to"|X]-X).
+verb(checkMove, ["walk","to"|X]-X).
+verb(checkMove, ["go","to","the"|X]-X).
+verb(checkMove, ["walk","to","the"|X]-X).
+
+noun(agricultural_science,["agricultural sciences"|X]-X).
+noun(agricultural_science,["ag science"|X]-X).
+noun(animal_science,["animal","sciences"|X]-X).
+noun(animal_science,["animal","science"|X]-X).
+noun(avenue,["avenue"|X]-X).
+noun(bedroom,["bedroom"|X]-X).
+noun(bedroom_closet,["closet"|X]-X):-here(bedroom).
+noun(bone,["dragon","bone"|X]-X).
+noun(book_a,["corpus","hermiticum"|X]-X).
+noun(book_b,["war","and","peace"|X]-X).
+noun(book_c,["great","expectations"|X]-X).
+noun(bunsen_burner,["bunsen","burner"|X]-X).
+noun(charged_bone,["chunk","of","dragon","bone"|X]-X).
+noun(chemistry_lab,["chemistry","lab"|X]-X).
+noun(chemistry_lab,["lab"|X]-X):-here(eslc_north).
+noun(clean_clothes, ["your","clothes"|X]-X).
+noun(closet,["equipment","closet"|X]-X).
+noun(closet,["closet"|X]-X):-here(eslc_south).
+noun(coat,["lab","coat"|X]-X).
+noun(coat,["coat"|X]-X).
+noun(common_room,["dorm","common","room"|X]-X).
+noun(common_room,["common","room"|X]-X).
+noun(computer_lab,["student","computer lab"|X]-X).
+noun(computer_lab,["computer","lab"|X]-X).
+noun(dirty_clothes, ["your","dirty","clothes"|X]-X).
+noun(dirty_clothes, ["dirty","clothes"|X]-X).
+noun(elevator,["elevator"|X]-X).
+noun(engr,["engr"|X]-X).
+noun(engr,["ENGR"|X]-X).
+noun(eslc_north,["eccels","science","learning","center"|X]-X).
+noun(eslc_north,["eslc"|X]-X):-here(chemistry_lab).
+noun(eslc_north,["eslc"|X]-X):-here(tsc_patio).
+noun(eslc_north,["eslc"|X]-X):-here(eslc_south).
+noun(eslc_south,["eccels","science","learning","center"|X]-X).
+noun(eslc_south,["eslc"|X]-X):-here(eslc_north).
+noun(eslc_south,["eslc"|X]-X):-here(quad).
+noun(figurine,["alien","figurine"|X]-X).
+noun(figurine,["figurine"|X]-X).
+noun(flask,["glass","flask"|X]-X).
+noun(flask,["flask"|X]-X).
+noun(fly,["dead","fly"|X]-X).
+noun(fly,["fly"|X]-X).
+noun(gas_lab, ["get","away","special","lab"|X]-X).
+noun(gas_lab, ["gas","lab"|X]-X).
+noun(geology_building,["geology","building"|X]-X).
+noun(goggles,["dark","safety goggles"|X]-X).
+noun(goggles,["safety","goggles"|X]-X).
+noun(goggles,["goggles"|X]-X).
+noun(green_beam,["grean","beam","enclosure"|X]-X).
+noun(hall,["hallway"|X]-X).
+noun(hall,["hall"|X]-X).
+noun(hub,["hub"|X]-X).
+noun(ice_cream,["aggie","creamery"|X]-X).
+noun(ice_cream,["aggie","ice","cream"|X]-X).
+noun(key,["key"|X]-X).
+noun(kitchen,["kitchen"|X]-X).
+noun(large_disk,["large","energy","disk"|X]-X).
+noun(large_disk,["large","disk"|X]-X).
+noun(laser,["laser","array"|X]-X).
+noun(laser_lab,["laser","lab"|X]-X).
+noun(laser_lab,["lab"|X]-X):-here(ser_2nd_floor).
+noun(library,["merill-caizer","library"|X]-X).
+noun(library,["library"|X]-X).
+noun(lost_homework,["some","student's","lost","geometry","homework"|X]-X).
+noun(lost_homework,["student's","lost","geometry","homework"|X]-X).
+noun(lost_homework,["lost","geometry","homework"|X]-X).
+noun(lost_homework,["geometry","homework"|X]-X).
+noun(medium_disk,["medium","energy","disk"|X]-X).
+noun(medium_disk,["medium","disk"|X]-X).
+noun(movie,["men","in","black"|X]-X).
+noun(note,["note"|X]-X).
+noun(note1_gas,["note","1","gas"|X]-X).
+noun(observatory,["observatory"|X]-X).
+noun(old_main,["old","main"|X]-X).
+noun(plaza,["engineering","plaza"|X]-X).
+noun(plaza,["plaza"|X]-X).
+noun(potion,["potion"|X]-X).
+noun(pylon_a,["red","pylon"|X]-X).
+noun(pylon_b,["blue","pylon"|X]-X).
+noun(pylon_c,["green","pylon"|X]-X).
+noun(quad,["quad"|X]-X).
+noun(recipe,["alchemical","recipe"|X]-X).
+noun(roof,["roof","of","the","ser","building"|X]-X).
+noun(roof,["ser","roof"|X]-X).
+noun(roof,["roof"|X]-X):-here(elevator).
+noun(roof,["roof"|X]-X):-here(green_beam).
+noun(roof,["roof"|X]-X):-here(observatory).
+noun(roommate_room,["your","dormmate's","room"|X]-X).
+noun(roommate_room,["dormmate's","room"|X]-X).
+noun(secret_lab,["dr.","sundberg's","secret","lab"|X]-X).
+noun(secret_lab,["sundberg's","secret","lab"|X]-X).
+noun(secret_lab,["secret","lab"|X]-X).
+noun(ser_1st_floor,["1st","Floor","of","ser","Building"|X]-X).
+noun(ser_1st_floor,["ser","1st","floor"|X]-X).
+noun(ser_1st_floor,["1st","floor"|X]-X):-here(elevator).
+noun(ser_1st_floor,["ser"|X]-X):-here(plaza).
+noun(ser_2nd_floor,["2nd","floor","of","ser","building"|X]-X).
+noun(ser_2nd_floor,["ser","2nd","floor"|X]-X).
+noun(ser_2nd_floor,["2nd","floor"|X]-X):-here(elevator).
+noun(ser_basement,["basement","of","the","ser","building"|X]-X).
+noun(ser_basement,["ser","basement"|X]-X).
+noun(ser_basement,["basement"|X]-X):-here(elevator).
+noun(ser_conference,["ser","conference","room"|X]-X).
+noun(ser_conference,["conference","room"|X]-X):-here(ser_2nd_floor).
+noun(small_disk,["small","energy","disk"|X]-X).
+noun(small_disk,["small","disk"|X]-X).
+noun(special_collections,["special","collections","room"|X]-X).
+noun(special_collections,["special","collections"|X]-X).
+noun(tsc,["taggart","student","center"|X]-X).
+noun(tsc,["tsc"|X]-X).
+noun(tsc_patio,["patio","of","the","tsc"|X]-X).
+noun(tsc_patio,["tsc","patio"|X]-X).
+noun(tunnels_east,["underground","tunnels","east"|X]-X).
+noun(tunnels_east,["tunnels","east"|X]-X).
+noun(tunnels_north,["underground","tunnels","north"|X]-X).
+noun(tunnels_north,["tunnels","north"|X]-X).
+noun(tunnels_west,["underground","tunnels","west"|X]-X).
+noun(tunnels_west,["tunnels","west"|X]-X).
+
+
+do(C):- CMD =.. C, CMD, !.
+
+quit:- write("Bye"), nl, asserta(theEnd(yes)).
+
+outside(avenue).
+outside(plaza).
+outside(quad).
+outside(roof).
 
 % HW3 -------------------------------------------------------------------------------------------------------------------------
 
@@ -35,7 +193,8 @@ hasAll([H|T]):- has(H), hasAll(T).
 use([]).
 use([H|T]):- has(H), retract(has(H)), use(T).
 
-win:-  location(large_disk, pylon_c), location(medium_disk, pylon_c), location(small_disk, pylon_c), nl, write("You foiled the evil Dr. Sundberg!"),nl, nl.
+win:- theEnd(yes), !.
+win:- location(large_disk, pylon_c), location(medium_disk, pylon_c), location(small_disk, pylon_c), nl, write("You foiled the evil Dr. Sundberg!"),nl, nl.
 
 printTowers:- hanoiTop, nl, hanoiMid, nl, hanoiBot, nl, hanoiLables.
 
