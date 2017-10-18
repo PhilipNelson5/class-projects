@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <fstream>
 #include <iostream>
+#include <signal.h>
 #include <sstream>
 #include <string>
 #include <sys/stat.h>
@@ -35,13 +36,12 @@ void load()
   if (!fin) return;
   // std::cerr << "loading aliases" << std::endl;
   std::string line;
-  while (std::getline(fin, line))
-    alias.push_back(Command(line));
+  while (std::getline(fin, line)) alias.push_back(Command(line));
 }
 
-char *const *buildArgs(const std::vector<std::string> &words)
+char* const* buildArgs(const std::vector<std::string>& words)
 {
-  char **args = new char *[words.size() + 1];
+  char** args = new char*[words.size() + 1];
   for (auto i = 0u; i < words.size(); ++i)
   {
     args[i] = new char[words[i].size() + 1];
@@ -51,7 +51,7 @@ char *const *buildArgs(const std::vector<std::string> &words)
   return args;
 }
 
-void exec(char *const *&args)
+void exec(char* const*& args)
 {
   int pid = fork();
   if (pid < 0)
@@ -68,12 +68,13 @@ void exec(char *const *&args)
     waitpid(pid, &status, 0);
     if (status != EXIT_SUCCESS)
     {
-      std::cout << RED << "FAILURE TO EXECUTE PROPERLY" << txtcolor << std::endl;
+      std::cout << RED << "FAILURE TO EXECUTE PROPERLY" << txtcolor
+                << std::endl;
     }
   }
 }
 
-void hist(const std::vector<Command> &history)
+void hist(const std::vector<Command>& history)
 {
   std::cout << GREEN << "[HISTORY]" << BLUE << std::endl;
 
@@ -85,7 +86,7 @@ void hist(const std::vector<Command> &history)
 }
 
 // text color change
-void color(std::vector<std::string> &words)
+void color(std::vector<std::string>& words)
 {
   if (words.size() >= 2)
   {
@@ -106,28 +107,31 @@ void color(std::vector<std::string> &words)
     else if (words[1] == "WHITE")
       txtcolor = WHITE;
     else
-      std::cout << "RED     GREEN     YELLOW     BLUE     MAGENTA     CYAN     WHITE \n";
+      std::cout << "RED     GREEN     YELLOW     BLUE     MAGENTA     CYAN     "
+                   "WHITE \n";
   }
   else
-    std::cout << "RED     GREEN     YELLOW     BLUE     MAGENTA     CYAN     WHITE \n";
+    std::cout
+      << "RED     GREEN     YELLOW     BLUE     MAGENTA     CYAN     WHITE \n";
 }
 
-void cd(std::vector<std::string> &words)
+void cd(std::vector<std::string>& words)
 {
   if (words.size() < 2)
   {
     std::string dir("/home/");
     dir.append(getLogin());
-    if (chdir(dir.c_str()) < 0) std::cout << words[0] << ": No such file or directory" << std::endl;
+    if (chdir(dir.c_str()) < 0)
+      std::cout << words[0] << ": No such file or directory" << std::endl;
   }
   else if (chdir(words[1].c_str()) < 0)
     std::cout << words[0] << ": No such file or directory" << std::endl;
 }
 
 // aliases
-bool aliases(std::vector<std::string> &words)
+bool aliases(std::vector<std::string>& words)
 {
-  for (auto &&a : alias)
+  for (auto&& a : alias)
     if (words[0] == a.cmd_v[0][0])
     {
       Command words = a;
@@ -190,7 +194,8 @@ void run(Command cmds)
           if (cmds.hasOutFile)
           {
             std::cerr << "OUT FILE: " << cmds.outfile << std::endl;
-            int outfd = open(cmds.outfile.c_str(), O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
+            int outfd =
+              open(cmds.outfile.c_str(), O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
             dup2(outfd, STDOUT_FILENO);
             // dup2(fd[curr_in][READ_END], STDIN_FILENO);
             close(outfd);
@@ -228,7 +233,8 @@ void run(Command cmds)
             if (cmds.hasOutFile)
             {
               std::cerr << "OUT FILE: " << cmds.outfile << std::endl;
-              int outfd = open(cmds.outfile.c_str(), O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
+              int outfd =
+                open(cmds.outfile.c_str(), O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
               dup2(outfd, STDOUT_FILENO);
               dup2(fd[curr_in][READ_END], STDIN_FILENO);
               close(outfd);
@@ -308,15 +314,23 @@ void run(Command cmds)
   }
 }
 
+void handle(int){}
 int main()
 {
   load();
   for (;;)
   {
-    std::cout << GREEN << getLogin() << "@" << getHostName() << WHITE << ":" << CYAN << getCWD()
-              << WHITE << "$ " << txtcolor;
+    std::cout << GREEN << getLogin() << "@" << getHostName() << WHITE << ":"
+              << CYAN << getCWD() << WHITE << "$ " << txtcolor;
     std::string line = "cat timer.hpp | grep // | grep return | grep total";
-    std::getline(std::cin, line);
+
+    signal(SIGINT, SIG_IGN);
+
+    if (!std::getline(std::cin, line))
+    {
+      std::cerr << "Unexpected end of file" << std::endl;
+      return EXIT_SUCCESS;
+    }
 
     if (line == "") continue;
     Command cmds(line);
