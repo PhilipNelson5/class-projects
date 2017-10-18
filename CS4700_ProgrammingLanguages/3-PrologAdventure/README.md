@@ -6,7 +6,7 @@ For best results, use a terminal that supports colors
 
 ---
 
-`look.`
+`lookHere.`
 * Look at the current room
 
 `look(room).`

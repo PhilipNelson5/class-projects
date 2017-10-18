@@ -1,5 +1,7 @@
 :-include(adventure).
+:-include(words).
 :-dynamic theEnd/1.
+:-dynamic devMode/1.
 reset   :- write("\033[0m").
 black   :- write("\033[30m").
 red     :- write("\033[31m").
@@ -13,32 +15,53 @@ bold    :- write("\033[1m").
 clear   :- write("\033[2J").
 
 theEnd(no).
+devMode(no).
 
 % HW4 -------------------------------------------------------------------------------------------------------------------------
 
-play:-repeat, write("\nWhat do you want to do? "), read_words(W), clear, parse(C,W), do(C), win, !.
+play:-clear, green, welcome, blue, prologAdventure, white, intro, reset, repeat, write("\nWhat do you want to do? "), read_words(W), clear, parse(C,W), do(C), win, !.
 
 parse([V],Input):- verb(V,Input-[]).
 parse([V,O],Input):- verb(V,Input-NounPhrase), noun(O, NounPhrase-[]).
+parse([V,D,P],Input):- verb(V,Input-NounPhrase), noun(D, NounPhrase-PylonPhrase), noun(P, PylonPhrase-[]).
 
 verb(quit,["quit"|X]-X).
+verb(quit,["exit"|X]-X).
 
-verb(look, ["look","at"|X]-X).
-verb(look, ["look","in"|X]-X).
-verb(look, ["look","at","the"|X]-X).
-verb(look, ["look","in","the"|X]-X).
+verb(checkLook, ["look","at"|X]-X).
+verb(checkLook, ["look","in"|X]-X).
+verb(checkLook, ["look","at","the"|X]-X).
+verb(checkLook, ["look","in","the"|X]-X).
 
-verb(move, ["warp"|X]-X).
+verb(lookHere, ["look"|X]-X).
+verb(lookHere, ["look","here"|X]-X).
 
-verb(look, ["look"|X]-X).
-verb(look, ["look","here"|X]-X).
+verb(checkStudy, ["study"|X]-X).
+verb(checkStudy, ["study","the"|X]-X).
+
+verb(dev, ["dev"|X]-X).
+verb(move, ["warp"|X]-X):-devMode(yes).
+
+verb(inventory, ["inv"|X]-X).
+verb(inventory, ["inventory"|X]-X).
+verb(inventory, ["look","inventory"|X]-X).
+verb(inventory, ["look","at","inventory"|X]-X).
 
 verb(checkMove, ["go"|X]-X).
-verb(checkMove, ["walk"|X]-X).
 verb(checkMove, ["go","to"|X]-X).
-verb(checkMove, ["walk","to"|X]-X).
 verb(checkMove, ["go","to","the"|X]-X).
+verb(checkMove, ["walk"|X]-X).
+verb(checkMove, ["walk","to"|X]-X).
 verb(checkMove, ["walk","to","the"|X]-X).
+
+verb(checkTake, ["take"|X]-X).
+verb(checkTake, ["take the"|X]-X).
+verb(checkTake, ["pickup"|X]-X).
+verb(checkTake, ["pickup the"|X]-X).
+verb(checkTake, ["grab"|X]-X).
+verb(checkTake, ["grab the"|X]-X).
+
+verb(transfer, ["transfer"|X]-X).
 
 noun(agricultural_science,["agricultural sciences"|X]-X).
 noun(agricultural_science,["ag science"|X]-X).
@@ -56,6 +79,7 @@ noun(charged_bone,["chunk","of","dragon","bone"|X]-X).
 noun(chemistry_lab,["chemistry","lab"|X]-X).
 noun(chemistry_lab,["lab"|X]-X):-here(eslc_north).
 noun(clean_clothes, ["your","clothes"|X]-X).
+noun(clean_clothes, ["clean","clothes"|X]-X).
 noun(closet,["equipment","closet"|X]-X).
 noun(closet,["closet"|X]-X):-here(eslc_south).
 noun(coat,["lab","coat"|X]-X).
@@ -139,9 +163,12 @@ noun(ser_1st_floor,["ser"|X]-X):-here(plaza).
 noun(ser_2nd_floor,["2nd","floor","of","ser","building"|X]-X).
 noun(ser_2nd_floor,["ser","2nd","floor"|X]-X).
 noun(ser_2nd_floor,["2nd","floor"|X]-X):-here(elevator).
+noun(ser_2nd_floor,["2nd","floor"|X]-X):-here(ser_conference).
+noun(ser_2nd_floor,["2nd","floor"|X]-X):-here(laser_lab).
 noun(ser_basement,["basement","of","the","ser","building"|X]-X).
 noun(ser_basement,["ser","basement"|X]-X).
 noun(ser_basement,["basement"|X]-X):-here(elevator).
+noun(ser_basement,["basement"|X]-X):-here(gas_lab).
 noun(ser_conference,["ser","conference","room"|X]-X).
 noun(ser_conference,["conference","room"|X]-X):-here(ser_2nd_floor).
 noun(small_disk,["small","energy","disk"|X]-X).
@@ -159,10 +186,11 @@ noun(tunnels_north,["tunnels","north"|X]-X).
 noun(tunnels_west,["underground","tunnels","west"|X]-X).
 noun(tunnels_west,["tunnels","west"|X]-X).
 
-
 do(C):- CMD =.. C, CMD, !.
 
 quit:- write("Bye"), nl, asserta(theEnd(yes)).
+
+dev:- write("Dev Mode Enabled"), nl, asserta(devMode(yes)).
 
 outside(avenue).
 outside(plaza).
@@ -213,11 +241,12 @@ pylonHas1(Pylon):- location(medium_disk, Pylon), not(location(large_disk, Pylon)
 pylonHas1(Pylon):- location(large_disk, Pylon), write(" (_____) "), !.
 pylonHas1(_):- write("    |    ").
 
-hanoiLables:- red, write("¯¯¯¯¯¯¯¯¯"), blue, write("¯¯¯¯¯¯¯¯¯"), green, write("¯¯¯¯¯¯¯¯¯").
+hanoiLables:- red, write("¯¯¯¯¯¯¯¯¯"), blue, write("¯¯¯¯¯¯¯¯¯"), green, write("¯¯¯¯¯¯¯¯¯"), reset.
 
 % HW2 -------------------------------------------------------------------------------------------------------------------------
 
-look:- here(X), look(X), !.
+lookHere:- here(X), look(X), !.
+lookHere(_).
 
 checkLook(Place):- here(Here), existsHere(Place, Here), look(Place), !.
 checkLook(Object):- has(Object), look(Object), !.
