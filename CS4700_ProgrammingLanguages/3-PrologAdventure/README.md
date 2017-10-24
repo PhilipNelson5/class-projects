@@ -1,6 +1,6 @@
 ### Author: Philip Nelson
 
-To play, load logic.pl in a prolog interpreter.
+To play, load logic.pl in a prolog interpreter and type `play.`
 
 For best results, use a terminal that supports colors
 
