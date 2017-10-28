@@ -4,6 +4,8 @@ To play, load logic.pl in a prolog interpreter and type `play.`
 
 For best results, use a terminal that supports colors
 
+Prolog Adventure now supports natural language processing, all you have to do is type what you want to do. ex: look at note. Type exit or quit at any time to leave the game. Enjoy defeating the evil Dr. Sundberg!
+
 ---
 
 `lookHere.`
