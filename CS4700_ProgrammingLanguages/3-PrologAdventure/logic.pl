@@ -213,7 +213,7 @@ printPylon(Pylon):- location(Disk, Pylon), write(" < "), printNameNC(Disk), writ
 printPylon(_).
 
 make(Product):- create_recipe(_, List, Product), use(List), asserta(has(Product)).
-checkMake(Product):- create_recipe(Device, List, Product), here(Here), location(Device, Here), hasAll(List), make(product).
+checkMake(Product):- create_recipe(Device, List, Product), here(Here), location(Device, Here), hasAll(List), make(Product).
 
 hasAll([]).
 hasAll([H|T]):- has(H), hasAll(T).
