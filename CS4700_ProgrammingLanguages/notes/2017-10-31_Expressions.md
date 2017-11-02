@@ -36,3 +36,41 @@
 * Determining the value of an expression without evaluating the whole expression is called short circuit evaluation
 * Boolean algebra
 
+### Lazy vs. Eager Evaluation
+* Lazy
+  * expressions become values at the last possible moment
+  * very common in functional languages
+  * allows expressions of infinite objects - but not their evaluation
+* Eager
+  * expressing become values at the earliest opportunity
+
+### Arithmetic Expressions
+* Unary
+* Binary
+  * infix
+  * prefix - unambiguous
+  * postfix - unambiguous
+* Ternary
+
+### Boolean Expressions
+* Comparisons
+  * Two-way operator
+    * True | False
+  * Three-way operator
+    * Less | Equal | Greater
+* Boolean Algebra
+
+### Assignment
+* Procedural Languages - Write to memory, always a side effect
+* Functional and Logic - Creates a new name binding to a constant value
+
+### Type conversoins - Casting
+* Narrowing
+  * the target can not exactly represent all instances of the source type
+  * Float <-> Int
+* Widening
+* Casting - explicit type conversion
+* Which are allowed in the language?
+* Which are implicit and explicit?
+* Are mixed mode expressions allowed?
+  * 1 + 1.0
