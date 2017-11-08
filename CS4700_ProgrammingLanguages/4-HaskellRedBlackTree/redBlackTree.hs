@@ -24,11 +24,10 @@ makeBlack t = t
 treeInsert :: (Ord a) => a -> Tree a -> Tree a
 treeInsert t x = makeBlack(insert t x)
 
-draw :: Tree a -> Int -> String
+draw :: Show a => Tree a -> Int -> String 
 draw Nill x = foldr (++) "" (take x $ repeat "\t") ++ "Nill\n"
-draw (Node Black r v l) x = (draw r (x+1)) ++ (foldr (++) "" (take x $ repeat "\t") ++ "B\n") ++ (draw l (x+1))
-draw (Node Red r v l) x = (draw r (x+1)) ++ (foldr (++) "" (take x $ repeat "\t") ++ "R\n") ++ (draw l (x+1))
---draw (Node Black r v l) x = (draw r (x+1)) ++ ("R" ++ (show v)) ++ (draw l (x+1))
+draw (Node Black r v l) x = (draw r (x+1)) ++ (foldr (++) "" (take x $ repeat "\t") ++ "R " ++ show v ++ "\n" ) ++ (draw l (x+1))
+draw (Node Red r v l) x = (draw r (x+1)) ++ (foldr (++) "" (take x $ repeat "\t") ++ "R " ++ show v ++ "\n" ) ++ (draw l (x+1))
 
-drawTree :: Tree a -> IO ()
-drawTree t = putStr $ draw t 0 ++ "\n"
+drawTree :: Show a => Tree a -> IO ()
+drawTree t = putStr $ draw t 0
