@@ -35,4 +35,4 @@ display t = putStr $ draw t 0
 
 height :: (Ord a) => Tree a -> Int
 height Nill = 0
-height (Node _ l _ r) = max ((height l) + 1) ((height r) + 1) 
+height (Node _ l _ r) = 1 + max (height l) (height r) 
