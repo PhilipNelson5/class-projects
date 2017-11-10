@@ -22,7 +22,7 @@ makeBlack t = t
 treeInsert :: (Ord a) => a -> Tree a -> Tree a
 treeInsert t x = makeBlack(insert t x)
 
-draw :: Show a => Tree a -> Int -> String
+draw :: (Show a) => Tree a -> Int -> String
 draw Nill x = tabs x ++ "Nill\n"
 draw (Node Black r v l) x = (draw l $ x+1) ++ (tabs x) ++ "B " ++ show v ++ "\n" ++ (draw r $ x+1)
 draw (Node Red r v l) x = (draw l $ x+1) ++ (tabs x) ++ "R " ++ show v ++ "\n" ++ (draw r $ x+1)
@@ -30,7 +30,7 @@ draw (Node Red r v l) x = (draw l $ x+1) ++ (tabs x) ++ "R " ++ show v ++ "\n" +
 tabs :: Int -> String
 tabs x = foldr (++) "" (take x $ repeat "\t")
 
-display :: Show a => Tree a -> IO ()
+display :: Show a => Tree a -> IO()
 display t = putStr $ draw t 0
 
 height :: (Ord a) => Tree a -> Int
