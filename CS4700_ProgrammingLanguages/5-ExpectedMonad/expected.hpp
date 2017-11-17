@@ -27,7 +27,7 @@ public:
   // operator T() { return value(); }
 
   //template<typename U>
-  Expected<T> apply(std::function<T(T)> f)
+  auto apply(std::function<auto(T)> f)
   {
     if (!good) return e;
     try
@@ -53,18 +53,21 @@ Expected<T> operator/(Expected<T> t, Expected<T> u)
 template <typename T, typename U>
 Expected<T> operator+(Expected<T> t, U u)
 {
+  std::cout << "\noperator 1\n";
   return t.apply([u](T t) { return t + u; });
 }
 
 template <typename T, typename U>
 Expected<T> operator+(U u, Expected<T> t)
 {
+  std::cout << "\noperator 2\n";
   return t.apply([u](T t) { return t + u; });
 }
 
 template <typename T, typename U>
-Expected<T> operator+(Expected<T> t, Expected<U> u)
+auto operator+(Expected<T> t, Expected<U> u)
 {
+  std::cout << "\noperator 3\n";
   try
   {
     return t.apply([u](T t) { return t + u.value(); });
