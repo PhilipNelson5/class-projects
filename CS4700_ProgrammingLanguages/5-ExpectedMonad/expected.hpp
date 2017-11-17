@@ -9,29 +9,30 @@ template <typename T>
 class Expected
 {
 private:
-  T t;
+  T data;
   std::exception_ptr e;
   bool good;
 
 public:
-  Expected(T t) : t(t), e(nullptr), good(true) {}
-  Expected(std::exception_ptr p) : t(), e(p), good(false) {}
-  Expected(std::exception e) : t(t), e(std::make_exception_ptr(e)), good(false) {}
+  Expected(T t) : data(t), e(nullptr), good(true) {}
+  Expected(std::exception_ptr p) : data(), e(p), good(false) {}
+  Expected(std::exception e) : data(), e(std::make_exception_ptr(e)), good(false) {}
 
   T value(void) const
   {
-    if (good) return t;
+    if (good) return data;
     std::rethrow_exception(e);
   }
 
-  operator T() { return value(); }
+  // operator T() { return value(); }
 
+  //template<typename U>
   Expected<T> apply(std::function<T(T)> f)
   {
     if (!good) return e;
     try
     {
-      return f(t);
+      return f(data);
     }
     catch (...)
     {
@@ -40,17 +41,38 @@ public:
   }
 };
 
+/*
 template <typename T>
 Expected<T> operator/(Expected<T> t, Expected<T> u)
 {
   if (u == 0) return std::out_of_range("DIVIDE BY ZERO");
   return t.apply([u](T t) { return t / u; });
 }
+*/
 
-template <typename T>
-Expected<T> operator+(Expected<T> t, Expected<T> u)
+template <typename T, typename U>
+Expected<T> operator+(Expected<T> t, U u)
 {
   return t.apply([u](T t) { return t + u; });
+}
+
+template <typename T, typename U>
+Expected<T> operator+(U u, Expected<T> t)
+{
+  return t.apply([u](T t) { return t + u; });
+}
+
+template <typename T, typename U>
+Expected<T> operator+(Expected<T> t, Expected<U> u)
+{
+  try
+  {
+    return t.apply([u](T t) { return t + u.value(); });
+  }
+  catch (...)
+  {
+    return Expected<T>(std::current_exception());
+  }
 }
 
 /*
@@ -87,7 +109,7 @@ MixedMode(operator==)
 */
 
 template <typename T>
-std::ostream& operator<<(std::ostream& o, Expected<T>& e)
+std::ostream& operator<<(std::ostream& o, Expected<T> e)
 {
   try
   {
