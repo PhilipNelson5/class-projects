@@ -4,28 +4,23 @@
 #include <exception>
 #include <functional>
 #include <iostream>
+#include <variant>
 
 template <typename T>
 class Expected
 {
 private:
-  union State{
-    T t;
-    std::exception_ptr e;
-
-  } data;
-
-  bool good;
+  std::variant<T, std::exception_ptr> data;
 
 public:
-  Expected(T t) : data({.t = {t}}), good(true) {}
-  Expected(std::exception_ptr p) : data({.e = {p}}), good(false) {}
-  Expected(std::exception e) : data({.e = {std::make_exception_ptr(e)}}), good(false) {}
+  Expected(T t) : data(t) {}
+  Expected(std::exception_ptr p) : data(p) {}
+  Expected(std::exception e) : data(std::make_exception_ptr(e)) {}
 
   T value(void) const
   {
-    if (good) return data.t;
-    std::rethrow_exception(data.e);
+    if (std::holds_alternative<T>(data)) return std::get<T>(data);
+    std::rethrow_exception(std::get<std::exception_ptr>(data));
   }
 
   operator T() { return value(); }
@@ -33,10 +28,11 @@ public:
   template <typename U>
   Expected<U> apply(std::function<U(T)> f)
   {
-    if (!good) return data.e;
+    if (std::holds_alternative<std::exception_ptr>(data))
+      return std::get<std::exception_ptr>(data);
     try
     {
-      return f(data.t);
+      return f(std::get<T>(data));
     }
     catch (...)
     {
