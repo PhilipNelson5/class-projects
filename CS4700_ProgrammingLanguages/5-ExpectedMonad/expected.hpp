@@ -5,6 +5,7 @@
 #include <functional>
 #include <iostream>
 #include <variant>
+#include "type.hpp"
 
 template <typename T>
 class Expected
@@ -23,7 +24,7 @@ public:
     std::rethrow_exception(std::get<std::exception_ptr>(data));
   }
 
-  operator T() { return value(); }
+  operator T() { std::cout << "CAST" << std::endl; return value(); }
 
   template <typename U>
   Expected<U> apply(std::function<U(T)> f)
@@ -32,7 +33,10 @@ public:
       return std::get<std::exception_ptr>(data);
     try
     {
-      return f(std::get<T>(data));
+
+      auto ret = f(std::get<T>(data));
+      std::cout << type_name<decltype(ret)>() << std::endl;
+      return ret;
     }
     catch (...)
     {
@@ -43,16 +47,16 @@ public:
 
 // clang-format off
 #define MixedMode(op)\
-template <typename T, typename U>\
-auto op(Expected<T> t, U u)\
+template <typename S, typename T, typename U>\
+Expected<S> op(Expected<T> t, U u)\
 {\
-  return t.apply([u](T t) { return op(t,u); });\
+  return t.apply([&](T t) { return op(t,u); });\
 }\
 \
-template <typename T, typename U>\
-auto op(T t, Expected<U> u)\
+template <typename S, typename T, typename U>\
+Expected<S> op(U u, Expected<T> t)\
 {\
-  return t.apply([t](U u) { return op(t,u); });\
+  return t.apply([&](T t) { return op(t,u); });\
 }\
 // clang-format on
 
