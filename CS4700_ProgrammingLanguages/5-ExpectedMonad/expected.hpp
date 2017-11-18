@@ -24,7 +24,7 @@ public:
     std::rethrow_exception(std::get<std::exception_ptr>(data));
   }
 
-  operator T() { std::cout << "CAST" << std::endl; return value(); }
+  operator T() { return value(); }
 
   template <typename U>
   Expected<U> apply(std::function<U(T)> f)
@@ -33,10 +33,7 @@ public:
       return std::get<std::exception_ptr>(data);
     try
     {
-
-      auto ret = f(std::get<T>(data));
-      std::cout << type_name<decltype(ret)>() << std::endl;
-      return ret;
+      return f(std::get<T>(data));
     }
     catch (...)
     {
