@@ -3,13 +3,11 @@
 #include <cmath>
 #include <exception>
 #include <iostream>
-#include <typeinfo>
 
 template <typename X>
 Expected<double> root(X x)
 {
   if (x < 0) return std::domain_error("IMAGINARY ROOT");
-  std::cout << "foo" << std::endl;
   return sqrt(x);
 }
 
@@ -56,7 +54,7 @@ int main(void)
   std::cout << "EQUALITY" << std::endl;
   std::cout << "a == b = " << (a == b) << std::endl << std::endl;
 
-  std::cout << "ERROR"<< std::endl;
+  std::cout << "ERROR" << std::endl;
   auto e = root(a);
-  std::cout << "square root of a = "<< e << std::endl << std::endl;
+  std::cout << "square root of a = " << e << std::endl << std::endl;
 }
