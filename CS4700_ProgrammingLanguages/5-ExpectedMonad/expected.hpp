@@ -41,34 +41,39 @@ public:
   }
 };
 
-// clang-format off
 #define MixedMode(op)\
-template <typename S, typename T, typename U>\
-Expected<S> op(Expected<T> t, U u)\
+template <typename T, typename V>\
+auto operator op (Expected<T> t, Expected<V> v)\
 {\
-  return t.apply([&](T t) { return op(t,u); });\
+  return t.template apply<decltype(std::declval<T>() op v)>(\
+    [&](T myT) { return myT op v; });\
 }\
-\
-template <typename S, typename T, typename U>\
-Expected<S> op(U u, Expected<T> t)\
+template <typename T, typename V>\
+auto operator op (Expected<T> t, V v)\
 {\
-  return t.apply([&](T t) { return op(t,u); });\
+  return t.template apply<decltype(std::declval<T>() op v)>(\
+    [&](T myT) { return myT op v; });\
 }\
-// clang-format on
+template <typename T, typename V>\
+auto operator op (V v, Expected<T> t)\
+{\
+  return t.template apply<decltype(v op std::declval<T>())>(\
+    [&](T myT) { return v op myT; });\
+}\
 
-MixedMode(operator+)
-MixedMode(operator-)
-MixedMode(operator*)
-MixedMode(operator/)
-MixedMode(operator%)
-MixedMode(operator>)
-MixedMode(operator>=)
-MixedMode(operator<)
-MixedMode(operator<=)
-MixedMode(operator==)
+MixedMode(+)
+MixedMode(-)
+MixedMode(*)
+MixedMode(/)
+MixedMode(%)
+MixedMode(>)
+MixedMode(>=)
+MixedMode(<)
+MixedMode(<=)
+MixedMode(==)
 
 template <typename T>
-std::ostream& operator<<(std::ostream& o, Expected<T>& e)
+std::ostream& operator<<(std::ostream& o, Expected<T> e)
 {
   try
   {
