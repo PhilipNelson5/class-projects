@@ -27,8 +27,8 @@ int main(void)
   // clang-format on
 
   std::cout << "ADDITION" << std::endl;
-  std::cout << "c + b = " << c + b << std::endl << std::endl;
-  std::cout << "b + c = " << b + c << std::endl;
+  std::cout << "c + b = " << c + b << std::endl;
+  std::cout << "b + c = " << b + c << std::endl << std::endl;
 
   std::cout << "SUBTRACTION" << std::endl;
   std::cout << "c - a = " << c - a << std::endl;
@@ -68,6 +68,6 @@ int main(void)
 
   std::cout << "ERROR" << std::endl;
   std::cout << "square root of a = " << root(a) << std::endl;
-  std::cout << "square root of -5 = " << root(-5) << std::endl << std::endl;
+  std::cout << "square root of -5 = " << root(-5) << std::endl;
   std::cout << "square root of 5 = " << root(5) << std::endl << std::endl;
 }
