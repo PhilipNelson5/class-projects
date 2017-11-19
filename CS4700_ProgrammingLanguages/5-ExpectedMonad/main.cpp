@@ -1,5 +1,4 @@
 #include "expected.hpp"
-#include "type.hpp"
 #include <cmath>
 #include <exception>
 #include <iostream>
