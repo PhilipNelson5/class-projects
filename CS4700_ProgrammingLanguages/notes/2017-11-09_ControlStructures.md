@@ -1,0 +1,20 @@
+# Control Structures
+- Two way
+  - If - Then - Else
+  - Nested ambiguity
+    - multiple if1 el1 if 2 el2 el3
+- Multiple selection
+  - switch
+  - pattern matching
+  - what if nothing matches
+  - Implementation
+    - Nested ifs
+    - Tree
+    - jump table
+- Iteration
+  - Counter control loop
+	- Logic control loop
+	- Loop control statement
+		- user located loop exit (break)
+		- skip statement (continue)
+		- used to eliminate goto
