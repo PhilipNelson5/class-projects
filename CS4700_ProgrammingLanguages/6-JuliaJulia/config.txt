@@ -1,5 +1,5 @@
 1024 1024   height width in pixels
-.28 .008    the value of c
+-.12 -.77   the value of c
 0.0 0.0     the center of the complex plane
 3.0 3.0     the height and width of the complex plane
 0 0 0       color one
@@ -8,5 +8,8 @@
 julia.ppm   output image
 
 -.79 .15    the value of c
+-1.476 0    the value of c
+-.162 1.04  the value of c
 .28 .008    the value of c
 .3 -.01     the value of c
+-.12 -.77   the value of c
