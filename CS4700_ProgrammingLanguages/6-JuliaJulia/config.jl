@@ -1,14 +1,15 @@
 struct Config
   pixlesX::Int64
   pixlesY::Int64
+  c::Complex64
   midX::Float64
   midY::Float64
   axisLenX::Float64
   axisLenY::Float64
   maxIters::Int
 
-  color1::Color
-  color2::Color
+  color1::RGB
+  color2::RGB
 
   outputFile::String
 

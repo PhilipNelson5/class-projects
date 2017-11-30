@@ -43,7 +43,7 @@ struct MandelbrotConfig {
     double step_r;                        // how far the red channel changes between iterations
     double step_g;                        // how far the green channel changes between iterations
     double step_b;                        // how far the blue channel changes between iterations
-    
+
 };
 
 
@@ -51,29 +51,29 @@ struct MandelbrotConfig {
 // Read fractal config file and return a MandelbrotConfig struct
 MandelbrotConfig readConfig(string fileName){
     MandelbrotConfig cfg;
-        
+
     //Open File and read info from it
     ifstream fin(fileName);
     if(!fin) {
         cout << "File Not Found!" << endl;
         return cfg;
     }
-    
+
     //read in given values
-    fin >> cfg.pixels >> cfg.midX >> cfg.midY >> cfg.axisLen >> cfg.maxIterations >> cfg.colorOne.r >> cfg.colorOne.g >> cfg.colorOne.b 
+    fin >> cfg.pixels >> cfg.midX >> cfg.midY >> cfg.axisLen >> cfg.maxIterations >> cfg.colorOne.r >> cfg.colorOne.g >> cfg.colorOne.b
     >> cfg.colorTwo.r >> cfg.colorTwo.g >> cfg.colorTwo.b >> cfg.outputPPMfile;
-    
+
     //calculate values
     cfg.minX = cfg.midX - (cfg.axisLen/2);
-    cfg.minY = cfg.midY - (cfg.axisLen/2);  
+    cfg.minY = cfg.midY - (cfg.axisLen/2);
     cfg.maxX = cfg.midX + (cfg.axisLen/2);
-    cfg.maxY = cfg.midY + (cfg.axisLen/2); 
+    cfg.maxY = cfg.midY + (cfg.axisLen/2);
     cfg.pixelSize = cfg.axisLen/cfg.pixels;
-    cfg.step_r = static_cast <double>((cfg.colorTwo.r - cfg.colorOne.r))/cfg.maxIterations; 
+    cfg.step_r = static_cast <double>((cfg.colorTwo.r - cfg.colorOne.r))/cfg.maxIterations;
     cfg.step_g = static_cast <double>((cfg.colorTwo.g - cfg.colorOne.g))/cfg.maxIterations;
     cfg.step_b = static_cast <double>((cfg.colorTwo.b - cfg.colorOne.b))/cfg.maxIterations;
-    
-    
+
+
     return cfg;
 }
 
@@ -87,7 +87,7 @@ int countIterations(MandelbrotConfig cfg, int i, int j){
     // Scale current pixel coordinates to lie inside the complex Mandelbrot X/Y scale
     double x0 = cfg.minX + j * cfg.pixelSize;
     double y0 = cfg.maxY - i * cfg.pixelSize;
-    
+
     //find out number of iterations
     while (((x*x + y*y) < 4) && (iteration < cfg.maxIterations)){
               xtemp = x*x - y*y + x0;
@@ -101,45 +101,39 @@ int countIterations(MandelbrotConfig cfg, int i, int j){
 // Helper function: decide what color corresponds to a given number of iterations
 Color getPixelColor(MandelbrotConfig cfg, int iterations){
     Color pixelColor;
-    
+
     pixelColor.r = cfg.colorOne.r + (cfg.step_r*iterations);
     pixelColor.b = cfg.colorOne.b + (cfg.step_b*iterations);
     pixelColor.g = cfg.colorOne.g + (cfg.step_g*iterations);
-    
+
     return pixelColor;
 }
 
 // Create the PPM file, including header, and build the image pixel by pixel
 // Loop over the grid of pixels and call the above helper functions as needed
 bool drawMandelbrot(MandelbrotConfig cfg){
-    double x0;
-    double y0;
-    double xtemp;
-    int y= 0;
-    int iteration;
     Color pixelColor;
-    
-    //Open PPM file 
+    //Open PPM file
     ofstream fout (cfg.outputPPMfile);
-    
+
     //Create Header
     fout << "P3" << endl << cfg.pixels << " " << cfg.pixels << endl << "255" << endl;
-    
+
     //For each row in image, do:
     for (int i=0; i< cfg.pixels; i++){
-        
+
         //For each col in row, do:
         for (int j=0; j<cfg.pixels; j++){
-           
+
            iteration = countIterations(cfg, i, j);
-    
+
            pixelColor = getPixelColor(cfg, iteration);
-           
+
            //add pixel to file
-           fout << setw(4) << left << static_cast<int> (pixelColor.r) << setw(4) << left << static_cast<int> (pixelColor.g) 
+           fout << setw(4) << left << static_cast<int> (pixelColor.r) << setw(4) << left << static_cast<int> (pixelColor.g)
                 << setw(6)<< left << static_cast<int> (pixelColor.b);
         }
-    
+
     }
     fout.close();
     return true;
@@ -149,12 +143,12 @@ int main(int argc, char* argv[]) {
     string filename;
 
     //Read in config file location from use
-    cout << "Please enter your file name:";                                                    
-    cin >> filename;                                                                           
+    cout << "Please enter your file name:";
+    cin >> filename;
 
     // Create a configuration struct from the file
     MandelbrotConfig cfg = readConfig(filename);
-    
+
     // Compute and write specified mandelbrot image to PPM file
     if (drawMandelbrot(cfg)) {
         // use the provided function to create a BMP image
