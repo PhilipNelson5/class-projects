@@ -1,10 +1,10 @@
 1024 1024   height width in pixels
--.12 -.77   the value of c
+.3 -.01     the value of c
 0.0 0.0     the center of the complex plane
 3.0 3.0     the height and width of the complex plane
-0 0 0       color one
-255 255 255 color 2
-1000        max iters
+255 0 0       color 1
+0 0 255 color 2
+1000       max iters
 julia.ppm   output image
 
 -.79 .15    the value of c

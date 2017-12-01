@@ -1,4 +1,4 @@
-include("rgb.jl")
+include("rgb.jl") # includeing files is very similar to C++
 include("hsv.jl")
 include("config.jl")
 
@@ -70,9 +70,20 @@ function hsvTOrgb(hsv::HSV)
   end
 end
 
+function gradient1(cfg, iters)
+
+    r = floor(cfg.color1.r + (cfg.step_r*iters))
+    b = floor(cfg.color1.b + (cfg.step_b*iters))
+    g = floor(cfg.color1.g + (cfg.step_g*iters))
+
+    return RGB(r,g,b)
+end
+
 function getColor(cfg, iters, style)
   if style == 0
     return hsvTOrgb(HSV((iters % 256), 1, (1 * (iters < cfg.maxIters))));
+  elseif style == 1
+    return gradient1(cfg, iters)
   end
 end
 
@@ -115,3 +126,5 @@ end
 main()
 
 # Julia does not do implicit type casting
+# Having a REPL is amazing for learning a language
+
