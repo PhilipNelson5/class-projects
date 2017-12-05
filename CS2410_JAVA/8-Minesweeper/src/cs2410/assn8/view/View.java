@@ -238,7 +238,7 @@ public class View extends Application {
     }
 
     /**
-     * rotates through clear, flagges and question
+     * rotates through clear, flags and question
      * @param b
      */
     void switchImage(FieldButton b) {
@@ -411,7 +411,7 @@ public class View extends Application {
     }
 
     /**
-     * game losing loginc
+     * game losing logic
      */
     void gameLost() {
         if (!mute) {

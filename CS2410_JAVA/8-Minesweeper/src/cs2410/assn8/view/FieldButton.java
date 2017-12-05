@@ -28,8 +28,8 @@ public class FieldButton extends Button {
     boolean cleared;
 
     /**
-     * coppy constructor
-     * @param old the button to be coppied
+     * copy constructor
+     * @param old the button to be copied
      */
     FieldButton(FieldButton old){
         row = old.row;
