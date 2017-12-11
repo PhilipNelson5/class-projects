@@ -1,0 +1,108 @@
+CS 2610 - Wed Nov 29
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+ ___ ___  ___   _     ___                          
+|_ _|   \| __| /_\   / __|_  _ _ ___ _____ _  _ ___
+ | || |) | _| / _ \  \__ \ || | '_\ V / -_) || (_-<
+|___|___/|___/_/ \_\ |___/\_,_|_|  \_/\___|\_, /__/
+                                           |__/    
+The IDEA survey is open until Dec 10
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+  ___              _   _                                                 
+ / __|_ _ ___ __ _| |_(_)_ _  __ _   ___ _  _ _ _   _____ __ ___ _  
+| (__| '_/ -_) _` |  _| | ' \/ _` | / _ \ || | '_| / _ \ V  V / ' \ 
+ \___|_| \___\__,_|\__|_|_||_\__, | \___/\_,_|_|   \___/\_/\_/|_||_|
+                             |___/                                  
+   _   ___ ___   _        ___  _                    
+  /_\ | _ \_ _| (_)_ _   |   \(_)__ _ _ _  __ _ ___ 
+ / _ \|  _/| |  | | ' \  | |) | / _` | ' \/ _` / _ \
+/_/ \_\_| |___| |_|_||_| |___// \__,_|_||_\__, \___/
+                            |__/          |___/     
+
+On Monday we looked at:
+
+    # Creating a Django app which will provide a view that implements an API
+
+     * How does this Django app differ from other apps we've created thus far?
+
+     * Who (or what) is this Django app's target audience?
+
+    # Accepting GET parameters 
+
+     * Why does our API operate over HTTP GET requests?
+
+     * For what sorts of APIs might it not make sense to use HTTP GET?
+
+     * How are the GET paramters presented by Django to our Python code?
+
+    # Returning JSON data instead of HTML to the client
+
+     * What is the name of the process which turns our data into a structured string?
+        Serialization
+
+     * What do we need to do to prepare our data to be sent over the wire?
+        Put the data into a Python dictionary, and call json.dumps() on it
+
+     * What are the advantages of using JSON as a data format?
+        In our case, it's very similar to Python Dictionaries, and is
+        conceptually familiar
+
+    # Handling errors
+
+     * What is one approach that we can adopt toward usage errors in our API?
+        Pack a nice, informative error message into the JSON response that
+        will help the poor user debug their query. 
+
+     * What other approaches might we take?
+        Returning HTTP error codes
+
+     * What are the pros and cons of the other approaches?
+        Pro: throttling - discourage users from making many bad requests
+        Pro: obfuscation - don't leak too much info about your code
+        Con: Takes more of your time to explain to users what's going on
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+Converting Units in our API
+
+You *could* just make an API which takes lbs as input and returns the
+equivalent mass in troy ounces, but it's not hard to make a fully-functional
+API that's more broadly useful.
+
+	Create a DB model which embodies the conversion table
+
+	Populate the model with the conversion factors. I pick an arbitrary unit to
+	be the 'basis' unit and assign it a factor of 1.  The other units are
+	represented by the factor which converts them into the basis unit.
+
+    Then it's straightforward to accept as input the incoming value, its unit,
+    and the desired output unit. Let's look at how to write this up in the REPL:
+
+>>> conversion = {'stone': 6350.2932, 'lb': 453.59237, 't_oz': 31.103477, 'ton': 907184.74, 'kg': 1000}
+                          ^
+# Don't call one of your variables 'from'- that doesn't work in Python!
+>>> def convert(value, ufrom, uto):
+...     value = conversion[ufrom] * value
+...     value = value / conversion[uto]
+...     return value
+...
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+                      db   d8b   db  .d8b.  d888888b 
+                      88   I8I   88 d8' `8b `~~88~~' 
+                      88   I8I   88 88ooo88    88    
+                      Y8   I8I   88 88~~~88    88    
+                      `8b d8'8b d8' 88   88    88    
+                       `8b8' `8d8'  YP   YP    YP    
+                                                     
+                                                     
+wat.mp4
+
+scratchpad.js

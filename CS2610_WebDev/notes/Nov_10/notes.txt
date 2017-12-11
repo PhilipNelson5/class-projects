@@ -1,0 +1,154 @@
+CS 2610 - Fri Nov 10
+
+ ___                    _ _   ____
+| __|_ ____ _ _ __    _| | |_|__ / Tuesday Nov 14th - Thursday Nov 16th
+| _|\ \ / _` | '  \  |_  .  _||_ \ (The funny schedule is to avoid
+|___/_\_\__,_|_|_|_| |_     _|___/  the Hackathon Nov 17th-18th)
+                       |_|_|       Sign up at the Testing Center today!
+
+Exam #3 will consist of material covered between Oct 16 through November 10
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+ _____ _        _   _        _   _           _   _             
+/  ___| |      | | (_)      | | | |         | | (_)            
+\ `--.| |_ __ _| |_ _  ___  | |_| | ___  ___| |_ _ _ __   __ _ 
+ `--. \ __/ _` | __| |/ __| |  _  |/ _ \/ __| __| | '_ \ / _` |
+/\__/ / || (_| | |_| | (__  | | | | (_) \__ \ |_| | | | | (_| |
+\____/ \__\__,_|\__|_|\___| \_| |_/\___/|___/\__|_|_| |_|\__, |
+                                                          __/ |
+                                                         |___/ 
+
+If your project consists only of HTML, CSS and JavaScript, you can host it "statically"
+Here "static" means there are no moving parts on the server side (e.g. no Django server)
+
+===============
+Bitbucket pages
+===============
+https://confluence.atlassian.com/bitbucket/publishing-a-website-on-bitbucket-cloud-221449776.html
+
+	0. Create a new repository called <account name>.bitbucket.io,
+        where <account name> is your BB username. It doesn't matter if this is a
+        private or public repo - they both work the same.
+	1. Push your index.html and other files to that repo
+	2. Go to https://<account name>.bitbucket.io
+    3. If you want other pages on Bitbucket, put them within subfolders 
+
+
+============
+GitHub pages
+============
+https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/
+
+	0. Put your content in a repo; preferably with an index.html
+	1. Push it to GH
+	2. Go into that repo, then the 'Settings' tab
+	3. Scroll down to GitHub pages and enable it
+	4. Choose whether you want to publish straight out of the master branch, or out of the docs/ dir in master
+	5. Hit save, it will reply with your published URL
+	6. It may take a few minutes for your page to appear at that URL
+
+	Your URL will be https://<account name>.github.io/<repo name>
+
+
+===========
+Pros & Cons
+===========
+    Pro: It's free
+    Pro: Works for JS applications which don't need persistence on the backend
+
+    Con: You don't get much control over your domain name
+    Con: Bandwidth and usage limits
+    Con: Only works for limited use cases
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+______                             _        _   _           _   _             
+|  _  \                           (_)      | | | |         | | (_)            
+| | | |_   _ _ __   __ _ _ __ ___  _  ___  | |_| | ___  ___| |_ _ _ __   __ _ 
+| | | | | | | '_ \ / _` | '_ ` _ \| |/ __| |  _  |/ _ \/ __| __| | '_ \ / _` |
+| |/ /| |_| | | | | (_| | | | | | | | (__  | | | | (_) \__ \ |_| | | | | (_| |
+|___/  \__, |_| |_|\__,_|_| |_| |_|_|\___| \_| |_/\___/|___/\__|_|_| |_|\__, |
+        __/ |                                                            __/ |
+       |___/                                                            |___/ 
+
+Here you pay a web hosting company to use their servers to run your dynamic,
+database-driven website. I'll show you what this is like with WestHost, a local
+hosting provider who kindly donated a hosting package for this demonstration.
+
+This process begins by picking out a Domain Name...
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+Free .tk domains
+http://www.dot.tk/en/index.html
+
+https://en.wikipedia.org/wiki/Domain_Name_System
+
+______        _   _      _____       
+|  _  \      | \ | |    /  ___|     
+| | | |omain |  \| |ame \ `--. ystem
+| | | |      | . ` |     `--. \
+| |/ /       | |\  |    /\__/ /
+|___/        \_| \_/    \____/ 
+
+The Domain Name System (DNS) is a hierarchical decentralized naming system for
+the internet DNS translates human-friendly hostnames into IP addresses that are
+meaningful to routers and other network equipment.
+
+Hierarchical
+============
+    In order to spread the load, a hierarchical, recursive structure exists so
+    that the many requests from the bottom may be served by a server above it.
+    If the server on top doesn't know the IP address corresponding to a
+    particular hostname, it asks the server above it. This process is repeated
+    (recursion) until master server at the very top level is consulted.
+
+Decentralized
+=============
+    DNS is essentially a database mapping hostnames to IP addresses. To
+    promote fault-tolerance and also to spread the load across many machines,
+    the database is split across many servers across the world. 
+
+    In the bad old days, each computer kept its own database of host-to-IP
+    mappings. This meant that whenever the network changed (e.g. new hosts
+    added, old hosts removed or renamed) each system administrator needed to
+    manually update his own host database. (This database still exists on Unix
+    and Windows machines - the /etc/hosts file. If you're up for a challenge,
+    try finding this file on your Wintendo). This scheme represents the maximum
+    amount of decentralization possible.
+    
+    The other end of the spectrum would be having a single, unifying database.
+    This would cut down on the amount of work spent on maintaining the
+    database, but that one database would be *busy*. And if something happened
+    to it, nobody could get anywhere on the net. Also, if the only DNS server
+    was in the U.S. and you weren't, then you'd enjoy trans-oceanic delays
+    everytime you visited a webpage, independent of where the webpage itself
+    was hosted.
+
+    The current system represents a good middle ground between these two
+    extremes.
+
+Common DNS Record Types
+=======================
+    A       Address             A 32-bit IPv4 address
+    AAAA    IPv6 Address        A 128-bit IPv6 address
+    CNAME   Canonical Name      Alias for another hostname
+    MX      Mail Exchange       Map a domain name to a list of message transfer agents (makes email work)
+    NS      Name Server         Which Name Server is authoritative for a zone (which NS to use for your domain)
+    SOA     Start Of Authority  Contains the authoritative information for a zone
+    TXT     Text                Originally for arbitrary human-readable text, but now used by machines
+
+
+============================
+Interrogating the DNS system
+============================
+    sudo netstat -Wpt -- see which domains/IP addresses are connected to your computer
+
+    Other commands which you can use to gain info about DNS records
+        dig      - retrieve DNS information
+        nslookup - retrieve DNS information (also available on Windows)
+        whois    - Interrogate the WHOIS database for information about the
+                   owner of a domain

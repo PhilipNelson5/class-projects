@@ -1,0 +1,97 @@
+CS 2610 - Wed Oct 25
+
+______ _____ _     _____                       _   _             
+|  ___/  ___| |   /  __ \                     | | (_)            
+| |_  \ `--.| |   | /  \/  _ __ ___   ___  ___| |_ _ _ __   __ _ 
+|  _|  `--. \ |   | |     | '_ ` _ \ / _ \/ _ \ __| | '_ \ / _` |
+| |   /\__/ / |___| \__/\ | | | | | |  __/  __/ |_| | | | | (_| |
+\_|   \____/\_____/\____/ |_| |_| |_|\___|\___|\__|_|_| |_|\__, |
+                    Thursday Oct 26 - 7:00 pm               __/ |
+                           ENGR 203                        |___/ 
+
+In your C9 workspaces, tag and push your submission for HW5
+
+
+What is MVC and/or MTV?
+	Django thinks of itself as a MTV (Model, Template, View) framework
+
+	What is MTV?
+	MTV was a television channel that used to be edgy and played music
+	https://docs.djangoproject.com/en/1.11/faq/general/#faq-mtv
+
+	MVC stands for Model, View, Controller
+	https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller
+
+	Model = Database (for all intents and purposes)
+	SQL = Structure Query Language
+	      Django has a Pythonic way to deal with the database, so we can do
+		  everything we want to with our model without needing to be a
+		  certified DBA
+
+
+Using Django's database interface instead of SQL
+	Today's discussion covers the 1st half of the Django tutorial pt. 2
+	https://docs.djangoproject.com/en/1.11/intro/tutorial02/
+
+	We're using the SQLite database in our app, but we *could* use any of a
+	variety of different database engines in our app without rewriting any of
+	our code.
+
+	Contrast this to webapp frameworks in which the database code is tightly
+	integrated (like PHP and MySQL) and we can see that this approach offers
+	us much more flexibility.
+
+
+Database tables vs. Classes
+	https://docs.djangoproject.com/en/1.11/intro/tutorial02/#creating-models
+
+	A table in a database is defined in much the same way as a Class in an
+	Object-Oriented Programming language. Most programming languages which
+	offer a database interface do so in terms of classes and objects.
+
+	To create a class in Python, we follow syntax reminiscent of defining a
+	function:
+
+	class Classname(ParentClass):
+		field1 = ...
+		field2 = ...
+
+	Instead of the keyword 'def', we use 'class'. Instead of a list of
+	function parameters, we specify the name of the class we want this new
+	class to inherit from. In Django, the classes we want to use to represent
+	our Database tables inherit from the class models.Model.
+
+	We add data members which are instances of other types in the models
+	package. Each type in the models package corresponds to a type of data
+	which might go into a database. You can refer to this document to find out
+	what types of data Django's database interface supports:
+
+		https://docs.djangoproject.com/en/1.11/ref/models/fields/
+
+	If you are familiar with SQL, you may notice that these types match up
+	with types you've used in other database systems.  Although Python
+	traditionally doesn't worry too much about the type of its variables, in
+	the context of a database it does matter for performance and data
+	integrity reasons.
+
+Incorporating models into Django
+	https://docs.djangoproject.com/en/1.11/intro/tutorial02/#activating-models
+
+	After we've defined our model in our webapp's models.py file, we need to
+	tell Django how to manage it.
+
+	First we run
+		$ ./manage.py migrate
+	to prepare Django to use our models.
+
+	Next, we add the path to the PollsConfig class which Django created for us
+	to the INSTALLED_APPS array in our project's settings.py file.
+
+	Finally, we apply the migration by running
+
+		$ ./manage.py makemigrations
+
+	If you get a message saying 'No changes detected', make sure that you have
+		0. saved changes to models.py
+		1. updated and saved settings.py
+	

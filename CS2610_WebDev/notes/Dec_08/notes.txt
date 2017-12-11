@@ -1,0 +1,98 @@
+CS 2610 - Fri Dec 08
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+  ___ _             _ ___      _     _     _   _
+ / __| |___ _  _ __| / _ \  __| |___| |___| |_(_)___ _ _
+| (__| / _ \ || / _` \_, / / _` / -_) / -_)  _| / _ \ ' \
+ \___|_\___/\_,_\__,_|/_/  \__,_\___|_\___|\__|_\___/_||_|
+
+
+Your C9 workspaces will go away before next semester starts to make room for
+my Spring classes. I will be getting things ready at the end of this month, so
+make sure that all of your code is pushed to an external Git repository or
+downloaded from C9 by New Year's Eve.
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+              _____ _             _   _____
+             |  ___(_)_ __   __ _| | | ____|_  ____ _ _ __ ___
+             | |_  | | '_ \ / _` | | |  _| \ \/ / _` | '_ ` _ \
+             |  _| | | | | | (_| | | | |___ >  < (_| | | | | | |
+             |_|   |_|_| |_|\__,_|_| |_____/_/\_\__,_|_| |_| |_|
+
+                       ____            _
+                      |  _ \ _____   _(_) _____      __
+                      | |_) / _ \ \ / / |/ _ \ \ /\ / /
+                      |  _ <  __/\ V /| |  __/\ V  V /
+                      |_| \_\___| \_/ |_|\___| \_/\_/
+
+
+HTML -
+    <div> = division of a document
+            has no intrinsic appearance
+            is a block-level element (takes up the width of its container)
+
+    <a> = anchor (hyperlink anchor-point)
+          needs an href attribute (the URL to link to)
+          inline element
+          not an empty tag
+
+          <a href="yabba-dabba-do.com"> stuff within</a>
+
+    <img> = image tag
+            has a src="" attribute
+            can have alt="" attribute, in case the graphic is unavailable, or
+                to improve accessibility
+            is an empty tag (no closing </img> required)
+
+    <form> = form element
+            method="" attribute tells the browser how to communicate with the
+                server, can be one of GET|DELETE|POST|PUT
+            action="" the URL of the resource to send this form data to
+
+CSS = Cascading Style Sheets
+    img = select all <img> in my document
+
+    .whatever = select all elements with class="whatever"
+
+    img.whatever = select all <img class="whatever"> elements
+
+    #special = find the single element with id="special"
+
+
+JavaScript
+    Use the source, Luke!
+    (this means use the browser's console)
+
+Python
+    Don't forget about help() and dir()
+    Python libraries must be imported before we can refer to them
+    functions are defined with the 'def' keyword
+    classes are defined  with the 'class' keyword; their parameter list is the
+        name of the class you wish to inherit from
+    "methods" in Python classes are simply functions which happen to be within
+        a class, and which take a "self" param which refers to the calling
+        object.
+
+APIs
+    What does "API" stand for?
+        Application Programming Interface
+    How to use them from JavaScript?
+        XmlHttpRequest
+    How do we use a XmlHttpRequest?
+        Refer to your homework to understand the sequence of lines of code we
+        used to make use of one of these
+        The important things are:
+        0) Create it
+        1) Give it some info about HTTP Method and Action
+        2) Set up a callback to process the data when it arrives (this is the
+           asynchronous bit)
+
+    When creating our own API, what do we want to be aware of?
+        Need some sort of input from the "user", query string, or POST data
+        serialize the response (e.g. "stringify" the response)
+
+SSH
+    Refer to the lecture notes for this (straightforward stuff, really)

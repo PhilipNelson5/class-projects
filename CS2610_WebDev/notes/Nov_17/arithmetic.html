@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Client-side dynamic pages with JavaScript</title>
+		<link href="style.css" rel="stylesheet">
+	</head>
+
+	<body>
+        <form>
+            <div class="stuff-box red shadowed">
+                <input type="text" id="first">
+                <select id="operator" name="operator">
+                    <option>+</option>
+                    <option>-</option>
+                    <option>*</option>
+                    <option>/</option>
+                    <option>%</option>
+                </select>
+                <input type="text" id="second">
+
+                <button type="button" onclick="calculate(this)">=</button>
+                <input disabled="1" type="text" id="answer">
+            </div>
+        </form>
+
+		<script type="text/javascript">
+            var calculate = function(button) {
+                var div = button.parentNode;
+                var first = div.querySelector('#first').value;
+                var operator = div.querySelector('#operator').value;
+                var second = div.querySelector('#second').value;
+                var answer = div.querySelector('#answer');
+                answer.value = eval(first + operator + second);
+            }
+        </script>
+	</body>
+</html>
+

@@ -1,0 +1,63 @@
+CS 2610 - Mon Oct 30
+
+https://docs.djangoproject.com/en/1.11/intro/tutorial02/#playing-with-the-api
+
+Today we explored the Django database API in the REPL by
+    * creating database row objects
+    * saving them to the DB
+    * retrieving them from the DB again
+    * overriding Python's ToString() equivalent (the __str__() method) to give
+      each row in our Database a pleasant string representation.
+
+Key observations are:
+    * You must run `./manage.py makemigrations` and then `./manage.py migrate`
+      before you can begin to use the database.
+
+    * Our models (Question and Choice) have a lot of functionality given to us
+      for free by virtue of the fact that they inherit from django's
+      models.Model class.
+
+    * New rows in the database are created by saving the result of a call to
+      the Model constructor. In the case of our polls app, the call
+          Question(question_text="What's new?", pub_date=timezone.now())
+      creates a row object. We should save that object into a variable so we
+      can later call the save() method on it to write it down into the DB.
+
+    * The database isn't actually changed until we call the save() method on
+      an object.
+
+    * The validity of the data isn't tested/enforced until we attempt to save
+      it. Become familiar with what the error trace looks like when this
+      happens, as it may happen often during development ;)
+
+    * The primary key field called "id" isn't assigned until we call the
+      save() method.
+
+    * If we go out of our way to manually set the id field, calling save()
+      will overwrite the existing row. Otherwise, save() adds a new row to the
+      DB.
+
+    * Question.objects represents the interface from Python to the rows in our
+      Database table Question. It contains many useful methods:
+
+      This method takes no arguments:
+      * Question.objects.all() returns a list of all rows saved in the DB
+
+      These methods take an argument:
+      * Question.objects.get() returns a single row from the DB. 
+      * Question.objects.filter() returns many rows from the DB. 
+
+      The keyword argument given to get() and filter() perform an SQL Database
+      query for us. What keywords are available for use is explained in this
+      document:
+
+      https://docs.djangoproject.com/en/1.11/topics/db/queries/#field-lookups-intro
+
+      This document describes the entire Database API. Keep it handy:
+
+      https://docs.djangoproject.com/en/1.11/topics/db/queries/
+
+I strongly encourage you to spend a good portion of your time understanding
+this section of the tutorial. The interaction with the database is the most
+crucial part of your webapp. After this part of the tutorial, the going
+becomes much easier

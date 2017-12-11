@@ -1,0 +1,50 @@
+CS 2610 - Mon Nov 6
+
+ ___                    _ _   ____
+| __|_ ____ _ _ __    _| | |_|__ / Tuesday Nov 14th - Thursday Nov 16th
+| _|\ \ / _` | '  \  |_  .  _||_ \ (The funny schedule is to avoid
+|___/_\_\__,_|_|_|_| |_     _|___/  the Hackathon Nov 17th-18th)
+                       |_|_|       Sign up at the Testing Center today!
+
+Exam #3 will consist of material covered between Oct 16 through November 10
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+API = Application Programming Interface
+    The traditional definition refered to libraries of code used within a
+    programming environment. An API describes the packages you can import,
+    objects you can use, functions you can call and what types of data those
+    functions return. An API may also describe protocols used to facilitate
+    communication between different systems.
+
+    More recently this acronym has become closely associated with web-based
+    technologies. The API in use by a web service may describe the URLs from
+    which certain data may be retrieved, what format that data will be sent
+    (i.e. XML, JSON, etc.) and what data may be uploaded from the client.
+
+==========
+Start here
+==========
+	https://docs.djangoproject.com/en/1.11/intro/tutorial04/#write-a-simple-form
+
+Redirects - why not stay on the POST view?
+	If I want to see the results I must change the results
+	If I simply reload the results page I also change the results
+
+	It is therefore better design to separate the act of voting from the act
+	of viewing the results
+
+
+
+=============
+Generic views - skipped over this in class
+=============
+
+
+=============
+Static assets
+=============
+	https://docs.djangoproject.com/en/1.11/intro/tutorial06/
+
+	Make sure that you balance your quote marks in your CSS file!

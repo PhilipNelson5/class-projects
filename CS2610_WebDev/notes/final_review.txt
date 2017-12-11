@@ -1,0 +1,63 @@
+API - Application Programming Interface
+SSH - Secure SHell
+  -L (local port forwarding)   ssh -L local port  : remote addess : remote port
+  -R (remote port forwarding)  ssh -R remote port : remote addess : local port
+  -D (dynamic port forwarding) ssh remote address -D local port
+
+CRUD
+C - Create | POST   ( !safe !idempotent )
+R - Report | GET    (  safe  idempotent )
+U - Update | PUT    ( !safe  idempotent )
+D - Delete | DELETE ( !safe  idempotent )
+
+Safe - does not change the data base
+Idempotent - repeating the action has compounding effect
+
+Python:
+  { } - dictionaries
+  [ ] - lists
+help() - brings up the "man" page
+dir()  - lists the available functions
+
+Django:
+  {{ }} - variables
+  {% %} - template tags
+  {# #} - comments
+MTV - Model Template View
+
+HTML
+  <header>       <--! For machines -->
+  </header>
+  <nav>          <--! Same across all pages, for navigation -->
+  </nav>
+  <main>         <--! For the main content -->
+    <section>    <--! For a sub section -->
+      <div>      <--! Block element -->
+        <a></a>  <--! Inline element, requires href attribute -->
+        <img>    <--! Empty element requires src attribute -->
+      </div>
+    </section>
+    <aside>      <--! For side content -->
+    </aside>
+  </main>
+  <footer>       <--! Same across all pages, for a footer -->
+  </footer>
+
+CSS
+  elem
+  .class
+  #id
+
+  Flexbox
+    Container Properties
+    display:        flex;          // make block element a flexbox
+    flex-direction: row | column;  //
+    flex-wrap:      nowrap | wrap; // extra content should wrap around
+    flex-flow:      row nowrap;    // shortcut for direction and wrap
+
+    Child Properties
+    order:
+    flex-grow:
+    flex-shrink:
+    flex-basis:
+    flex: <num>

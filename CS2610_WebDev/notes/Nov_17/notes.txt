@@ -1,0 +1,60 @@
+CS 2610 - Fri Nov 17
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+When a user submits a comment through the <form> on that blog's page, how does
+your view know which Blog object to associate that Comment with?
+
+    Encode the Blog's ID number into the URL to which the user POSTs
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+  88888    db    Yb    dP    db    .dP"Y8  dP""b8 88""Yb 88 88""Yb 888888 
+     88   dPYb    Yb  dP    dPYb   `Ybo." dP   `" 88__dP 88 88__dP   88   
+ o.  88  dP__Yb    YbdP    dP__Yb  o.`Y8b Yb      88"Yb  88 88"""    88   
+ "bodP' dP""""Yb    YP    dP""""Yb 8bodP'  YboodP 88  Yb 88 88       88   
+
+    db    88b 88 8888b.    888888 88  88 888888   8888b.   dP"Yb  8b    d8 
+   dPYb   88Yb88  8I  Yb     88   88  88 88__      8I  Yb dP   Yb 88b  d88 
+  dP__Yb  88 Y88  8I  dY     88   888888 88""      8I  dY Yb   dP 88YbdP88 
+ dP""""Yb 88  Y8 8888Y"      88   88  88 888888   8888Y"   YbodP  88 YY 88 
+
+Javascript and the DOM
+
+Ken Thompson's "Reflections on Trusting Trust"; an excellent read for anybody
+who uses computers:
+    https://www.ece.cmu.edu/~ganger/712.fall02/papers/p761-thompson.pdf
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+----------
+index.html
+----------
+    Q: Where do all of the words come from?
+    A: content.js
+
+    Interesting Javascript functions that are illustrated in content.js:
+
+        document.querySelector(CSS-style selector in a string)
+        return a Node (aka a Node on the DOM tree)
+
+        document.querySelectorAll(CSS-style selector in a string)
+        returns a NodeList containing all matching DOM elements
+
+        document.createElement(The name of an HTML element as a string)
+        returns a Node of the specified type
+
+
+        /* add some notes about things that you can do with a Node object */
+
+        <NodeVariable>.appendChild(another Node in the DOM)
+        Make the argument become a child of the <NodeVariable>
+
+    Question: how to do a deepCopy of a Node?
+
+---------------
+arithmetic.html
+---------------
+    Let's do something interactive

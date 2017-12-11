@@ -1,0 +1,202 @@
+CS 2610 - Fri Oct 27
+
+Database Schema
+===============
+
+The structure of a database is called its "Schema". When desiging a database we
+want to follow organizational principles that are similar to the way we
+organize code. Code is organized into classes with data members; databases are
+organized into tables with columns. The concept is virtually the same between
+clasess and tables, so much so that nearly every programming interface to a
+database represents database tables as classes, and rows of data in a database
+as instances (a.k.a. objects).
+
+Refer to the attached spreadsheet polls_app_schema.ods to see a picture of what
+our polls' app database looks like so far.
+
+
+Those files that Django makes for you
+=====================================
+workspace/
+	cs2610private/   # project directory
+	   __init__.py
+	   __init__.pyc
+	   settings.py   # our project's settings
+	   settings.pyc
+	   urls.py       # the "receptionist" - tells you where to go to use an app
+	   urls.pyc
+	   wsgi.py       # Pertains to the WSGI interface to a "real" web server
+	   wsgi.pyc
+	db.sqlite3
+	hello/
+	   __init__.py   # This file makes the 'hello' directory into a Python package
+	   __init__.pyc
+	   admin.py
+	   apps.py
+	   migrations/
+		   __init__.py
+	   models.py
+	   tests.py
+	   urls.py
+	   urls.pyc
+	   views.py
+	   views.pyc
+	manage.py*
+	polls/
+	   __init__.py
+	   __init__.pyc
+	   admin.py
+	   admin.pyc
+	   apps.py
+	   apps.pyc
+	   models.py
+	   models.pyc
+	   tests.py
+	   urls.py
+	   urls.pyc
+	   views.py
+	   views.pyc
+
+
+What is WSGI?
+=============
+	https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface
+
+
+
+urls.py - the dispatcher of requests
+====================================
+
+	You can actually view the top line of the HTTP request made to Django in the console.
+	This helps us to understand just what Django sees.
+	
+	The urls.py files define a list of patterns (called urlpatterns in those
+	files) used by Django to match the path in the URL to Python code to a
+	function to call. This is how Django "knows" what view to run based upon
+	the URL you navigate to.
+
+	The pattern matching is achived by a "Regular Expression"
+
+
+Regular Expressions
+===================
+
+	https://en.wikipedia.org/wiki/Regular_expression
+
+	A regular expression (regex or regexp) is, in theoretical computer science
+	and formal language theory, a sequence of characters that define a search
+	pattern.  Usually this pattern is then used by string searching algorithms
+	for "find" or "find and replace" operations on strings.
+
+	Regular expressions are used in search engines, search and replace dialogs
+	of word processors and text editors, in text processing utilities such as
+	sed and AWK and in lexical analysis.
+	
+	The concept arose in the 1950s when the American mathematician Stephen
+	Kleene (KLAY-nee) formalized the description of a regular language. The
+	concept came into common use with Unix text-processing utilities. Since the
+	1980s, different syntaxes for writing regular expressions exist, one being
+	the POSIX standard and another, widely used, being the Perl syntax.
+
+
+What using Regexes is like
+==========================
+
+	Many programming languages provide regex capabilities, built-in, or via
+	libraries. In Python, regular expressions come from the 're' module.
+
+	Regular expressions are a language unto themselves, meaning that they have
+	their own peculiar syntax. Part of the syntax happens to involve lots of
+	backslashes. This is why we see string literals in Django which contain
+	regexes which begin with r''. These are *not* regular expression literals
+	but "raw" strings. Raw strings are a way to tell Python to leave our
+	backslashes alone!
+
+
+What sort of language is Regex?
+===============================
+
+	In CS lingo, a regular expression describes a state machine called a
+	"deterministic finite automaton" (DFA). In other words, we're writing a
+	compact program which describes a computer that will match a pattern, one
+	byte at a time.
+
+
+	Cool story:
+	-----------
+	Ken Thompson is an interesting hacker that you should read about. His
+	Turing Award acceptance speech (the ACM Turing Award is the Nobel Prize of
+	the CS world) about why you can never trust your computer is the most
+	memorable and influential of them all.
+	
+	He is responsivle for introducing regular expressions into a text editor
+	called QED, which went on to influence ed, sed, ex, vi, vim, etc., and by
+	so doing made them widespread and common to all programmers.
+
+	The clever thing he did with QED was to compile regular expressions,
+	on-the-fly, into machine code implementations of the equivalent NDFA
+	"non-deterministic finite automaton", which was then converted into a DFA
+	and executed.
+	
+	TL;DR Ken Thompson's text editor was also a compiler. He did this in the
+	mid-sixties.
+
+	https://www.bell-labs.com/usr/dmr/www/qed.html
+	https://en.wikipedia.org/wiki/Thompson%27s_construction
+
+
+
+	Basically, regexes are machines
+	-------------------------------
+	What can these machines do? Let's take them out for a spin and find out!  A
+	program or website which lets you visualize your regex pattern is supremely
+	helpful.
+
+	https://pythex.org/ # a python regular expression tester
+		set the multiline regex option
+
+
+	* Match one character in particular (such as a):
+	  r'a'
+
+	* Match one character or an other (a or b):
+	  r'a|b'
+
+	* Match one character out of a set (one of a, b, c):
+	  r'[abcd]'
+	  r'[a-d]'
+
+	* Match one or more characters out of a set (many copies of a, b, c or d,
+		  in any order):
+	  r'[abcd]+'
+	  r'[a-d]+'
+
+	* Match zero or more characters out of a set (many copies of a, b, c or d,
+		  in any order, or nothing at all):
+	  r'[abcd]*'
+	  r'[a-d]*'
+
+	* The dot is a character set which includes everything EXCEPT newline. This
+	  pattern matches zero or more chars which are not newlines, in other
+	  words, an entire line of text (including a blank line):
+	  r'.*' 
+
+	* Exactly match a substring:
+	  r'beg'
+
+	* Match that same substring but *only* when it appears at the beginning:
+	  r'^beg'
+
+	* Or match a substring *only* when it appears at the end of the line:
+	  r'ing$'
+
+	* Like other programming languages you're familiar with, you can use
+	  prentheses to group things together.
+	  r'(beginn|end)ing'
+
+
+Regex documentation that may be helpful
+=======================================
+
+	https://docs.python.org/2/library/re.html#regular-expression-syntax
+	https://docs.python.org/2/howto/regex.html

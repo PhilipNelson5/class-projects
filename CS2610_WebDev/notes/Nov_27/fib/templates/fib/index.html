@@ -1,0 +1,36 @@
+{% load static %}
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Fibonacci numbers</title>
+		<link href="{% static 'fib/style.css' %}" rel="stylesheet">
+	</head>
+
+	<body>
+        <div>
+            <div class="stuff-box green shadowed">
+				<h2>Compute the Nth Fibonacci number via our awesome API</h2>
+                <input type="number" id="fib" name="fib">
+                <button type="button" onclick="calculate()">Calculate</button>
+				<p id="result"></p>
+            </div>
+        </div>
+
+		<script type="text/javascript">
+var calculate = function() {
+	var fibReqUrl = 'https://cs2610private-erikfalor.c9users.io/fib/fibAPI?n=' + document.querySelector("#fib").value;
+	var fibReq = new XMLHttpRequest();
+	fibReq.open('GET', fibReqUrl);
+	fibReq.responseType = 'json';
+	fibReq.send();
+	fibReq.onload = function() {
+		var json = fibReq.response;
+		console.log(json);
+		document.querySelector('#result').textContent = json['fibonacci']
+	}
+}
+		</script>
+	</body>
+</html>
+

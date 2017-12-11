@@ -1,0 +1,162 @@
+CS 2610 - Mon Oct 23
+
+
+ ___                  ___   ___         _            
+| __|_ ____ _ _ __   |_  ) | _ \_____ _(_)_____ __ __
+| _|\ \ / _` | '  \   / /  |   / -_) V / / -_) V  V /
+|___/_\_\__,_|_|_|_| /___| |_|_\___|\_/|_\___|\_/\_/ 
+                                                     
+
+(60%)
+Q: The text you enter into a text <input> is sent verbatim to the server.
+A: False
+   The input is URL encoded by the browser before being sent.
+
+
+(78%)
+Q: In order to merge a new branch into master, you have to add and commit
+   changes to that branch first.
+A: True
+   You merge commits, not files or diffs
+
+
+(82%)
+Q: Which of the following statements is true about Python?
+A: Variables do not have a type; values do have a type
+   You can see this in two ways
+   0. you don't need to specify the type which a varaible contains
+      a = True  # not 'bool a = True'
+   1. you can assign a completely different type of value to the same variable
+      a = [True, 7, 'Bar', { "Fruit": "Lemon" }]
+
+
+(78%)
+Q: Which Python function gives the length of a collection?
+A: len([1, 2, 3])
+   not size(), not [1, 2, 3].len()
+
+
+(82%)
+Q: Which Python function gives the type of a value?
+A: type()
+
+
+(84%)
+Q: Which symbols are used to construct a dictionary?
+A: Curly braces { }
+   Square braces construct a list : l = [1, 2, 3]
+   Parentheses construct a tuple  : t = (1, 2, 3) # tuples are read-only lists
+   Angle braces are a SyntaxError in Python: e = <1, 2, 3> # SyntaxError: invalid syntax
+
+
+(80%)
+Q: How does one enable wrapping behavior on a flex container?
+A: flex-wrap: wrap;
+
+
+(64%)
+Q: Is it possible to have multiple <footer> elements in one document?
+A: Yes
+   https://developer.mozilla.org/en-US/docs/Web/HTML/Element/footer
+   The HTML <footer> element represents a footer for its nearest sectioning
+   content or sectioning root element. 
+
+
+(82%)
+Q: What is the purpose of the <article> element?
+A: To represent a self-contained composition within a document.
+   https://developer.mozilla.org/en-US/docs/Web/HTML/Element/article
+
+
+(64%)
+Q: A linear gradient is an example of background-image CSS property?
+A: True
+
+
+(70%)
+Q: What attributes are required on the <form> element?
+A: Action and Method
+   Action means "Destination the request is sent to"
+   Method means "How to send the request: GET or POST usually"
+    
+   Technically, these attributes are optional; I should have written the
+   question "What attributes *should* always be present on the <form>?"
+   https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Your_first_HTML_form#The_<form>_element
+
+
+(80%)
+Q: When you enter text into an <input> and submit a <form> whose
+   method="POST", it becomes part of the URL your browser navigates to
+A: False
+   You're thinking of GET
+
+
+
+ ___                        _                     _   _        
+|   \ ___   _  _ ___ _  _  | |___ _  _____ __ __ | |_| |_  ___ 
+| |) / _ \ | || / _ \ || | | / / ' \/ _ \ V  V / |  _| ' \/ -_)
+|___/\___/  \_, \___/\_,_| |_\_\_||_\___/\_/\_/   \__|_||_\___|
+            |__/                                               
+ _   _              ___ 
+| |_(_)_ __  ___ __|__ \
+|  _| | '  \/ -_|_-< /_/
+ \__|_|_|_|_\___/__/(_) 
+                        
+http://www.homestarrunner.com/sbemail119.html
+
+How to get the current (server) time onto your webpage we can use the Python
+time library.
+
+How do we use this thing? Let's play with it in the REPL. There are some
+helpful things built-in to Python that make discovering how to do things nice
+and easy.
+
+    import time
+
+    help(time)
+    dir(time)
+
+    # add some of this code into our views.py
+
+
+I like the strftime() function myself, but how do I learn to use it?
+It's a holdover from the Unix days when everything was written in C.
+
+Python itself is written in C, so it is easy and natural to make it possible
+to use C functions from Python. It also saves the Python people time when it
+comes to documentation, because they can just point you to the Unix manual.
+
+    $ man strftime
+
+
+
+Cool, but that's not the time that my clock reads?
+How do I get Django to use *my* timezone?
+
+    <project_dir>/settings.py - look for the variable TIME_ZONE
+
+We're in the America/Denver timezone
+
+
+
+ ___                          _      __                  _ 
+| _ \__ _ __ _ ___   _ _  ___| |_   / _|___ _  _ _ _  __| |
+|  _/ _` / _` / -_) | ' \/ _ \  _| |  _/ _ \ || | ' \/ _` |
+|_| \__,_\__, \___| |_||_\___/\__| |_| \___/\_,_|_||_\__,_|
+         |___/                                             
+                      ___ _   __  _ ___  
+                     / / | | /  \| | \ \ 
+                    | ||_  _| () |_  _| |
+                    | |  |_| \__/  |_|| |
+                     \_\             /_/ 
+
+This happens because Django wasn't told what to do with the empty path. Just
+because you have 1 webapp installed doesn't mean that Django should route all
+traffic there by default.
+
+There are two ways we can deal with this:
+
+0) Create a "landing page" containing links to each of our webapps
+
+1) Make our controller (urls.py) send requests for the empty path to our
+   preferred webapp

@@ -1,0 +1,75 @@
+CS 2610 - Fri Sep 29
+
+   _    
+  /_\ny questions...
+ / _ \  * regarding the assessment due Oct 1st?
+/_/ \_\ * regarding the HW4 - Multipage website Oct 11?
+
+
+                                      _          
+                             _ _  ___| |_ ___ ___
+                            | ' \/ _ \  _/ -_|_-<
+                            |_||_\___/\__\___/__/
+
+https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Your_first_HTML_form
+
+HTML Forms
+==========
+	Think about what "form" means (form.jpg)
+
+	No, not that form. More like this kind (mcform.png)
+
+	The webpages we've used so far are one-way communication. HTML Forms allow
+	us to talk back to webservers.
+
+
+Syntax
+======
+
+	To create a form section, we provide the form with a name, id, action, and
+	method. An example with blank attributes looks like this:
+
+		<form action="" method="">
+
+			<!-- labels, buttons, sliders, text boxes, etc. go in here :) -->
+
+		</form>
+
+
+	Attributes
+	----------
+
+		At minimum the form needs to know where to go and how to get there
+
+		* action - the URL your browser sends the user upon form submission
+		* method - how to send the user's carefully entered data to the server
+
+		  Method refers to HTTP - HyperText Transport Protocol
+		  HTTP is a set of rules that servers and browsers follow in order to
+		  communicate.
+
+		  It was originally created coincidentally with HTML to define how our
+		  new, fancy webpages should be sent from server to browser.
+		  Lots of systems besides webservers and web browsers use it nowadays.
+
+
+Form input elements
+===================
+	https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Your_first_HTML_form#The_<label>_<input>_and_<textarea>_elements
+
+	<label>
+	-------
+		for="" -> an input's #id
+			Associates the label to a form input so that by clicking on the
+			label the browser will focus on the associated input.
+		
+
+	<input>
+	-------
+		id=""
+			The input's ID (same #id as we've seen before in CSS)
+		name=""
+			The name of the value in the URL after the ?
+		type=""
+			What sort of input widget - text entry, slider, checkbox, etc.
+

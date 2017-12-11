@@ -1,0 +1,96 @@
+CS 2610 - Wed Sep 27
+
+              _           _    _    ___ _             _
+             | |  _  _ __(_)__| |  / __| |_  __ _ _ _| |_ ___
+             | |_| || / _| / _` | | (__| ' \/ _` | '_|  _(_-<
+             |____\_,_\__|_\__,_|  \___|_||_\__,_|_|  \__/__/
+
+                           Utah web company
+                      Info session Tonight 7-8pm
+                               ENGR 109
+                       There is pizza and swag
+
+                    ___           _   _
+                   | _ \__ _ _  _| |_| |_  ___ ___ _ _
+                   |   / _` | || |  _| ' \/ -_) _ \ ' \
+                   |_|_\__,_|\_, |\__|_||_\___\___/_||_|
+                             |__/
+                        CyberHacking Workshop
+                            Sat Sept 30th
+           RSVP by tomorrow afternoon in the CS main office
+
+
+           ___ ___ _    ___   __  __         _   _
+          | __/ __| |  / __| |  \/  |___ ___| |_(_)_ _  __ _
+          | _|\__ \ |_| (__  | |\/| / -_) -_)  _| | ' \/ _` |
+          |_| |___/____\___| |_|  |_\___\___|\__|_|_||_\__, |
+                                                       |___/
+                          ENGR 106 - Tue Oct 3
+                 7pm Beginner's guide to the Bash shell
+                8pm Intermediate guide to the Bash shell
+
+ _  _
+| || |W4 - Multipage website is posted
+| __ | It is due Midnight Oct 11th
+|_||_| https://usu.instructure.com/courses/471342/assignments/2311231
+
+
+ _
+| |ook for a small assignment to reinforce what we'll cover in
+| |__  class today. It is due Friday
+|____| https://usu.instructure.com/courses/471342/assignments/2318227
+
+
+
+                                      _
+                             _ _  ___| |_ ___ ___
+                            | ' \/ _ \  _/ -_|_-<
+                            |_||_\___/\__\___/__/
+
+CSS Flexbox Layout
+==================
+
+Complete guide to flexbox
+    https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+
+    Container properties:
+        display: flex;
+        flex-direction: row | column;
+        flex-wrap: nowrap | wrap; /* whether to bring excess
+                                     items down to a new row */
+        /* recommended shorthand for the two aforementioned properties */
+        flex-flow: row nowrap;
+
+
+    Child properties:
+        order: <int>; /* override the source-code ordering of contained items */
+        flex-grow: <num>;   /* Whether this item can grow to take up extra space */
+        flex-shrink: <num>; /* Whether this item can shrink */
+        flex-basis: <size>;
+
+        /* recommended shorthand for the three aforementioned properties */
+        flex: <num>; /* specifies what proportion of of the available space should go to this item */
+        flex: 1;     /* Specifies that this item is 1 "unit" wide */
+        flex: 2;     /* Specifies that this item is twice as wide as the 1 "unit" item */
+
+        The flex property in its most basic usage defines what proportion of
+        the available space an item should use.
+
+
+Basic Document Structure in HTML5
+=================================
+
+Document structure article
+    https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure
+    (Refer to my index.html and style.css)
+    (now that we know some Flexbox, we can make sense of this code)
+
+    <header>
+    <nav>
+    <main>
+        <article>
+            <section>
+            <div>
+        <aside>
+    <footer>
+

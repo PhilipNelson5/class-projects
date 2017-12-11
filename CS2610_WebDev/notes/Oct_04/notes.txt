@@ -1,0 +1,45 @@
+CS 2610 - Wed Oct 4
+
+ ___         _            
+| _ \_____ _(_)_____ __ __
+|   / -_) V / / -_) V  V /
+|_|_\___|\_/|_\___|\_/\_/ 
+
+	Text Input Widgets
+
+		Single line text fields
+			E-mail address field
+			Password field
+			Search field
+
+
+ ___          _             
+| __|_ ___ __| |___ _ _ ___ 
+| _|\ \ / '_ \ / _ \ '_/ -_)
+|___/_\_\ .__/_\___/_| \___|
+        |_|                 
+
+Let's explore other input widgets:
+	https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/The_native_form_widgets
+
+	Text Input Widgets
+
+		Single line text fields
+			Phone number field  (not cool; 0/10, would not do again)
+			URL field (validates input is of the form
+				protocol://domain.tld
+
+	Drop-Down content (drop-down-content.html)
+
+		<select> element, which contains:
+			<option>s (lots of options!)
+			or <optgroup label="group name">
+				which itself contains <options>
+
+		Multiple Choice <select> Box
+			Add the 'multiple' attribute to a <select> element
+
+		Auto-completing text <input>
+			<input type="text" list="#some id">
+			Wrap your <option>s in a <datalist> with matching id (as opposed
+				to putting <optins> within a <select>)

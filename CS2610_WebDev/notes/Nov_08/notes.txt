@@ -1,0 +1,73 @@
+CS 2610 - Wed Nov 8
+
+ ___                    _ _   ____
+| __|_ ____ _ _ __    _| | |_|__ / Tuesday Nov 14th - Thursday Nov 16th
+| _|\ \ / _` | '  \  |_  .  _||_ \ (The funny schedule is to avoid
+|___/_\_\__,_|_|_|_| |_     _|___/  the Hackathon Nov 17th-18th)
+                       |_|_|       Sign up at the Testing Center today!
+
+Exam #3 will consist of material covered between Oct 16 through November 10
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+CRUD - Do you know what they do in that square lake that's about 3 1/2 miles
+west of here?
+
+
+https://en.wikipedia.org/wiki/Create,_read,_update_and_delete
+
+Let's map these words to concepts from HTTP and Django
+
+
+                Databases    Database         HTTP
+  ___            (SQL)       (Django)
+ / __|reate                                          !safe
+| (__           INSERT       .save()          POST   !idempotent
+ \___|
+
+
+ ___
+| _ \ead                     .filter()               safe
+|   /           SELECT       .get()           GET    idempotent
+|_|_\                        .all()
+
+
+ _   _
+| | | |pdate                                         !safe
+| |_| |         UPDATE       .save()          PUT    idempotent
+ \___/
+
+
+ ___
+|   \elete                                           !safe
+| |) |          DELETE       .delete()        DELETE idempotent
+|___/
+
+
+ ___        __     _
+/ __| __ _ / _|___| |_ _  _
+\__ \/ _` |  _/ -_)  _| || |
+|___/\__,_|_| \___|\__|\_, |
+                       |__/
+What does it mean for an operation to be "safe"?
+    If an operation does not modify resources on the server, it is safe.
+
+Which of these operations are safe?
+    Read
+ ___    _                     _
+|_ _|__| |___ _ __  _ __  ___| |_ ___ _ _  __ ___
+ | |/ _` / -_) '  \| '_ \/ _ \  _/ -_) ' \/ _/ -_)
+|___\__,_\___|_|_|_| .__/\___/\__\___|_||_\__\___|
+                   |_|
+What does it mean for an operation to be "idempotent"?
+    It doesn't change things to do it more than one time
+
+    a = 0;
+    for i in range(1000):
+        a = 1
+
+Which of these operations are idempotent?
+    Delete
+    Update
+    Read

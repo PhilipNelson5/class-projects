@@ -1,0 +1,138 @@
+CS 2610 - Mon Oct 9
+
+   _                                                _      
+  /_\  _ _  _ _  ___ _  _ _ _  __ ___ _ __  ___ _ _| |_ ___
+ / _ \| ' \| ' \/ _ \ || | ' \/ _/ -_) '  \/ -_) ' \  _(_-<
+/_/ \_\_||_|_||_\___/\_,_|_||_\__\___|_|_|_\___|_||_\__/__/
+                                                           
+
+Exam 2 will be at the beginning of next week, Mon Oct 16 - Weds 18
+
+Due to Fall Break, there is no class on Thu Oct 19th
+
+
+          ___     _               _         _   _            _       
+         |_ _|_ _| |_ _ _ ___  __| |_  _ __| |_(_)___ _ _   | |_ ___ 
+          | || ' \  _| '_/ _ \/ _` | || / _|  _| / _ \ ' \  |  _/ _ \
+         |___|_||_\__|_| \___/\__,_|\_,_\__|\__|_\___/_||_|  \__\___/
+                                                                     
+                          ___      _   _             
+                         | _ \_  _| |_| |_  ___ _ _  
+                         |  _/ || |  _| ' \/ _ \ ' \ 
+                         |_|  \_, |\__|_||_\___/_||_|
+                              |__/                   
+            https://usu.instructure.com/courses/474722
+
+
+Python was created in the mid 1990's, at the height of the Object-Oriented
+Programming craze. Its creator, Guido van Rossum is a Monty Python fan; hence
+the reference is to the movies, not the snake.
+
+Despite having an inperpreter, Python is a compiled language. However, due to
+the inobtrusive nature of the compiler programs written in Python are often
+called scripts. Python programs traditionally have a .py extension.
+
+Python has two really great things going for it:
+
+0) The REPL
+1) Simple, well-thought out and intuitive syntax
+
+Because of this, it's easy to learn and has become very, very popular.
+
+
+
+ _____ _          ___ ___ ___ _    
+|_   _| |_  ___  | _ \ __| _ \ |   
+  | | | ' \/ -_) |   / _||  _/ |__ 
+  |_| |_||_\___| |_|_\___|_| |____|
+                                   
+REPL stands for Read Eval Print Loop
+
+The REPL is an interactive environment where you can play with the language
+and see for yourself how stuff works.
+
+The idea of the REPL was born in LISP (as so many good ideas were), and all
+self-respecting "modern" languages feature this nowadays.
+
+You enter the REPL simply by running the python executable with no arguments.
+
+You are in the REPL when you see the >>> prompt.
+
+You may also launch the REPL after your script has run by running
+
+    $ python -i scriptname.py
+
+
+ ___ _            _                   _            
+/ __(_)_ __  _ __| |___   ____  _ _ _| |_ __ ___ __
+\__ \ | '  \| '_ \ / -_) (_-< || | ' \  _/ _` \ \ /
+|___/_|_|_|_| .__/_\___| /__/\_, |_||_\__\__,_/_\_\
+            |_|              |__/                  
+
+  __   
+ /  \  Numbers
+| () | 
+ \__/  For the most part, Python isn't too particular about types
+       of numbers. All of the familiar arithmetic operations from C++ are
+       available: +, -, *, /, %.
+       You can explicitly perform integer division with //
+       You may perform exponation with **. For example, to raise 2 to the 77th
+       power, type
+
+           2 ** 77
+       
+       As we saw in class, an 
+
+
+ _  
+/ |  Strings
+| |  
+|_|  Strings are delimited by double-quotes or single quotes:
+     
+     a_string = "this is a\tdouble-quoted string"
+     another_string = 'this is a\nsingle-quoted string'
+     tough_string = 'she said "my grammer suck\'s"'
+
+     The expected collection of character escape sequences from C are also
+     available in Python.
+
+     You may access individual characters in the string with the [] subscript
+     operator.
+
+     There is no char data type in Python; what *looks* like a char literal is
+     actually a string of length 1.
+
+
+ ___  
+|_  )  Lists
+ / /   
+/___|  Lists are created with square brackets [ ]
+       a_list = [1, 2, 3, 4, 5]
+
+       You can access the final element with the offset -1,
+       the penultimate element with -2, and so on.
+
+       You can treat lists like a stack data structure by using the .pop() and
+       .append() methods:
+
+       a_list.append(6)
+       print(a_list.pop())  # prints 6
+
+
+ ____ 
+|__ /  Loops
+ |_ \  
+|___/  for loops iterate over collections. Lists and strings are collection
+       types you've seen so far. for loops, and other constructs which
+       introduce scope *must* be indented. It is a syntax error to misalign
+       your indentation:
+
+       # print each character in tough_string on a line of its own
+       for s in tough_string:
+	       print s
+
+       # the same, but suppress the newline character that print wants to
+       # automagically put at the end of every line
+       for s in tough_string:
+	       print s,
+

@@ -1,0 +1,195 @@
+CS 2610 - Mon Nov 20
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+ ___ ___  ___   _     ___                          
+|_ _|   \| __| /_\   / __|_  _ _ ___ _____ _  _ ___
+ | || |) | _| / _ \  \__ \ || | '_\ V / -_) || (_-<
+|___|___/|___/_/ \_\ |___/\_,_|_|  \_/\___|\_, /__/
+                                           |__/    
+
+You've already gotten the emails, and some of you have taken the survey.
+Thank you!
+
+Please provide me with your *honest* feedback. It's the only way
+that I can improve and be a better instructor
+
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+HW8 tips:
+
+* The Django documentation is really top-notch. Be sure to read through it and
+  look for examples.
+
+* ListView documentation:
+    https://docs.djangoproject.com/en/1.11/ref/class-based-views/generic-display/#django.views.generic.list.ListView
+
+* Re-read the part of tutorial #4 which explains how the Generic View classes
+  work:
+    https://docs.djangoproject.com/en/1.11/intro/tutorial04/#use-generic-views-less-code-is-better
+
+    The big idea is that the Django people have written for you a lot of
+    the code that you were making yourself in the function-based views
+    that we did in the earlier part of the tutorial. By making your view
+    object inherit from ListView, you're letting the Django people make
+    some choices for you, including the name of the variable within your
+    template which contains the list of your blog posts.
+
+When creating the view which accepts a reader's comment and puts it into the
+database, ask yourself how our polls app handled accepting votes. Did the
+tutorial use a Generic View for that view, or did they write their own? What
+is the right tool for the job of posting a comment to a Blog?
+
+When you're posting data to the view which handles adding a comment to a blog
+post, look for the <form> data in request.POST, which is a Python dictionary.
+
+You might even write some code in there to print out the contents of that
+variable so you can see what it is you're sending:
+
+<!-- this 'blog:post_a_comment' is a namespaced URL
+    look for "app_name" in the tutorial -->
+<form action="{% url 'blog:post_a_comment' blog.id %}">
+
+# A skeleton of how you POST a comment to a blog
+def postComment(request, blog_id):
+
+    # Print out all of the form variables in the POST dictionary
+    for k, v in request.POST.items():
+       print k, "=>", v
+
+    # create a new Comment in the DB
+    c = Comment()
+    c.nickname = request.POST.nickname
+    c.comment = request.POST.comment
+    ...
+
+    b = Blog.objects.get(id=blog_id)
+    c.blog = b
+    c.save()
+    return HttpRedirect(...)
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+Javascript DOM manipulation - cloning nodes
+
+Last time I showed you how to modify an HTML document after it has been
+downloaded to the browser programmatically through Javascript.
+
+These functions all return a reference to an element in the DOM
+
+    [document | DOMelement].querySelector()
+    [document | DOMelement].querySelectorAll()
+    [document | DOMelement].createElement()
+
+This means that if we call DOMelement.appendChild() on the result of one of
+the above calls, that node is moved within the DOM structure. If we want to
+create a new node with the same contents we can use
+
+    DOMelement.cloneNode(true)
+
+Pass a true value as an argument to make a "deep copy" clone of the node.
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+HW9 - Worth your weight in gold
+    https://usu.instructure.com/courses/471342/assignments/2295286
+
+This assignment will require you to
+
+* Manipulate the DOM after a page has loaded
+* Consume data from a 3rd-party API
+* Create your own API which serves JSON data in Django
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+ ___  
+|_ _|ntro to JSON
+ | |  These days there are many web APIs out there which provide data
+|___| in the JSON format.
+
+
+JSON stands for "JavaScript Object Notation", and is a subset of the
+Javascript programming language. In particular, JSON embodies the syntax of
+"objects" in Javascript, which are equivalent to dictionaries in Python.
+
+Like Python's dictionaries, the following is true of objects in JS:
+
+    * are a mapping of key-value pairs
+    * each key must be unique
+    * keys may be any string
+    * the values can be any JS value, including functions and other objects
+    * literal values are delimited with curly braces
+
+The keys in JS objects are most often referred to as "properties". An object's
+properties can be referred two by two different syntaxes:
+
+OOP syntax:
+    console.log( obj.property )
+
+Array syntax:
+    console.log( obj['property'] )
+
+Creating a new object:
+    var o = { 'name': "Park Place", 'price': 350, 'rent': 35 };
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+  ___  
+ / __|onsuming data from a web API with XMLHttpRequest()
+| (__ 
+ \___|
+
+Here is the URL to Quandl's API that we'll base our app upon:
+
+
+https://www.quandl.com/api/v3/datasets/LBMA/GOLD.json?api_key=o8A-AZSvTssXC8RkJooE&start_date=2017-11-15&end_date=2017-11-20
+
+We can either visit this URL directly in the browser, or run it from the
+cmdline on C9. By running it on C9 we can filter it through a pretty-printer,
+which makes it easier for us to see the structure of the JSON result.
+
+Note the single quotes around the URL - the URL contains ampersands and
+question marks, which are special characters to the command-line. The
+single quotes make the shell ignore them.
+
+curl 'https://www.quandl.com/api/v3/datasets/LBMA/GOLD.json?api_key=o8A-AZSvTssXC8RkJooE&start_date=2017-11-15&end_date=2017-11-20' | json_pp
+
+
+Remember that curl is our handy-dandy command-line HTTP tool.
+json_pp is a program which pretty-prints JSON data.
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+// https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON
+
+// Erik's API key. Get your own :P
+var apiKey = 'o8A-AZSvTssXC8RkJooE';
+
+
+var start = "2017-11-15,
+    end =  "2017-11-20";
+var goldRUrl = "https://www.quandl.com/api/v3/datasets/LBMA/GOLD.json?api_key="
+    + apiKey + "&column_index=2&start_date=" + start + "&end_date=" + end;
+
+var priceOfGold;
+var goldR = new XMLHttpRequest();
+goldR.open('GET', goldRUrl);
+goldR.responseType = 'json';
+goldR.send();
+goldR.onload = function() {
+    var json = goldR.response;
+    console.log(json);
+    priceOfGold = json.dataset.data[0][1];
+}
+

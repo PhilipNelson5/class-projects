@@ -1,0 +1,73 @@
+CS 2610 - Mon Oct 2
+
+                                      _          
+                             _ _  ___| |_ ___ ___
+                            | ' \/ _ \  _/ -_|_-<
+                            |_||_\___/\__\___/__/
+
+
+ ___         _            
+| _ \_____ _(_)_____ __ __
+|   / -_) V / / -_) V  V /
+|_|_\___|\_/|_\___|\_/\_/ 
+
+	What is a protocol?
+
+	What is the difference between <form> and <input>?
+
+	What attributes are required on the <form> element?
+
+	What is a <label>?
+
+	What attributes go on the <label> element?
+
+	Where does your input go when you perform a GET?
+
+	How can you observe what your browser does when you GET pages?
+
+                          
+ ___                   _               _   
+| __|_ ___ __  ___ _ _(_)_ __  ___ _ _| |_ 
+| _|\ \ / '_ \/ -_) '_| | '  \/ -_) ' \  _|
+|___/_\_\ .__/\___|_| |_|_|_|_\___|_||_\__|
+        |_|                                
+Let's look at what the server sees when we send data from our browser
+
+Here's a little demo I put together in C9:
+	git clone https://bitbucket.org/erikfalor/netcat-and-html-form
+	cd netcat-and-html-form
+	./install.sh
+	./run-netcat-and-html-form.sh
+
+	* What happens when we change the method on the form?
+	* What happens when we send input with spaces?
+	* What about ', "?
+	* What happens when we send input with < and > symbols?
+	* What about ?, &?
+
+Regarding the <form> element, Matt tells me that method="GET" and
+method="POST" are the only two valid possiblities here.
+
+Also, a URL is restricted to 2kb. This is another reason why one might want to
+use POST; if you want to upload very much information to the server, you won't
+want to limit yourself to 2kb at a time.
+
+
+ ___          _             
+| __|_ ___ __| |___ _ _ ___ 
+| _|\ \ / '_ \ / _ \ '_/ -_)
+|___/_\_\ .__/_\___/_| \___|
+        |_|                 
+Let's explore other input widgets:
+
+	https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/The_native_form_widgets
+
+	Text Input Widgets
+
+		Single line text fields
+			E-mail address field
+			Password field
+			Search field
+
+			Phone number field
+			URL field

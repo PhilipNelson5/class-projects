@@ -1,0 +1,96 @@
+CS 2610 - Wed Nov 15
+
+Firefox Quantum is released
+
+https://www.mozilla.org/en-US/firefox/
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+SDL/USU Technical Lecture
+
+Spacecraft Robotic Servicing, presented by Paul Oppenheimer, Satellite
+Technologies Branch Head, in the Strategic and Military Space Division at SDL,
+will discuss advancements in spacecraft on-orbit servicing.
+
+Today at 4:30pm in ENGR 104
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+=======================
+Testing IPv6 compliance
+=======================
+    http://test-ipv6.com/
+
+
+==========================
+Transferring a domain name
+==========================
+    Give over the maintenance of the database info about your domain to another registrar
+
+    ICANN Policy document
+        https://www.icann.org/resources/pages/policy-2012-03-07-en
+
+    Preconditions:
+        Domain has been at the current registrar for at least 60 days
+            The domain has been registered in your name for more than 60 days,
+            and you haven't made another transfer within the past 60 days
+        WhoisGuard must be disabled - your real up-to-date info must be up
+        "Domain Lock" or "Registrar Lock" must be disabled
+        Get the Auth-Info Code from your current registrar
+            https://www.icann.org/resources/pages/auth-2013-05-03-en
+
+    Apply for a transfer at the receiving registrar:
+        Provide them with your domain's auth code
+        The new registrar will send an transfer approval email to your current
+            registrar as listed in the WHOIS data
+        If approved, your current registrar has 5 days to complete the transfer
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+============================
+Finish setting up my website
+============================
+    https://chi.westhost.com/
+    "I am in great pain, please help me"
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+  88888    db    Yb    dP    db    .dP"Y8  dP""b8 88""Yb 88 88""Yb 888888 
+     88   dPYb    Yb  dP    dPYb   `Ybo." dP   `" 88__dP 88 88__dP   88   
+ o.  88  dP__Yb    YbdP    dP__Yb  o.`Y8b Yb      88"Yb  88 88"""    88   
+ "bodP' dP""""Yb    YP    dP""""Yb 8bodP'  YboodP 88  Yb 88 88       88   
+                 88""Yb    db    .dP"Y8 88  dP""b8 .dP"Y8 
+                 88__dP   dPYb   `Ybo." 88 dP   `" `Ybo." 
+                 88""Yb  dP__Yb  o.`Y8b 88 Yb      o.`Y8b 
+                 88oodP dP""""Yb 8bodP' 88  YboodP 8bodP' 
+
+
+Two ways to play with JS
+------------------------
+
+    0) Developer tools, as usual (Ctrl+Shift+I)
+    1) Firefox Scratchpad (Shift+F4)
+
+    Exploring Mozilla Firefox's scratchpad
+        Interactively create and run JavaScript in a live editor
+
+    Features:
+        0. Code completion _Ctrl+Space_
+        1. Inline documentation _Ctrl+Shift+Space_
+        2. Run selected code _Ctrl+R_
+        3. Run selected code, displaying results in Object Inspector window _Ctrl+I_
+        4. Append results of evaluating selected code as a code comment _Ctrl+L_
+        5. Reformat (pretty print) source code _Ctrl+P_
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+https://learnxinyminutes.com/docs/javascript/

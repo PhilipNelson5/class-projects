@@ -1,0 +1,287 @@
+CS 2610 - Mon Dec 04
+
+ ___ ___ _    ___
+| __/ __| |  / __|
+| _|\__ \ |_| (__
+|_| |___/____\___|
+
+End-of-semester social
+Thursday 12/7 7pm
+ENGR 203
+
+There will be Pizza!!!
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+                     __      __   _        _
+                     \ \    / /__| |__    /_\  _ __ _ __
+                      \ \/\/ / -_) '_ \  / _ \| '_ \ '_ \
+                       \_/\_/\___|_.__/ /_/ \_\ .__/ .__/
+                                              |_|  |_|
+                 _          _    _ _          _
+                /_\  _ _ __| |_ (_) |_ ___ __| |_ _  _ _ _ ___
+               / _ \| '_/ _| ' \| |  _/ -_) _|  _| || | '_/ -_)
+              /_/ \_\_| \__|_||_|_|\__\___\__|\__|\_,_|_| \___|
+
+Chart the architecture of our "Weight in Gold" web application to ensure that
+we're all on the same page.
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+         __      __   _        ___              _
+         \ \    / /__| |__ ___|   \ _____ _____| |___ _ __  ___ _ _
+          \ \/\/ / -_) '_ \___| |) / -_) V / -_) / _ \ '_ \/ -_) '_|
+           \_/\_/\___|_.__/   |___/\___|\_/\___|_\___/ .__/\___|_|
+                                                     |_|
+                      ___              _
+                     | _ \___  __ _ __| |_ __  __ _ _ __
+                     |   / _ \/ _` / _` | '  \/ _` | '_ \
+                     |_|_\___/\__,_\__,_|_|_|_\__,_| .__/
+                                                   |_|
+
+             https://github.com/joshuajosh59/Webdeveloper-roadmap
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+ ____ ____  _   _
+/ ___/ ___|| | | |
+\___ \___ \| |_| |
+ ___) |__) |  _  |
+|____/____/|_| |_|
+
+The Secure Shell
+
+Controlling my fadein.tk web site means either:
+
+    0) Using the control panel webpage provided by my web hosting company.
+       This works so long as my web host has provided all of the tools that I
+       want to be able to use (not likely).
+
+    1) Running commands directly on the server. This puts me in complete
+       control. And so long as my server supports standard Unix/Linux command
+       shells and tools I won't have to learn a new control panel every time I
+       use a new web hosting provider. Or on the whims of their IT
+       department's upgrade schedule.
+
+This semester we've been using the Unix command-line because many web
+technologies were created in this environment. You are not likely to become a
+well-rounded web developer and escape contact.
+
+SSH offers a way for you to securely connect to and administer your systems.
+Let's take a look at why security is such an important consideration.
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+ ___               _            _        _ _      _   __
+| _ \___ _ __  ___| |_ ___   __| |_  ___| | |___ / | /  \
+|   / -_) '  \/ _ \  _/ -_) (_-< ' \/ -_) | (_-< | || () |
+|_|_\___|_|_|_\___/\__\___| /__/_||_\___|_|_/__/ |_(_)__/
+
+Telnet and rsh
+
+Wireshark (https://wireshark.org) is a tool that allows me to snoop on network
+traffic. I'll use it to illustrate the shortcomings of a non-encrypted remote
+shell program:
+
+[demonstrate telnet to localhost w/ wireshark]
+
+You can see everything the server prints out, including the prompts.  You also
+can see every keystroke I make, including my username and password. They're
+helpfully highlighted by the prompts!
+
+SSH prevents this by encrypting the entire conversation using secret keys
+which aren't exchanged directly over the wire, so an eavesdropper cannot
+decrypt our conversation.
+
+    (The details of how this secret key exchange happens is outside of the
+    scope of this class, but you should read up on it after finals week. It's
+    fascinating!
+    https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange)
+
+
+[demonstrate SSH to localhost w/ wireshark]
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+ ___      _                 _ _       _   _                _                        _
+| _ )_  _| |_  __ __ ____ _(_) |_    | |_| |_  ___ _ _ ___( )___  _ __  ___ _ _ ___| |
+| _ \ || |  _| \ V  V / _` | |  _|_  |  _| ' \/ -_) '_/ -_)/(_-< | '  \/ _ \ '_/ -_)_|
+|___/\_,_|\__|  \_/\_/\__,_|_|\__( )  \__|_||_\___|_| \___| /__/ |_|_|_\___/_| \___(_)
+                                 |/
+
+Above we discussed how we can use SSH to encrypt our FTP connections. SSH
+provides "tunnels", which are secure channels for data to flow beside the
+primary SSH connection which provides a shell.
+
+There are many uses for this - I'll illustrate but a few for you today.
+
+For purposes of today's lecture I'll use the hostname 'viking-dyn' as the SSH
+server. In all of my examples you may replace that with the hostname of *your*
+SSH server.
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+ _                 _                 _
+| |   ___  __ __ _| |  _ __  ___ _ _| |_
+| |__/ _ \/ _/ _` | | | '_ \/ _ \ '_|  _|
+|____\___/\__\__,_|_| | .__/\___/_|  \__|
+                      |_|
+  __                            _ _
+ / _|___ _ ___ __ ____ _ _ _ __| (_)_ _  __ _
+|  _/ _ \ '_\ V  V / _` | '_/ _` | | ' \/ _` |
+|_| \___/_|  \_/\_/\__,_|_| \__,_|_|_||_\__, |
+                                        |___/
+
+Connect to firewall-protected resources
+---------------------------------------
+
+I have a router in my home network. It has a webpage from which I administer
+it. To prevent hackers from taking over my home network, this admin webpage is
+only available from within my home network. What if I want to fix it while I'm
+here at school?
+
+If only I had a way to "bounce" a connection to it through my home network
+from my laptop here right now...
+
+I have a Raspberry Pi in my house which has an internet-exposed SSH server.
+
+I'll connect to my Raspberry Pi (named viking-dyn) and tell SSH "tunnel port
+9000 on my laptop through viking-dyn and connect it to port 80 on my router".
+
+    $ ssh viking-dyn -L9000:router.asus.com:80
+
+The syntax of the -L command breaks down like this:
+    -L local port ':' remote address ':' remote port
+
+So long as this connection is alive, I can go to http://localhost:9000 on my
+own laptop and it will go to my router by way of my Raspberry Pi.
+
+
+Cover your tracks
+-----------------
+
+I can make it appear to the internet that I'm accessing certain webpages from
+my house instead of USU campus. The 'remote address' in the -L argument can be
+*any* address reachable from my SSH server (in this case, my Raspberry Pi).
+
+http://checkip.dyndns.org
+
+    $ ssh viking-dyn -L9000:checkip.dyndns.org:80
+
+Theoretically, I could use this to tunnel to any website of my choosing, but
+in practicality, things like HTTPS and certificates make this brittle.
+Moreover, nearly all webpages include resources from lots of different
+addresses, and this only lets me tunnel one at a time.
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+ ___                       _                    _
+|   \ _  _ _ _  __ _ _ __ (_)__   _ __  ___ _ _| |_
+| |) | || | ' \/ _` | '  \| / _| | '_ \/ _ \ '_|  _|
+|___/ \_, |_||_\__,_|_|_|_|_\__| | .__/\___/_|  \__|
+      |__/                       |_|
+  __                            _ _
+ / _|___ _ ___ __ ____ _ _ _ __| (_)_ _  __ _
+|  _/ _ \ '_\ V  V / _` | '_/ _` | | ' \/ _` |
+|_| \___/_|  \_/\_/\__,_|_| \__,_|_|_||_\__, |
+                                        |___/
+SOCKS proxy == Poor man's VPN
+
+It would be nice if I could tell my browser to bounce *all* of its requests
+through the SSH server running on my Raspberry Pi. Suppose I work at an office
+with a webfilter which prevents me from visiting Stack Overflow or other
+websites because "social media". Suppose they use a Russian virus scanner
+which installs its own certificates so they can decrypt my traffic as it moves
+through their router.
+
+Or, suppose that you're at McRestaraunt using McFree WiFi, which you don't
+trust.  For one thing, it's a dirty corporation which doesn't regard its
+customers well enough to feed them real food. For another thing, there is a
+dude sitting across from you with what appears to be a WiFi Pineapple sticking
+out of his laptop.
+
+Never fear, OpenSSH has you covered
+
+    $ ssh viking-dyn -D12345
+
+Now a web browser on your laptop can connect to port 12345 on localhost and
+the connection will securely go to my Raspberry Pi and all of my web traffic
+will appear to originate from my house. All of it.
+
+
+-=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+
+
+ ___               _                       _
+| _ \___ _ __  ___| |_ ___   _ __  ___ _ _| |_
+|   / -_) '  \/ _ \  _/ -_) | '_ \/ _ \ '_|  _|
+|_|_\___|_|_|_\___/\__\___| | .__/\___/_|  \__|
+                            |_|
+  __                            _ _
+ / _|___ _ ___ __ ____ _ _ _ __| (_)_ _  __ _
+|  _/ _ \ '_\ V  V / _` | '_/ _` | | ' \/ _` |
+|_| \___/_|  \_/\_/\__,_|_| \__,_|_|_||_\__, |
+                                        |___/
+
+Right now, I need somebody to visit
+
+    https://cs2610private-erikfalor.c9users.io/gold/
+
+How does that look? Impressive?
+
+Suppose that I'm a freelance webdev hacker working on my client's cool new
+webapp on my private C9 workspace. I don't want to give my client full access
+to my private C9 workspace because I have other stuff on there that's not for
+them.
+
+The client demands to know that I'm making progress. I haven't yet gotten the
+kinks all worked out on the testing server. The app works *great* on C9, but
+it isn't exactly impressive (or practical) bring my laptop to their office to
+show them how awesome it is in C9. Also, they're on the other side of the
+country.
+
+Remember that my Raspberry Pi *is* on the internet. What if I could ask my
+client to connect to my Raspberry Pi, and have that connection come directly
+into my private C9 workspace. Now the client can see what I'm working on right
+now, without having to look over my shoulder. My private C9 workspace is only
+online so long as I keep that SSH connection open, so I can cut it off at
+will.
+
+For this to work, I must edit my Raspbery Pi's SSH server configuration file
+and enable the setting
+
+    GatewayPorts yes
+
+From the machine running Django I run the command
+
+    $ ssh viking-dyn -R8080:localhost:8080
+
+
+The syntax of the -R command breaks down like this:
+    -R remote port ':' local address ':' local port
+
+The 1st number is the port which you may connect over the internet to my
+Raspberry Pi.
+
+The "local address" in the middle is the hostname of the machine hosting the
+Django server from the point of view of the SSH command. Because the SSH
+command is running on the same machine as Django, the correct hostname is
+"localhost" which means "this very same machine".
+
+The 3rd number is the port on C9 which my Django server is listening to
+connections on.
+
+Now will one of you navigate to http://unnovative.net:8080/gold
+
+If you don't have a Raspberry Pi out on the internet, you can use a 3rd party
+service such as https://ngrok.com/ to do this.
