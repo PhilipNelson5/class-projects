@@ -30,6 +30,7 @@
 │   ├── 6-UnionFind
 │   └── 7-GraphCycles
 ├── CS2610_WebDev
+│   ├── 1-GitStaticWebPage
 │   └── notes
 ├── CS3100_OperatingSystems
 │   ├── 1-MandelbrotSerial
@@ -45,6 +46,12 @@
 │   ├── StackAttack
 │   └── StringEncodeAndCompare
 ├── CS4700_ProgrammingLanguages
-│   └── Notes
+│   ├── 1-Hypotrochoids
+│   ├── 2-LsystemFractals
+│   ├── 3-PrologAdventure
+│   ├── 4-HaskellRedBlackTree
+│   ├── 5-ExpectedMonad
+│   ├── 6-JuliaJulia
+│   └── notes
 └── ECE5930_NeuralNetworks
     └── 1-perceptron

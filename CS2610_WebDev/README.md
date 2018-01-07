@@ -1,3 +1,31 @@
 ~~~~
 .
+├── 1-GitStaticWebPage
 └── notes
+    ├── Dec_04
+    ├── Dec_06
+    ├── Dec_08
+    ├── Nov_01
+    ├── Nov_06
+    ├── Nov_08
+    ├── Nov_10
+    ├── Nov_13
+    ├── Nov_15
+    ├── Nov_17
+    ├── Nov_20
+    ├── Nov_27
+    ├── Nov_29
+    ├── Oct_02
+    ├── Oct_04
+    ├── Oct_06
+    ├── Oct_09
+    ├── Oct_11
+    ├── Oct_13
+    ├── Oct_16
+    ├── Oct_18
+    ├── Oct_23
+    ├── Oct_25
+    ├── Oct_27
+    ├── Oct_30
+    ├── Sep_27
+    └── Sep_29
