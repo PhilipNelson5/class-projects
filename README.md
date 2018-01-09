@@ -40,6 +40,7 @@
 │   ├── 5-TheConchShell
 │   ├── 6-TheConchShellPiping
 │   └── 7-Scheduling
+├── CS3450_SoftwareEngineering
 ├── CS3810_ComputerArchitecture
 │   ├── BombLab
 │   ├── BubbleSort
@@ -53,5 +54,8 @@
 │   ├── 5-ExpectedMonad
 │   ├── 6-JuliaJulia
 │   └── notes
-└── ECE5930_NeuralNetworks
-    └── 1-perceptron
+├── CS5050_AdvanvedAlgorithms
+├── CS5410_GameDev
+├── ECE5930_NeuralNetworks
+│   └── 1-perceptron
+└── MATH5620_NumericalSolutionsOfDifferentialEquations
