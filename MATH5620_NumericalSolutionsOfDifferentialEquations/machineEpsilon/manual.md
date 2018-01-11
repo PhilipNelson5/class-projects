@@ -15,9 +15,9 @@ $ ./maceps.out
 
 This will compile and run the driver program.
 
-**Input:** `maceps<T>( )` requires a template argument _T_ with the type of machine epsilon you want _(float, double, long double, etc...)_. Otherwise, maceps takes no input.
+**Input:** `maceps<T>( )` requires a template argument _T_ with the type of machine epsilon you want _(float, double, long double, etc...)_. Otherwise, `maceps` takes no input.
 
-**Output:** maceps returns an `eps` struct with members `int prec` which holds the precision and `T maceps` which holds the machine epsilon for the given type
+**Output:** maceps returns an `eps` struct with members `int prec` which holds the precision and `T maceps` which holds the machine epsilon for the specified type.
 
 **Code:**
 ``` C++
