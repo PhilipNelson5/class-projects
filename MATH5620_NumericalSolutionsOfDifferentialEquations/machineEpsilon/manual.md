@@ -15,7 +15,7 @@ $ ./maceps.out
 
 This will compile and run the driver program.
 
-**Input:** maceps&lt;T&gt; requires a template argument _T_ with the type of machine epsilon you want _(float, double, long double, etc...)_
+**Input:** `maceps<T>( )` requires a template argument _T_ with the type of machine epsilon you want _(float, double, long double, etc...)_. Otherwise, maceps takes no input.
 
 **Output:** maceps returns an `eps` struct with members `int prec` which holds the precision and `T maceps` which holds the machine epsilon for the given type
 
@@ -44,8 +44,8 @@ int main()
 {
   auto doubleeps = maceps<double>();
   std::cout << "double\n";
-  std::cout << "precision:\t" << doubleeps.prec << std::endl;
-  std::cout << "maceps:\t\t" << doubleeps.maceps << std::endl;
+  std::cout << "precision:\t"    << doubleeps.prec << std::endl;
+  std::cout << "maceps:\t\t"     << doubleeps.maceps << std::endl;
   std::cout << "std::numeric:\t" << std::numeric_limits<double>::epsilon() << std::endl << std::endl;
 }
 ```
