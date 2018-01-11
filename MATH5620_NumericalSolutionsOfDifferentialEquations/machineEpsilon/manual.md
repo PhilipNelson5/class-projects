@@ -1,5 +1,6 @@
+{% raw %}
 <a style=aligh:right; href="https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/SoftwareManual"> Table of Contents </a>
-
+{% endraw %}
 # Machine Epsilon
 
 **Routine Name:** maceps
