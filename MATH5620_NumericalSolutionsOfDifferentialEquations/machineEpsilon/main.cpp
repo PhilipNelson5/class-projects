@@ -28,4 +28,5 @@ int main()
   std::cout << "maceps:\t\t" << longdoubleeps.maceps << std::endl;
   std::cout << "std::numeric:\t" << std::numeric_limits<long double>::epsilon() << std::endl << std::endl;
 
+  return EXIT_SUCCESS;
 }
