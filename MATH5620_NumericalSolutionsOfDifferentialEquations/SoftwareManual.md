@@ -1,4 +1,4 @@
 # Table of Contents
 
 ### Machine Epsilon
-- [macheps](./machineEpsilon/manual)
+- [macheps](https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/machineEpsilon/manual)
