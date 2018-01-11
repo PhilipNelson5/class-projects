@@ -47,7 +47,7 @@ eps<T> maceps()
 ```
 
 ## Example
-``` C++
+{% highlight c++ %}
 int main()
 {
   auto doubleeps = maceps<double>();
@@ -56,7 +56,7 @@ int main()
   std::cout << "maceps:\t\t"     << doubleeps.maceps << std::endl;
   std::cout << "std::numeric:\t" << std::numeric_limits<double>::epsilon() << std::endl << std::endl;
 }
-```
+{% endhighlight %}
 
 ## Result
 ```
