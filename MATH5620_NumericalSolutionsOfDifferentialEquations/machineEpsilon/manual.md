@@ -8,12 +8,14 @@
 
 **Description:** maceps returns the machine epsilon and precision of any primitive type. A make file is included with a driver program.
 
-`$ make`
-`$ ./maceps.out`
+```
+$ make
+$ ./maceps.out
+```
 
 This will compile and run the driver program.
 
-**Input:** maceps&gt;T&lt; requires a template argument _T_ with the type of machine epsilon you want _(float, double, long double, etc...)_
+**Input:** maceps&lt;T&gt; requires a template argument _T_ with the type of machine epsilon you want _(float, double, long double, etc...)_
 
 **Output:** maceps returns an `eps` struct with members `int prec` which holds the precision and `T maceps` which holds the machine epsilon for the given type
 
@@ -49,11 +51,11 @@ int main()
 ```
 
 **Output:**
-``` C++
+```
 double
 precision:	53
 maceps:		2.22045e-16
 std::numeric:	2.22045e-16
 ```
 
-**Last Modification date:** 01 January 2018
+**Last Modification date:** 11 January 2018
