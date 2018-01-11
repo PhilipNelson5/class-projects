@@ -1,4 +1,4 @@
-<a href="https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/SoftwareManual"> <p align="right"> Table of Contents </p> </a>
+<a style=aligh:right; href="https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/SoftwareManual"> Table of Contents </a>
 
 # Machine Epsilon
 
