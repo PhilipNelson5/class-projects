@@ -28,7 +28,7 @@ This will compile and run the driver program.
 maceps returns an `eps` struct with members `int prec` which holds the precision and `T maceps` which holds the machine epsilon for the specified type.
 
 ## Code
-``` C++
+{% highlight c++ %}
 template <typename T>
 eps<T> maceps()
 {
@@ -44,7 +44,7 @@ eps<T> maceps()
 
   return eps(prec, e);
 }
-```
+{% endhighlight %}
 
 ## Example
 {% highlight c++ %}
