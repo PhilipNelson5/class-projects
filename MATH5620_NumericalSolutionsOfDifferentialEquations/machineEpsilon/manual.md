@@ -19,7 +19,7 @@ This will compile and run the driver program.
 
 ## Input
 
-`maceps<T>( )` requires a template argument _T_ with the type of machine epsilon you want _(float, double, long double, etc...)_. Otherwise, `maceps` takes no input.
+`maceps<T>( )` requires a template argument _T_ with the type of machine epsilon you want _( float, double, long double, etc... )_. Otherwise, `maceps` takes no input.
 
 ## Output
 
