@@ -6,7 +6,7 @@
 
 **Language:** C++
 
-#### Description:
+## Description:
 
 maceps returns the machine epsilon and precision of any primitive type. A make file is included with a driver program.
 
@@ -17,7 +17,7 @@ $ ./maceps.out
 
 This will compile and run the driver program.
 
-#### Input:
+### Input:
 
 `maceps<T>( )` requires a template argument _T_ with the type of machine epsilon you want _(float, double, long double, etc...)_. Otherwise, `maceps` takes no input.
 
