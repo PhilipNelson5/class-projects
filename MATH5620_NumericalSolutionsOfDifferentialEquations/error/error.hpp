@@ -1,12 +1,14 @@
 #include <cmath>
 #include <iostream>
 
-double absoluteError(double approx, double value)
+template <typename T>
+inline T absoluteError(const T approx, const T value)
 {
   return std::abs(value - approx);
 }
 
-double relativeError(double approx, double value)
+template <typename T>
+inline T relativeError(const T approx, const T value)
 {
   return std::abs(absoluteError(value, approx) / value);
 }
