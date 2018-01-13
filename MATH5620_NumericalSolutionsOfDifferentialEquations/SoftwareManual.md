@@ -1,3 +1,4 @@
+<a href="https://philipnelson5.github.io">Home</a>
 # Table of Contents
 
 ### Machine Epsilon
