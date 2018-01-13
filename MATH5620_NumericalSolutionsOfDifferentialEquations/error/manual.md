@@ -1,7 +1,7 @@
 <a href="https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/SoftwareManual"> Table of Contents </a>
 # Error
 
-**Routine Name:** [absoluteError](#Input-absoluteError) and [relativeError](#Input-relativeError)
+**Routine Name:** [absoluteError](#input-absoluteerror) and [relativeError](#input-relativeerror)
 
 **Author:** Philip Nelson
 
