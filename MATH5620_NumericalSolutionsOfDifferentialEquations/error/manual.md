@@ -60,7 +60,7 @@ Real Value: 3.14159
 
 Absolute: 0.05841
 ```
-
+---
 ## Input relativeError
 
 `relativeError<T>(T approx, T value)` requires a `T approx` which is the approximated value and a `T value` which is the real value. `approx` and `value` must be the same type. relative error \(= \abs{\frac{absolute error}{value}}\)
