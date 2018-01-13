@@ -6,7 +6,7 @@ DEBUG_FLAGS = -Og -g3 -Wall -Wextra -Werror
 RELEASE_FLAGS = -O3
 
 release: $(OBJS)
-	$(CC) $(RELEASE_FLAGS) $(FLAGS) $(OBJS) -o error.out
+	$(CC) $(RELEASE_FLAGS) $(FLAGS) $(OBJS) -o maceps.out
 
 debug: $(OBJS)
 	$(CC) $(DEBUG_FLAGS) $(FLAGS) $(OBJS) -o debug.out
