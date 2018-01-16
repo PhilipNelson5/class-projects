@@ -24,7 +24,9 @@ This will compile and run the driver program.
 
 ## Input absoluteError
 
-`absoluteError<T>(T approx, T value)` requires a `T approx` which is the approximated value and a `T value` which is the real value. `approx` and `value` must be the same type. absolute error \(= \abs{approx - value}\)
+`absoluteError<T>(T approx, T value)` requires a `T approx` which is the approximated value and a `T value` which is the real value. `approx` and `value` must be the same type. absolute error \\(= \abs{approx - value}\\)
+
+\\[\alpha\\]
 
 ## Output
 
