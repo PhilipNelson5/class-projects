@@ -1,1 +1,13 @@
+title: Numerical Solutions (Math 5620)
+email: PhilipNelson5
+description: >- # this means to ignore newlines until "baseurl:"
+  Philip's Software Projects
+url: "http://philipnelson5.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+github_username: philipnelson5
+
+# Build settings
+markdown: kramdown
+mathjax: true
 theme: jekyll-theme-modernist
+plugins:
+  - jekyll-feed
