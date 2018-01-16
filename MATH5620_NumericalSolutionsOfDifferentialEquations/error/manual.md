@@ -1,6 +1,3 @@
----
-mathjax: true
----
 <a href="https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/SoftwareManual"> Table of Contents </a>
 # Error
 
@@ -28,10 +25,6 @@ This will compile and run the driver program.
 ## Input absoluteError
 
 `absoluteError<T>(T approx, T value)` requires a `T approx` which is the approximated value and a `T value` which is the real value. `approx` and `value` must be the same type. absolute error \(= \abs{approx - value}\)
-
-\[\alpha \beta \gamma\]
-
-\[\frac{\alpha}{\beta} \gamma\]
 
 ## Output
 
