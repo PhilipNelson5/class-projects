@@ -30,7 +30,7 @@ Logistic returns a double with the solution to the logistic differential equatio
 {% highlight c++ %}
 inline double logistic(double a, double b, double t, double p0)
 {
-  return a / (((a / p0) - b) * exp(-a * t) + b);
+  return a / (((a-p0*b)/p0) * exp(-a * t) + b);
 }
 {% endhighlight %}
 
@@ -59,4 +59,4 @@ P0:	10
 result:	0.5
 ```
 
-**Last Modification date:** 15 January 2018
+**Last Modification date:** 17 January 2018
