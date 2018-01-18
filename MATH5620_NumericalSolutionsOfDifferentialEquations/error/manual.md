@@ -1,6 +1,6 @@
 ---
 math: true
-permalink: /error
+permalink: /manual
 layout: default
 ---
 
