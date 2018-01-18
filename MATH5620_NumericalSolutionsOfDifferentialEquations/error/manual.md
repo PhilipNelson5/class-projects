@@ -1,6 +1,5 @@
 ---
 math: true
-permalink: /manual
 layout: default
 ---
 
