@@ -2,6 +2,9 @@
 math: true
 layout: default
 ---
+
+{% include mathjax.html %}
+
 <a href="https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/SoftwareManual"> Table of Contents </a>
 # Error
 
@@ -31,6 +34,8 @@ This will compile and run the driver program.
 `absoluteError<T>(T approx, T value)` requires a `T approx` which is the approximated value and a `T value` which is the real value. `approx` and `value` must be the same type. absolute error \\(= \abs{approx - value}\\)
 
 \\[ \epsilon := \Big \lvert v - v_{\text{approx}} \Big \rvert \\]
+
+\\[ \eta := \frac{\epsilon}{\lvert v \rvert} \\]
 
 ## Output
 
