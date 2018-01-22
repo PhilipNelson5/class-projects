@@ -3,6 +3,8 @@ math: true
 layout: default
 ---
 
+{% include mathjax.html %}
+
 <a href="https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/SoftwareManual"> Table of Contents </a>
 # Error
 
