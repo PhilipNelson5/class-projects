@@ -31,7 +31,7 @@ This will compile and run the driver program.
 
 ## Input absoluteError
 
-`absoluteError<T>(T approx, T value)` requires a `T approx` which is the approximated value and a `T value` which is the real value. `approx` and `value` must be the same type. absolute error \\(= \abs{approx - value}\\)
+`absoluteError<T>(T approx, T value)` requires a `T approx` which is the approximated value and a `T value` which is the real value. `approx` and `value` must be the same type. absolute error \\( = \abs {approx - value}\\)
 
 \\[ \epsilon := \Big \lvert v - v_{\text{approx}} \Big \rvert \\]
 
@@ -57,7 +57,7 @@ int main()
   double approx = 3.2;
   double value = 3.14159;
 
-  std::cout << "Approximate: " << approx 
+  std::cout << "Approximate: " << approx
             << "\nReal Value: " << value << std::endl
             << std::endl;
   std::cout << "Absolute: " << absoluteError(approx, value) << std::endl;
@@ -96,7 +96,7 @@ int main()
   double approx = 3.2;
   double value = 3.14159;
 
-  std::cout << "Approximate: " << approx 
+  std::cout << "Approximate: " << approx
             << "\nReal Value: " << value << std::endl
             << std::endl;
   std::cout << "Relative: " << relativeError(approx, value) << std::endl;
