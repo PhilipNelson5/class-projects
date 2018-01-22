@@ -4,6 +4,7 @@ layout: default
 ---
 
 {% include mathjax.html %}
+{% include style.css %}
 
 <a href="https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/SoftwareManual"> Table of Contents </a>
 # Error
