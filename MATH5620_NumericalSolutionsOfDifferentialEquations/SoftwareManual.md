@@ -2,8 +2,10 @@
 # Table of Contents
 
 ### Basic Routines
-- [macheps](https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/machineEpsilon/manual)
+- [Machine Epsilon](https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/machineEpsilon/manual)
 
-- [absolute and relative error](https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/error/manual)
+- [Absolute and Relative Error](https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/error/manual)
 
-- [logistic differential equation](https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/logistic/manual)
+- [Logistic Differential Equation](https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/logistic/manual)
+
+- [Second Order Linear DE with Constant Coefficents](https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/secondOrderLinear/manual)
