@@ -33,7 +33,7 @@ This will compile and run the driver program.
 
 `absoluteError<T>(T approx, T value)` requires:
 * `T approx` - the approximated value
-* `T value` the real value
+* `T value` - the real value
 
 absolute error \\(= \epsilon := \Big \lvert v - v_{\text{approx}} \Big \rvert \\)
 
