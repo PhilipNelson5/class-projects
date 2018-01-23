@@ -29,7 +29,7 @@ This will compile and run the driver program.
 
 ## Input
 
-`logistic( double a, double b, double t, double p0 )` requires:
+`logistic(A a, B b, T t, N p0)` requires:
 * `a` - alpha
 * `b` - beta
 * `t` - time
