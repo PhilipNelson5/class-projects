@@ -22,20 +22,20 @@ solcc computes the solution to the below **s**econd-**o**rder, **l**inear, **c**
 
 ```
 $ make
-$ ./error.out
+$ ./solcc.out
 ```
 
 This will compile and run the driver program.
 
 ## Input absoluteError
 
-`std::optional<std::complex<N>> solcc(N y0, N v0, A a, B b, C c, T t)`  requires:
-* N y0 - initial y
-* N v0 - initial v
-* A a - coefficent on y\`\`
-* B b - coefficent on y\`\`
-* C c - coefficent on y\`\`
-* T t - time
+nput relativeError`std::optional<std::complex<N>> solcc(N y0, N v0, A a, B b, C c, T t)`  requires:
+* `N y0` - initial condition \\(y(0)\\)
+* `N v0` - initial condition \\(y^{\prime}(0)\\)
+* `A a` - coefficent \\(a\\) on y''
+* `B b` - coefficent \\(b\\) on y'
+* `C c` - coefficent \\(c\\) on y
+* `T t` - time
 
 ## Output
 
