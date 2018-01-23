@@ -1,5 +1,5 @@
 ---
-title: Logistic
+title: Second Order Linear
 math: true
 layout: default
 ---
