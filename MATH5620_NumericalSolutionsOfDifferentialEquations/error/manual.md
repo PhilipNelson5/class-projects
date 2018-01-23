@@ -1,4 +1,5 @@
 ---
+title: Error
 math: true
 layout: default
 ---

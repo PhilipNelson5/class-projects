@@ -1,4 +1,5 @@
 ---
+title: Logistic
 math: true
 layout: default
 ---
