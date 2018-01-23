@@ -33,10 +33,10 @@ This will compile and run the driver program.
 `T solcc(T y0, T v0, T a, T b, T c, T t)`  requires:
 * `T y0` - initial condition \\(y(0)\\)
 * `T v0` - initial condition \\(y^{\prime}(0)\\)
-* `T a` - coefficent \\(a\\) on \\(y^{\prime\prime}\\)
-* `T b` - coefficent \\(b\\) on \\(y^{\prime}\\)
-* `T c` - coefficent \\(c\\) on \\(y\\)
-* `T t` - time
+* `T  a` - coefficent \\(a\\) on \\(y^{\prime\prime}\\)
+* `T  b` - coefficent \\(b\\) on \\(y^{\prime}\\)
+* `T  c` - coefficent \\(c\\) on \\(y\\)
+* `T  t` - time
 
 **Note:** all parameters must be the same type.
 
