@@ -16,7 +16,7 @@ layout: default
 
 ## Description
 
-solcc computes the solution to the **s**econd-**o**rder **l**inear **c**onstant-**c**oefficient equation below at time _t_.
+`solcc` computes the solution to the **s**econd-**o**rder **l**inear **c**onstant-**c**oefficient equation below at time \\(t\\).
 
 \\[ ay^{\prime \prime} + by^{\prime} + cy = f(t) \\]
 

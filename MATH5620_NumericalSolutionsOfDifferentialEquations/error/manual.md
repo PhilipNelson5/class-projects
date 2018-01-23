@@ -8,7 +8,7 @@ layout: default
 <a href="https://philipnelson5.github.io/class-projects/MATH5620_NumericalSolutionsOfDifferentialEquations/SoftwareManual"> Table of Contents </a>
 # Error
 
-**Routine Name:** [absoluteError](#input-absoluteerror) and [relativeError](#input-relativeerror)
+**Routine Names:** [absoluteError](#input-absoluteerror) and [relativeError](#input-relativeerror)
 
 **Author:** Philip Nelson
 
@@ -16,9 +16,9 @@ layout: default
 
 ## Description
 
-absoluteError calculates the absolute error given an approximation and a real value.
+`absoluteError` calculates the _absolute_ error given an approximation and a real value.
 
-relativeError calculates the relative error given an approximation and a real value.
+`relativeError` calculates the _relative_ error given an approximation and a real value.
 
 A driver program and make file are provided.
 
@@ -31,11 +31,14 @@ This will compile and run the driver program.
 
 ## Input absoluteError
 
-`absoluteError<T>(T approx, T value)` requires a `T approx` which is the approximated value and a `T value` which is the real value. `approx` and `value` must be the same type. absolute error \\( = \abs {approx - value}\\)
+`absoluteError<T>(T approx, T value)` requires:
+* `T approx` - the approximated value
+* `T value` the real value
 
-\\[ \epsilon := \Big \lvert v - v_{\text{approx}} \Big \rvert \\]
+absolute error \\(= \epsilon := \Big \lvert v - v_{\text{approx}} \Big \rvert \\)
 
-\\[ \eta := \frac{\epsilon}{\lvert v \rvert} \\]
+
+**Note:** `approx` and `value` must be the same type.
 
 ## Output
 
@@ -65,16 +68,24 @@ int main()
 {% endhighlight %}
 
 ## Result
+
 ```
 Approximate: 3.2
 Real Value: 3.14159
 
 Absolute: 0.05841
 ```
+
 ---
 ## Input relativeError
 
-`relativeError<T>(T approx, T value)` requires a `T approx` which is the approximated value and a `T value` which is the real value. `approx` and `value` must be the same type. relative error \(= \abs{\frac{absolute error}{value}}\)
+`relativeError<T>(T approx, T value)` requires:
+* `T approx` - the approximated value
+* `T value` the real value
+
+ elative error \\(= \eta := \frac{\epsilon}{\lvert v \rvert} \\)
+
+**Note:** `approx` and `value` must be the same type.
 
 ## Output
 
