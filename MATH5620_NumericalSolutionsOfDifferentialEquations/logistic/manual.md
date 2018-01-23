@@ -11,6 +11,8 @@
 
 Logistic returns the solution to the logistic differential equation given alpha, beta, time and an initial P. A make file is included with a driver program.
 
+\\[ \frac{dP}{dt} = \alphaP + \betaP^2 \\]
+
 ```
 $ make
 $ ./logistic.out
@@ -20,15 +22,20 @@ This will compile and run the driver program.
 
 ## Input
 
-`logistic( double a, double b, double t, double p0 )` requires alpha `a`, beta `b`, time `t`, and the initial value for P `p0`.
+`logistic( double a, double b, double t, double p0 )` requires:
+* `a` - alpha
+* `b` - beta
+* `t` - time
+* `p0` - initial condition \\(P(0)\\)
 
 ## Output
 
-Logistic returns a double with the solution to the logistic differential equation.
+Logistic returns an `N`, which is the type of the initial parameter, with the solution to the logistic differential equation.
 
 ## Code
 {% highlight c++ %}
-inline double logistic(double a, double b, double t, double p0)
+template <typename A, typename B, typename T, typename N>
+inline N logistic(A a, B b, T t, N p0)
 {
   return a / (((a-p0*b)/p0) * exp(-a * t) + b);
 }
