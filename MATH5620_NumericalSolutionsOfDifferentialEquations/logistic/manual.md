@@ -16,7 +16,7 @@ layout: default
 
 ## Description
 
-Logistic returns the solution to the logistic differential equation given alpha, beta, time and an initial P. A make file is included with a driver program.
+`logistic` returns the solution to the logistic differential equation given alpha, beta, time and an initial P. A make file is included with a driver program.
 
 \\[ \frac{dP}{dt} = \alpha P + \beta P^2 \\]
 
