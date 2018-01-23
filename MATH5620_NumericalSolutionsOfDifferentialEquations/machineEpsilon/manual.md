@@ -9,7 +9,7 @@
 
 ## Description
 
-maceps returns the machine epsilon and precision of any primitive type. A make file is included with a driver program.
+`maceps` returns the machine epsilon and precision of any primitive type. A make file is included with a driver program that compares `maceps` to `std::numeric_limits<T>::epsilon()`.
 
 ```
 $ make
