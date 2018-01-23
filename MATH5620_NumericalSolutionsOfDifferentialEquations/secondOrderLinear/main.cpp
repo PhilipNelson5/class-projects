@@ -3,6 +3,6 @@
 
 int main()
 {
-  auto result = solcc(1.0, 0.0, 2.0, 3.0, -2.0, 4.0).value();
-  std::cout << result << std::endl;
+  auto solution = solcc(2.0, 0.0, 3.0, 5.0, -1.0, 3.0).value();
+  std::cout << solution << std::endl;
 }

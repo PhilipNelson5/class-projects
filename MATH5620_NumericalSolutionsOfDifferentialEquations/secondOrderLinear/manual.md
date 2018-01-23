@@ -16,7 +16,7 @@ layout: default
 
 ## Description
 
-solcc computes the solution to the below **s**econd-**o**rder, **l**inear, **c**onstant-**c**oefficient equation at a time _t_.
+solcc computes the solution to the **s**econd-**o**rder **l**inear **c**onstant-**c**oefficient equation below at time _t_.
 
 \\[ ay^{\prime \prime} + by^{\prime} + cy = f(t) \\]
 
@@ -32,9 +32,9 @@ This will compile and run the driver program.
 nput relativeError`std::optional<std::complex<N>> solcc(N y0, N v0, A a, B b, C c, T t)`  requires:
 * `N y0` - initial condition \\(y(0)\\)
 * `N v0` - initial condition \\(y^{\prime}(0)\\)
-* `A a` - coefficent \\(a\\) on y''
-* `B b` - coefficent \\(b\\) on y'
-* `C c` - coefficent \\(c\\) on y
+* `A a` - coefficent \\(a\\) on \\(y^{\prime\prime}\\)
+* `B b` - coefficent \\(b\\) on \\(y^{\prime}\\)
+* `C c` - coefficent \\(c\\) on \\(y\\)
 * `T t` - time
 
 ## Output
@@ -67,13 +67,13 @@ std::optional<std::complex<N>> solcc(N y0, N v0, A a, B b, C c, T t)
 {% highlight c++ %}
 int main()
 {
-  auto result = solcc(1.0, 0.0, 2.0, 3.0, -2.0, 4.0).value();
-  std::cout << result << std::endl;
+  auto solution = solcc(2.0, 0.0, 3.0, 5.0, -1.0, 3.0).value();
+  std::cout << solution << std::endl;
 }
 {% endhighlight %}
 
 ## Result
 ```
-(5.91131,0)
+(3.13158,0)
 ```
 **Last Modification date:** 22 January 2018
