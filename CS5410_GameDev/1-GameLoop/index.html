@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html lang = "en-US">
+  <head>
+    <meta charset = "UTF-8">
+    <title>Javascript Game Loop</title>
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <script src=gameloop.js ></script>
+  </head>
+  <body>
+    <header>
+      <h1>Brower Game Loop Simulation</h1>
+    </header>
+    <div class="split">
+      <div class="item box">
+        <p id="output">This is where output will go!<p>
+      </div>
+      <div class="form">
+        <div>
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="event_name">
+        </div>
+
+        <div>
+          <label for="interval">Interval:</label>
+          <input type="number" id="interval" name="event_interval">
+        </div>
+
+        <div>
+          <label for="count">Times:</label>
+          <input type="number" id="count" name="event_count">
+        </div>
+
+        <div class="button">
+          <button type="submit">Register</button>
+        </div>
+      </div>
+    </div>
+    <footer>
+
+      <p class="alignleft">
+      Created by Philip Nelson for CS 5410 at USU
+      </p>
+      <p id="fps" class="alignright"></p>
+    </footer>
+  </body>
+  <script>gameloop();</script>
+</html>
