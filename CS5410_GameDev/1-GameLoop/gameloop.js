@@ -34,7 +34,7 @@ for(i = 0; i < avgFPS.n; ++i)
 showFPS = makeEvent(
   "Show FPS",
   100,
-  100,
+  Infinity,
   function(){
     document.getElementById('fps').innerHTML="FPS: " + avgFPS.avg.toFixed(2);
   });
@@ -47,6 +47,30 @@ window.addEventListener('keydown', function(event) {
     quit = true;
 }, false);
 
+function register() {
+  inputName = document.getElementById('name');
+  name = document.getElementById('name').value;
+  inputName.value = "";
+
+  inputInterval = document.getElementById('interval').value;
+  interval = document.getElementById('interval').value;
+  inputInterval.value = "";
+
+  inputCount = document.getElementById('count').value;
+  count = document.getElementById('count').value;
+  inputCount.value = "";
+
+  console.log("New Event: " + name + " " + interval + " " + count);
+
+  event = makeEvent(
+    name,
+    interval,
+    count,
+    function(){console.log("Event: " + this.name + ": " + this.count);});
+
+  events.push(event);
+}
+
 function processInput(dTime){
 }
 
@@ -57,7 +81,10 @@ function update(dTime){
     if(e.elapsed >= e.interval)
     {
       e.elapsed=0;
+      --e.count;
       e.exec();
+      if (e.count == 0)
+        events.splice(events.indexOf(e),1);
     }
     else
       e.elapsed+=dTime;
