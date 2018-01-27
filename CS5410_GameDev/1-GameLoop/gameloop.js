@@ -81,6 +81,9 @@ function render(dTime) {
   events.forEach(function(e) {
     if (e.elapsed >= e.interval) {
       e.exec();
+      console.log(e.name + " " + e.elapsed);
+      //e.elapsed = 0;
+      e.elapsed -= e.interval;
     }
   });
 }

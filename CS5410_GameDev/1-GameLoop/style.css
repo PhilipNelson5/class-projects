@@ -6,7 +6,6 @@
   /* border: 1px solid #999; */
   overflow: auto;
   scroll: auto
-
 }
 
 .alignleft {
@@ -46,16 +45,19 @@
 }
 
 header {
+  margin: 1em auto 1em auto;
+  width: 50em;
   background-color: #f44250;
   text-align: center;
-  margin: 1em;
   padding: 1em;
 }
 
 footer {
+  margin: 1em auto 1em auto;
+  width: 50em;
+  height: 3em;
   background-color: #f44250;
   text-align: left;
-  margin: 1em;
   padding: 1em;
   clear: both;
 }
@@ -101,6 +103,6 @@ input:focus {
 
 .button {
   /* To position the buttons to the same position of the text fields */
-  padding-left: 95px; /* same size as the label elements */
+  padding-left: 90px; /* same size as the label elements */
   margin: .5em;
 }
