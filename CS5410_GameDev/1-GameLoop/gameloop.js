@@ -1,6 +1,8 @@
 let prevTime = performance.now();
 let quit = false;
 let fps = 0;
+let log = document.getElementById('log');
+let output = document.getElementById('output');
 
 let events = [];
 
@@ -25,7 +27,7 @@ avgFPS = {
 }
 
 for (i = 0; i < avgFPS.n; ++i)
-  avgFPS.arr.push(0);
+avgFPS.arr.push(0);
 
 showFPS = makeEvent('Show FPS', 100, Infinity, function() {
   document.getElementById('fps').innerHTML = 'FPS: ' + avgFPS.avg.toFixed(2);
@@ -34,7 +36,6 @@ showFPS = makeEvent('Show FPS', 100, Infinity, function() {
 events.push(showFPS);
 
 window.addEventListener('keydown', function(event) {
-  // console.log(event.keyCode)
   if (event.keyCode == 32) quit = true;
 }, false);
 
@@ -51,15 +52,12 @@ function register() {
   count = document.getElementById('count').value;
   inputCount.value = '';
 
-  // console.log('New Event: ' + name + ' ' + interval + ' ' + count);
-
   event = makeEvent(name, interval, count, function() {
-    let log = document.getElementById("log");
-    let output = document.getElementById("output");
-    log.innerText = log.innerText + '\nEvent:\t' + this.name + ':\t' + this.count;
+    log.innerText =
+        log.innerText + '\nEvent:\t' + this.name + ':\t' + this.count;
     output.scrollTop = output.scrollHeight;
     --this.count;
-    this.elapsed = 0;
+    e.elapsed -= e.interval;
   });
 
   events.push(event);
@@ -81,9 +79,6 @@ function render(dTime) {
   events.forEach(function(e) {
     if (e.elapsed >= e.interval) {
       e.exec();
-      // console.log(e.name + " " + e.elapsed);
-      // e.elapsed = 0;
-      e.elapsed -= e.interval;
     }
   });
 }
