@@ -14,13 +14,13 @@ class Rational {
 
 public:
 	Rational(int n = 0, int d = 1);
-	Rational(std::string s){std::stringstream ss { s }; ss>>*this;}	
+	Rational(std::string s){std::stringstream ss { s }; ss>>*this;}
 	int getNumerator() const;
 	int getDenominator() const;
 	void setNumerator(int n);
 	void setDenominator(int d);
 	void simplify();
-	
+
 	operator float();
 	operator double();
 
