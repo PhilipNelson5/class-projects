@@ -51,7 +51,7 @@ function register() {
   count = document.getElementById('count').value;
   inputCount.value = '';
 
-  console.log('New Event: ' + name + ' ' + interval + ' ' + count);
+  // console.log('New Event: ' + name + ' ' + interval + ' ' + count);
 
   event = makeEvent(name, interval, count, function() {
     let log = document.getElementById("log");
@@ -81,8 +81,8 @@ function render(dTime) {
   events.forEach(function(e) {
     if (e.elapsed >= e.interval) {
       e.exec();
-      console.log(e.name + " " + e.elapsed);
-      //e.elapsed = 0;
+      // console.log(e.name + " " + e.elapsed);
+      // e.elapsed = 0;
       e.elapsed -= e.interval;
     }
   });
