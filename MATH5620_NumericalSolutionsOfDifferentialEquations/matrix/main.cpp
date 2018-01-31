@@ -1,7 +1,7 @@
 #include "matrix.hpp"
 #include "matrix_util.hpp"
-#include <iostream>
 #include "termColors.hpp"
+#include <iostream>
 #include <string>
 
 template <typename T, typename R>
@@ -17,11 +17,11 @@ void test(T a, R r, std::string name)
 // template <typename F, typename R>
 // void test(F f, R r, std::string name)
 // {
-  // std::cout << "[RUN     ] " << name << std::endl;
-  // if (f() == r)
-    // std::cout << "[      OK] " << name << std::endl;
-  // else
-    // std::cout << "[    FAIL] " << name << std::endl;
+// std::cout << "[RUN     ] " << name << std::endl;
+// if (f() == r)
+// std::cout << "[      OK] " << name << std::endl;
+// else
+// std::cout << "[    FAIL] " << name << std::endl;
 // }
 
 int main()
@@ -44,17 +44,15 @@ int main()
   Matrix<int, 2, 3> _i_row({{6, 1, 1}, {2, 8, 7}});
   Matrix<int, 3, 2> _i_col({{6, 1}, {4, 5}, {2, 7}});
 
-
-
-  test(d+e, _de_add, "matrix addition");
-  test(d-e, _de_sub, "matrix subtraction");
-  test(b*c, _bc, "matrix multiplication");
-  test(2*a, _a, "scalar * matrix");
-  test(a*2, _a, "matrix * scalar");
+  test(d + e, _de_add, "matrix addition");
+  test(d - e, _de_sub, "matrix subtraction");
+  test(b * c, _bc, "matrix multiplication");
+  test(2 * a, _a, "scalar * matrix");
+  test(a * 2, _a, "matrix * scalar");
   test(-e, _e_neg, "unary minus, negation");
   test(identity<double, 3>(), _id, "identity construction");
   test(determinant(f), -306, "determinant");
-  test(dotProduct(g,h), 116, "dot product");
-  test(removeRow(i,1), _i_row, "remove row");
-  test(removeCol(i,1), _i_col, "remove col");
+  test(dotProduct(g, h), 116, "dot product");
+  test(removeRow(i, 1), _i_row, "remove row");
+  test(removeCol(i, 1), _i_col, "remove col");
 }
