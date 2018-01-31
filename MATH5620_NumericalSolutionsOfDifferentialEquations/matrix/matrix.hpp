@@ -11,7 +11,10 @@ template <typename T, std::size_t M, std::size_t N>
 class Matrix
 {
 public:
-  /* Random Creation  */
+  /* Default Creation */
+  Matrix() {}
+
+  /* Random Creation */
   Matrix(int start, int end)
   {
     for (auto i = 0u; i < M; ++i)
@@ -19,7 +22,15 @@ public:
         m[i][j] = rand(start, end);
   }
 
-  /* Construct From Vector  */
+  /* Fill With n */
+  Matrix(int n)
+  {
+    for (auto i = 0u; i < M; ++i)
+      for (auto j = 0u; j < N; ++j)
+        m[i][j] = n;
+  }
+
+  /* Construct From Vector */
   Matrix(std::vector<std::vector<T>> v)
   {
     for (auto i = 0u; i < M; ++i)
@@ -27,7 +38,7 @@ public:
         m[i][j] = v[i][j];
   }
 
-  /* Construct From Array  */
+  /* Construct From Array */
   Matrix(T t[M][N])
   {
     for (auto i = 0u; i < M; ++i)
@@ -35,7 +46,7 @@ public:
         m[i][j] = t[i][j];
   }
 
-  /* Copy Constructor  */
+  /* Copy Constructor */
   Matrix(Matrix const& old)
   {
     for (auto i = 0u; i < M; ++i)
@@ -53,6 +64,16 @@ private:
   std::array<std::array<T, N>, M> m;
 };
 
+/* returns an NxN identity matrix */
+template <typename T, std::size_t N>
+Matrix<T, N, N> identity()
+{
+  Matrix<T, N, N> matrix(0);
+  for (auto i = 0u; i < N; ++i)
+    matrix.set(i, i, 1);
+  return matrix;
+}
+
 /* Dot Product row i of a and col j of b  */
 template <typename T,
           typename U,
@@ -61,8 +82,8 @@ template <typename T,
           std::size_t O,
           typename R = decltype(T() * U())>
 R dotProduct(Matrix<T, M, N> const& a,
-             Matrix<U, N, O> const& b,
              unsigned int const& i,
+             Matrix<U, N, O> const& b,
              unsigned int const& j)
 {
   R sum = 0;
@@ -179,12 +200,8 @@ Matrix<R, M, O> operator*(Matrix<T, M, N> const& a, Matrix<U, N, O> const& b)
 {
   R matrix[M][O];
   for (auto i = 0u; i < M; ++i)
-  {
     for (auto j = 0u; j < O; ++j)
-    {
-      matrix[i][j] = dotProduct(a, b, i, j);
-    }
-  }
+      matrix[i][j] = dotProduct(a, i, b, j);
   return matrix;
 }
 
