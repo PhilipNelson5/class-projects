@@ -1,4 +1,5 @@
 #include "matrix.hpp"
+#include "matrix_util.hpp"
 #include <iostream>
 #include "termColors.hpp"
 #include <string>
@@ -37,6 +38,12 @@ int main()
   Matrix<int, 2, 2> _e_neg({{-4, 0}, {-1, 9}});
   Matrix<int, 3, 3> _id({{1, 0, 0}, {0, 1, 0}, {0, 0, 1}});
   Matrix<int, 3, 3> f({{6, 1, 1}, {4, -2, 5}, {2, 8, 7}});
+  Matrix<int, 1, 3> g({{2, 4, 6}});
+  Matrix<int, 3, 1> h({{7}, {9}, {11}});
+  Matrix<int, 3, 3> i({{6, 1, 1}, {4, -2, 5}, {2, 8, 7}});
+  Matrix<int, 2, 3> _i_row({{6, 1, 1}, {2, 8, 7}});
+  Matrix<int, 3, 2> _i_col({{6, 1}, {4, 5}, {2, 7}});
+
 
 
   test(d+e, _de_add, "matrix addition");
@@ -47,4 +54,7 @@ int main()
   test(-e, _e_neg, "unary minus, negation");
   test(identity<double, 3>(), _id, "identity construction");
   test(determinant(f), -306, "determinant");
+  test(dotProduct(g,h), 116, "dot product");
+  test(removeRow(i,1), _i_row, "remove row");
+  test(removeCol(i,1), _i_col, "remove col");
 }

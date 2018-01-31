@@ -207,26 +207,41 @@ $n^{\frac{3}{2}} = O\left(n^{\frac{4}{2}-\epsilon}\right),\ 0 < \epsilon < \frac
 \item
 $T(n)=2\cdot T(\frac{n}{2})+n\log n$.
 
-$T(\frac{n}{2}) = 2 \cdot T(\frac{n}{4})+\frac{n}{2}\log\frac{n}{2}$
+$a=2,\ b=2,\ f(n)=n\log n$
 
-$T(n)=2\cdot (2 \cdot T(\frac{n}{4})+\frac{n}{2}\log\frac{n}{2})+n\log n$.
+$n\log n = \Theta(n^{\log_2 2} log^k n)$
 
-$T_k(n)=2^k \cdot T(\frac{n}{2^k})+kn\log\left(\frac{n}{2^{k-1}}\right)+n\log n$.
+If $f(n)=\Theta (n^{\log_{b}a}\log^{k}n),\ k \geq 0 \Rightarrow T(n)=\Theta (n^{\log_{b}a}\log^{k+1}n)$
 
-$T_k(n)=2^k \cdot T(\frac{n}{2^k})+kn(\log n - k + 1)+n\log n$.
+$n\log n = \Theta(n^{\log_2 2} log^k n),\ k=1$
 
-$T_k(n)=2^k \cdot T(\frac{n}{2^k})+kn\log n - k^2n + kn+n\log n$.
+\[\boxed{T(n)=n\log^2 n}\]
 
-$let\ k = \log n$
 
-$T_{\log n}(n) = n \cdot 1 + n\log^2 n -\log^2 n + n\log n + n\log n$
 
-$T_{\log n}(n) = n + 2n\log n$
-
-\[\boxed{T(n) = O(n\log n)}\]
+% $T(\frac{n}{2}) = 2 \cdot T(\frac{n}{4})+\frac{n}{2}\log\frac{n}{2}$
+%
+% $T(n)=2\cdot (2 \cdot T(\frac{n}{4})+\frac{n}{2}\log\frac{n}{2})+n\log n$.
+%
+% $T_k(n)=2^k \cdot T(\frac{n}{2^k})+kn\log\left(\frac{n}{2^{k-1}}\right)+n\log n$.
+%
+% $T_k(n)=2^k \cdot T(\frac{n}{2^k})+kn(\log n - k + 1)+n\log n$.
+%
+% $T_k(n)=2^k \cdot T(\frac{n}{2^k})+kn\log n - k^2n + kn+n\log n$.
+%
+% $let\ k = \log n$
+%
+% $T_{\log n}(n) = n \cdot 1 + n\log^2 n -\log^2 n + n\log n + n\log n$
+%
+% $T_{\log n}(n) = n + 2n\log n$
+%
+% \[\boxed{T(n) = O(n\log n)}\]
 
 \item
 $T(n)=T(\frac{3}{4}\cdot n)+n$.
+
+
+
 \end{enumerate}
 
 \item % question 4
