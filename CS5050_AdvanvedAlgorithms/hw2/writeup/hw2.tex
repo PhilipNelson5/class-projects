@@ -139,28 +139,28 @@ The algorithm \textit{fill\_knapsack} solves the knapsack problem, factor two ap
 
 \item % question 2
 
-Let $A[1\ldots n]$ be an array of $n$ elements and $B[1\ldots m]$ another array of $m$ elements, with $m\leq n$. Note that neither $A$ nor $B$ is sorted. The problem is to compute the number of elements of $A$ that are smaller than $B[i]$ for each element $B[i]$ with $1\leq i\leq m$.
+Let $A[1\ldots a]$ be an array of $a$ elements and $B[1\ldots b]$ another array of $b$ elements, with $b\leq a$. Note that neither $A$ nor $B$ is sorted. The problem is to compute the number of elements of $A$ that are smaller than $B[i]$ for each element $B[i]$ with $1\leq i\leq m$.
 For simplicity, we assume that no two elements of $A$ are equal and no two elements of $B$ are equal.
 
 For example, let $A$ be $\{30, 20, 100, 60, 90, 10, 40, 50, 80, 70\}$ of ten elements. Let $B$ be $\{60, 35, 73\}$ of three elements. Then, your answer should be the following: for 60, return 5 (because there 5 numbers in $A$ smaller than 60); for 35, return 3; for 73, return 7.
 
 \begin{enumerate}
 \item
-Design an $O(n\log n)$ time algorithm for solving the problem. {\hfill \bf (5 points)}
+Design an $O(a\log a)$ time algorithm for solving the problem. {\hfill \bf (5 points)}
 
 \item
-Design an $O(nm)$ time algorithm for the problem. Note that this is better than the $O(n\log n)$ time algorithm if $m<\log n$. {\hfill \bf (5 points)}
+Design an $O(ab)$ time algorithm for the problem. Note that this is better than the $O(a\log a)$ time algorithm if $b<\log a$. {\hfill \bf (5 points)}
 
 \item
-Improve your algorithm to $O(n\log m)$ time. Because $m\leq n$, this is better than both the $O(n\log n)$ time and the $O(nm)$ time algorithms. {\hfill \bf (20 points)}
+Improve your algorithm to $O(a\log b)$ time. Because $b\leq a$, this is better than both the $O(a\log a)$ time and the $O(ab)$ time algorithms. {\hfill \bf (20 points)}
 
 
-{\bf Hint:} Use the divide and conquer technique. Since $m\leq n$, you cannot sort the array $A$ because that would take $O(n\log n)$ time, which is not $O(n\log m)$ as $m$ may be much smaller than $n$.
+{\bf Hint:} Use the divide and conquer technique. Since $b\leq a$, you cannot sort the array $A$ because that would take $O(a\log a)$ time, which is not $O(a\log b)$ as $b$ may be much smaller than $n$.
 \end{enumerate}
 
 
 {\bf Note:}
-You will receive the full 30 points if you give an $O(n\log m)$ time algorithm directly for (c) without giving any algorithms for (a) or (b).
+You will receive the full 30 points if you give an $O(a\log b)$ time algorithm directly for (c) without giving any algorithms for (a) or (b).
 
 
 \item % question 3
@@ -171,6 +171,23 @@ Solve the following recurrences (you may use any of the methods we studied in cl
 
 \item
 $T(n)=2\cdot T(\frac{n}{2})+ n^3$.
+
+$a=2,\ b=2,\ f(n)=n^3$
+
+$n^{\log_2{2}} = n^3$
+
+
+case 3:
+\begin{enumerate}
+
+  \item
+    $n^{1+\epsilon} = \Omega(n^3),\ 2 < \epsilon$
+
+  \item
+    $2\cdot\left(\frac{n}{2}\right)^3 \leq cn^3\Rightarrow \frac{1}{4}n^3\leq cn^3 ,\ \frac{1}{4}\leq c < 1 $
+
+\end{enumerate}
+
 
 \item
 $T(n)=4\cdot T(\frac{n}{2})+n\sqrt{n}$.
