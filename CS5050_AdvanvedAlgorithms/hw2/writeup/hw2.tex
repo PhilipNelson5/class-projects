@@ -7,6 +7,7 @@
 %\usepackage{hyperref}
 \usepackage[linesnumbered, vlined, ruled]{algorithm2e}
 \usepackage{listings}
+\usepackage{units}
 
 %\usepackage[T1]{fontenc}
 
@@ -168,7 +169,6 @@ You will receive the full 30 points if you give an $O(a\log b)$ time algorithm d
 Solve the following recurrences (you may use any of the methods we studied in class). Make your bounds as small as possible (in the big-$O$ notation). For each recurrence, $T(n)$ is constant for $n\leq 2$.
 
 \begin{enumerate}
-
 \item
 $T(n)=2\cdot T(\frac{n}{2})+ n^3$.
 
@@ -217,8 +217,6 @@ $n\log n = \Theta(n^{\log_2 2} log^k n),\ k=1$
 
 \[\boxed{T(n)=n\log^2 n}\]
 
-
-
 % $T(\frac{n}{2}) = 2 \cdot T(\frac{n}{4})+\frac{n}{2}\log\frac{n}{2}$
 %
 % $T(n)=2\cdot (2 \cdot T(\frac{n}{4})+\frac{n}{2}\log\frac{n}{2})+n\log n$.
@@ -240,7 +238,22 @@ $n\log n = \Theta(n^{\log_2 2} log^k n),\ k=1$
 \item
 $T(n)=T(\frac{3}{4}\cdot n)+n$.
 
+$a=1,\ b=\frac{4}{3},\ f(n) = n$
 
+$n = n^{\log_{\frac{4}{3}}(1)}$
+
+case 3:
+
+\begin{enumerate}
+  \item
+    $n = \Omega(n^{0+\epsilon}),\ 0 < \epsilon < 1$
+
+  \item
+    $1\cdot \frac{n}{\nicefrac{4}{3}} \leq cn \Rightarrow \frac{3}{4}\cdot n \leq cn,\ \frac{3}{4} < c < 1$
+
+\end{enumerate}
+
+\[\boxed{T(n)=\Theta(n)}\]
 
 \end{enumerate}
 
