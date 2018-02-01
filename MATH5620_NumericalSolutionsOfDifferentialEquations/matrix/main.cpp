@@ -52,4 +52,8 @@ int main()
   k.swapRows(0, 1);
   test(k, _i_swap, "swap row");
   test(j.findLargestInCol(1,0), 2, "find largest element in column");
+
+  Matrix<int, 4, 4> x({{2, 1, 1, 0}, {4, 3, 3, 1}, {8, 7, 9, 5}, {6, 7, 9, 8}});
+  x.luFactorize();
+  std::cout << x;
 }

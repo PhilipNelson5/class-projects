@@ -2,6 +2,7 @@
 #define MATRIX_HPP
 
 #include "random.hpp"
+#include "matrix_util.hpp"
 #include <algorithm>
 #include <array>
 #include <iostream>
@@ -81,12 +82,20 @@ public:
     return max;
   }
 
+  /* calculate the lower and upper triangles */
   std::tuple<Matrix<T, N, N>, Matrix<T, N, N>> luFactorize()
   {
     for (auto i = 0u; i < N; ++i)
     {
       auto pivot = findLargestInCol(i, i);
       if (pivot != i) swapRows(i, pivot);
+      pivot = m[i][i];
+      auto mod = identity<T, N>();
+      for (auto j = i; j < N; ++j)
+      {
+        m[i][j] = -1 / m[i][j] * pivot;
+      }
+      m = mod * m;
     }
   }
 
