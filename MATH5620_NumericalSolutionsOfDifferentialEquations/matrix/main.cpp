@@ -14,16 +14,6 @@ void test(T a, R r, std::string name)
     std::cout << RED << "[    FAIL] " << RESET << std::endl;
 }
 
-// template <typename F, typename R>
-// void test(F f, R r, std::string name)
-// {
-// std::cout << "[RUN     ] " << name << std::endl;
-// if (f() == r)
-// std::cout << "[      OK] " << name << std::endl;
-// else
-// std::cout << "[    FAIL] " << name << std::endl;
-// }
-
 int main()
 {
   Matrix<int, 2, 2> a({{4, 0}, {1, -9}});
@@ -43,6 +33,8 @@ int main()
   Matrix<int, 3, 3> i({{6, 1, 1}, {4, -2, 5}, {2, 8, 7}});
   Matrix<int, 2, 3> _i_row({{6, 1, 1}, {2, 8, 7}});
   Matrix<int, 3, 2> _i_col({{6, 1}, {4, 5}, {2, 7}});
+  Matrix<int, 3, 3> _i_swap({{4, -2, 5}, {6, 1, 1}, {2, 8, 7}});
+  Matrix<int, 3, 3> j({{6, 1, 1}, {4, -2, 5}, {2, -8, 7}});
 
   test(d + e, _de_add, "matrix addition");
   test(d - e, _de_sub, "matrix subtraction");
@@ -55,4 +47,9 @@ int main()
   test(dotProduct(g, h), 116, "dot product");
   test(removeRow(i, 1), _i_row, "remove row");
   test(removeCol(i, 1), _i_col, "remove col");
+
+  Matrix<int, 3, 3> k({{6, 1, 1}, {4, -2, 5}, {2, 8, 7}});
+  k.swapRows(0, 1);
+  test(k, _i_swap, "swap row");
+  test(j.findLargestInCol(1,0), 2, "find largest element in column");
 }

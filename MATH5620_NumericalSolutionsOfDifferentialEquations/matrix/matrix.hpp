@@ -60,6 +60,36 @@ public:
 
   std::array<T, N>& operator[](int x) { return m[x]; }
 
+  /* Swap rows r1 and r2 */
+  void swapRows(unsigned int const& r1, unsigned int const& r2)
+  {
+    for (auto i = 0u; i < N; ++i)
+    {
+      std::swap(m[r1][i], m[r2][i]);
+    }
+    // return this;
+  }
+
+  /* return the absolute largest element of a col starting at a given row */
+  int findLargestInCol(unsigned int const& col, unsigned int const& row = 0)
+  {
+    T max = row;
+    for (auto i = row + 1; i < M; ++i)
+    {
+      if (std::abs(m[i][col]) > std::abs(m[max][col])) max = i;
+    }
+    return max;
+  }
+
+  std::tuple<Matrix<T, N, N>, Matrix<T, N, N>> luFactorize()
+  {
+    for (auto i = 0u; i < N; ++i)
+    {
+      auto pivot = findLargestInCol(i, i);
+      if (pivot != i) swapRows(i, pivot);
+    }
+  }
+
 private:
   std::array<std::array<T, N>, M> m;
 };
