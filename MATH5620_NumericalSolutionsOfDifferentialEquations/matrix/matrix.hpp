@@ -1,12 +1,30 @@
 #ifndef MATRIX_HPP
 #define MATRIX_HPP
 
-#include "random.hpp"
 #include "matrix_util.hpp"
+#include "random.hpp"
 #include <algorithm>
 #include <array>
 #include <iostream>
 #include <vector>
+
+template <typename T, std::size_t M, std::size_t N>
+class Matrix;
+
+// template <typename T>
+// using filler = std::function<T(unsigned int const&, unsigned int const&)>;
+
+/* returns an NxN identity matrix */
+template <typename T, std::size_t N>
+Matrix<T, N, N> identity()
+{
+  Matrix<T, N, N> matrix(0);
+  for (auto i = 0u; i < N; ++i)
+  {
+    matrix.set(i, i, 1);
+  }
+  return matrix;
+}
 
 template <typename T, std::size_t M, std::size_t N>
 class Matrix
@@ -37,6 +55,14 @@ public:
     for (auto i = 0u; i < M; ++i)
       for (auto j = 0u; j < N; ++j)
         m[i][j] = v[i][j];
+  }
+
+  /* Construct From std::array */
+  Matrix(std::array<std::array<T, N>, M> a)
+  {
+    for (auto i = 0u; i < M; ++i)
+      for (auto j = 0u; j < N; ++j)
+        m[i][j] = a[i][j];
   }
 
   /* Construct From Array */
@@ -72,7 +98,7 @@ public:
   }
 
   /* return the absolute largest element of a col starting at a given row */
-  int findLargestInCol(unsigned int const& col, unsigned int const& row = 0)
+  unsigned int findLargestInCol(unsigned int const& col, unsigned int const& row = 0)
   {
     T max = row;
     for (auto i = row + 1; i < M; ++i)
@@ -82,21 +108,49 @@ public:
     return max;
   }
 
-  /* calculate the lower and upper triangles */
-  std::tuple<Matrix<T, N, N>, Matrix<T, N, N>> luFactorize()
+  void transpose()
   {
-    for (auto i = 0u; i < N; ++i)
+    for (auto i = 0u; i < M; i++)
+      for (auto j = 0u; j < N; j++)
+        std::swap(m[j][i], m[i][j]);
+  }
+
+  /* calculate the lower and upper triangles */
+  std::tuple<Matrix<T, N, N>, Matrix<T, N, N>, Matrix<T, N, N>> luFactorize()
+  {
+    auto I = identity<T, N>();
+    auto P = identity<T, N>();
+    P.transpose();
+    Matrix<T, N, N> L(0);
+    Matrix<T, N, N> U(m);
+    std::vector<std::vector<unsigned int>> swaps;
+    for (auto j = 0u; j < N; ++j) // columns
     {
-      auto pivot = findLargestInCol(i, i);
-      if (pivot != i) swapRows(i, pivot);
-      pivot = m[i][i];
-      auto mod = identity<T, N>();
-      for (auto j = i; j < N; ++j)
+      auto largest = U.findLargestInCol(j, j);
+      if (largest != j)
       {
-        m[i][j] = -1 / m[i][j] * pivot;
+        L.swapRows(j, largest);
+        U.swapRows(j, largest);
+        P.swapRows(j, largest);
+        swaps.push_back({j, largest});
       }
-      m = mod * m;
+      auto pivot = U[j][j];
+      auto mod = identity<T, N>();
+      for (auto i = j + 1; i < N; ++i) // rows
+      {
+        /* if (U[i][j] != 0 && pivot != 0) */
+        mod[i][j] = -U[i][j] / pivot;
+      }
+      L = -(mod - I) + L;
+      U = mod * U;
     }
+    L = I + L;
+    // for (auto i = swaps.size() - 1; i-- != 0u;)
+    // {
+      // I.swapRows(swaps[i][0], swaps[i][1]);
+      // swapRows(swaps[i][0], swaps[i][1]);
+    // }
+    return {L, U, P};
   }
 
 private:

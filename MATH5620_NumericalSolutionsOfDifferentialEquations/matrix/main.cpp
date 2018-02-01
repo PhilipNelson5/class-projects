@@ -51,9 +51,15 @@ int main()
   Matrix<int, 3, 3> k({{6, 1, 1}, {4, -2, 5}, {2, 8, 7}});
   k.swapRows(0, 1);
   test(k, _i_swap, "swap row");
-  test(j.findLargestInCol(1,0), 2, "find largest element in column");
+  test(j.findLargestInCol(1, 0), 2u, "find largest element in column");
 
-  Matrix<int, 4, 4> x({{2, 1, 1, 0}, {4, 3, 3, 1}, {8, 7, 9, 5}, {6, 7, 9, 8}});
-  x.luFactorize();
-  std::cout << x;
+  Matrix<double, 4, 4> x({{2, 1, 1, 0}, {4, 3, 3, 1}, {8, 7, 9, 5}, {6, 7, 9, 8}});
+  //Matrix<double, 10, 10>x(0, 300);
+  auto [L, U, P] = x.luFactorize();
+  std::cout << "A\n" << x << std::endl;
+  std::cout << "L\n" << L << std::endl << "U\n" << U << std::endl;
+  std::cout << "PA\n" << P*x << std::endl;
+  std::cout << "LU\n" << L*U << std::endl;
+
+
 }

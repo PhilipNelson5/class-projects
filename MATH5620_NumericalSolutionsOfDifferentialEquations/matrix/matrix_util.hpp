@@ -1,23 +1,12 @@
 #ifndef MATRIX_UTIL_HPP
 #define MATRIX_UTIL_HPP
 
+#include <iomanip>
 #include <iostream>
 #include <tuple>
 
 template <typename T, std::size_t M, std::size_t N>
 class Matrix;
-
-/* returns an NxN identity matrix */
-template <typename T, std::size_t N>
-Matrix<T, N, N> identity()
-{
-  Matrix<T, N, N> matrix(0);
-  for (auto i = 0u; i < N; ++i)
-  {
-    matrix.set(i, i, 1);
-  }
-  return matrix;
-}
 
 /* Dot Product row i of a and col j of b  */
 template <typename T,
@@ -233,11 +222,12 @@ std::ostream& operator<<(std::ostream& o, Matrix<T, M, N> const& m)
 {
   for (auto i = 0u; i < M; ++i)
   {
+    o << "| ";
     for (auto j = 0u; j < N; ++j)
     {
-      o << m.get(i, j) << '\t';
+      o << std::setw(9) << std::setprecision(4) << std::setfill(' ') << m.get(i, j);
     }
-    o << std::endl;
+    o << " |" << std::endl;
   }
   return o;
 }
