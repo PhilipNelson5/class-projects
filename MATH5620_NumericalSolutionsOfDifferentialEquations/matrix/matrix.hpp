@@ -138,18 +138,12 @@ public:
       auto mod = identity<T, N>();
       for (auto i = j + 1; i < N; ++i) // rows
       {
-        /* if (U[i][j] != 0 && pivot != 0) */
         mod[i][j] = -U[i][j] / pivot;
       }
       L = -(mod - I) + L;
       U = mod * U;
     }
     L = I + L;
-    // for (auto i = swaps.size() - 1; i-- != 0u;)
-    // {
-      // I.swapRows(swaps[i][0], swaps[i][1]);
-      // swapRows(swaps[i][0], swaps[i][1]);
-    // }
     return {L, U, P};
   }
 
