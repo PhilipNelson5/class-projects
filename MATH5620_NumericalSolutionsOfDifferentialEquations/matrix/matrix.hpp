@@ -147,6 +147,58 @@ public:
     return {L, U, P};
   }
 
+  std::array<T, M> triDiagThomas(std::array<T, M> const& a,
+                                 std::array<T, M> const& b,
+                                 std::array<T, M> const& c,
+                                 std::array<T, M> const& d)
+  {
+    std::array<T, M> c_s, d_s, f;
+    c_s[0] = c[0] / b[0];
+    d_s[0] = d[0] / b[0];
+    for (auto i = 1u; i < M; ++i)
+    {
+      auto bmcsta = 1.0 / (b[i] - c_s[i - 1] * a[i]);
+      c_s[i] = c[i] * bmcsta;
+      d_s[i] = (d[i] - d_s[i - 1] * a[i]) * bmcsta;
+    }
+
+    f[M - 1] = d_s[M - 1];
+    for (auto i = M - 2; i-- > 0;)
+    {
+      f[i] = d_s[i] - c_s[i] * d[i + 1];
+    }
+    return f;
+  }
+
+  std::array<T, M> triDiagThomas(std::array<T, M> const& d)
+  {
+    std::array<T, M> a, b, c;
+    a[0] = 0;
+    b[0] = m[0][0];
+    c[0] = m[0][1];
+    for (auto i = 1u; i < M - 1; ++i)
+    {
+      a[i] = m[i][i - 1];
+      b[i] = m[i][i];
+      c[i] = m[i][i + 1];
+    }
+    a[M - 1] = m[M - 1][M - 2];
+    b[M - 1] = m[M - 1][M - 1];
+    c[M - 1] = 0;
+
+    for (auto e : a)
+      std::cout << e << " ";
+    std::cout << std::endl;
+    for (auto e : b)
+      std::cout << e << " ";
+    std::cout << std::endl;
+    for (auto e : c)
+      std::cout << e << " ";
+    std::cout << std::endl;
+
+    return triDiagThomas(a, b, c, d);
+  }
+
 private:
   std::array<std::array<T, N>, M> m;
 };
