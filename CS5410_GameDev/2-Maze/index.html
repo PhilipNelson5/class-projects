@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <title>aMAZEing</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Philip Nelson">
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body onload = "init();">
+    <div class = "container-main">
+
+      <div class="container-canvas">
+        <canvas id="canvas-main" width=1000, height=2000"></canvas>
+      </div>
+
+      <div class="container-opts">
+
+        <div class="col"> <input type="submit" class="button" value="5x5" onclick="standard(5,5);"/></div>
+        <div class="col"> <input type="submit" class="button" value="10x10" onclick="standard(10,10);"/></div>
+        <div class="col"> <input type="submit" class="button" value="15x15" onclick="standard(15,15);"/></div>
+        <div class="col"> <input type="submit" class="button" value="20x20" onclick="standard(20,20);"/></div>
+        <div class="col"> <input type="submit" class="button" value="Custom" onclick="custom();"/></div>
+
+        <div class="container-input">
+          <input type="number" id="sizex" class="number-input" name="sizex">
+          <p class="ptagx" >x</p>
+          <input type="number" id="sizey" class="number-input" name="sizey">
+        </div>
+
+        <span class = "inline">TIMER:</span><span id="timer" class="inline">0.00</span>
+        <span class = "inline">SCORE:</span><span id="score" class="inline">0.00</span>
+
+        <div class="col"> <input type="submit" class="button" value="Show High Score" onclick="showHighScores();"/></div>
+
+        <p id="fps" class="alignright">FPS HERE</p>
+      </div>
+    </div>
+    <script src="maze.js"></script>
+  </body>
+</html>
