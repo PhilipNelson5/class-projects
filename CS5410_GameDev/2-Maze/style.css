@@ -1,12 +1,25 @@
+.label{
+  display:inline;
+  font-size: 17pt;
+}
+
+.label2{
+  font-size: 15pt;
+}
+
+.radio{
+  width:1.25em;
+  height:1.25em;
+}
+
 .container-main{
   display: flex;
   flex-flow: row;
-  min-height: 50px;
 }
 
 .container-canvas{
   flex: 7;
-  width: 50%;
+  /* width: 50%; */
   height: 50%;
   background-color: #DBE7FF;
 }

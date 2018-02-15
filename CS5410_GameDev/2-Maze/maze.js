@@ -1,3 +1,4 @@
+document.body.style.zoom = .85;
 function copy(o)
 { // https://www.codementor.io/avijitgupta/deep-copying-in-js-7x6q8vh5d
   var output, v, key;
@@ -127,54 +128,155 @@ function resetMaze()
       maze[i][j].visited = false;
 }
 
-function findPath(curr)
+function getMoves(cell)
 {
-  curr.visited = true;
-  if (curr === maze.end)
-  {
-    path.push(curr);
-    return true;
-  }
-  let north = (curr.n.worn === curr) ? curr.n.eors : curr.n.worn
-  if (north && !curr.n.wall && !north.visited)
-  {
-    if (findPath(north))
-    {
-      path.push(curr);
-      return true;
-    }
-  }
+  let moves = [];
 
-  let south = (curr.s.worn === curr) ? curr.s.eors : curr.s.worn
-  if (south && !curr.s.wall && !south.visited)
-  {
-    if (findPath(south))
-    {
-      path.push(curr);
-      return true;
-    }
-  }
+  if (!cell.n.wall && !cell.n.worn.visited)
+    moves.push(cell.n.worn);
+  if (!cell.e.wall && !cell.e.eors.visited)
+    moves.push(cell.e.eors);
+  if (!cell.s.wall && !cell.s.eors.visited)
+    moves.push(cell.s.eors);
+  if (!cell.w.wall && !cell.w.worn.visited)
+    moves.push(cell.w.worn);
 
-  let east = (curr.e.worn === curr) ? curr.e.eors : curr.e.worn
-  if (east && !curr.e.wall && !east.visited)
-  {
-    if (findPath(east))
-    {
-      path.push(curr);
-      return true;
-    }
-  }
+  return moves;
+}
 
-  let west = (curr.w.worn === curr) ? curr.w.eors : curr.w.worn
-  if (west && !curr.w.wall && !west.visited)
+function findPath(start, end)
+{
+  stack = [];
+  let visited = 0;
+  let cell = end;
+
+  while (visited !== sizex * sizey)
   {
-    if (findPath(west))
+    if (cell === start)
     {
-      path.push(curr);
-      return true;
+      stack.push(start);
+      return stack;
+    }
+
+    if (!cell.visited)
+    {
+      ++visited
+      cell.visited = true;
+    }
+
+    let moves = getMoves(cell);
+    if (moves.length !== 0)
+    {
+      stack.push(cell);
+      cell = moves[0];
+    }
+    else if (stack.length != 0)
+    {
+      let next = stack.pop();
+      if (next)
+        cell = next;
     }
   }
 }
+
+/***********************************************/
+/*        Recursive Backtracking Algorithm     */
+/***********************************************/
+let visited = 0;
+
+function breakWall(cell1, cell2)
+{
+  if (cell1.n === cell2.s)
+    cell1.n.wall = false;
+  if (cell1.e === cell2.w)
+    cell1.e.wall = false;
+  if (cell1.s === cell2.n)
+    cell1.s.wall = false;
+  if (cell1.w === cell2.e)
+    cell1.w.wall = false;
+}
+
+function getUnvisited(cell)
+{
+  let moves = [];
+
+  if (cell.n.worn && !cell.n.worn.visited)
+    moves.push(cell.n.worn);
+  if (cell.e.eors && !cell.e.eors.visited)
+    moves.push(cell.e.eors);
+  if (cell.s.eors && !cell.s.eors.visited)
+    moves.push(cell.s.eors);
+  if (cell.w.worn && !cell.w.worn.visited)
+    moves.push(cell.w.worn);
+
+  return moves;
+}
+
+function recBT(cell, stack)
+{
+  cell.visited = true;
+
+  let moves = getMoves(cell);
+
+  if (moves.length != 0)
+  {
+    stack.push(cell);
+    let move = moves[rint(moves.length)];
+    breakWall(cell, move);
+    recBT(move, stack);
+  }
+  else if (stack.length != 0)
+  {
+    let next = stack.pop();
+    if (next)
+      recBT(next, stack);
+  }
+}
+
+function recursiveBacktrack()
+{
+  let firstx = 0; // rint(sizex);
+  let firsty = 0; // rint(sizey);
+
+  let cell = maze[firstx][firsty];
+
+  let stack = [];
+  let visited = 0;
+  while (visited != sizex * sizey)
+  {
+    if (!cell.visited)
+    {
+      ++visited;
+      cell.visited = true;
+    }
+
+    let moves = getUnvisited(cell);
+
+    if (moves.length != 0)
+    {
+      stack.push(cell);
+      let move = moves[rint(moves.length)];
+      breakWall(cell, move);
+      cell = move;
+    }
+    else if (stack.length != 0)
+    {
+      let next = stack.pop();
+      if (next)
+        cell = next;
+    }
+  }
+}
+
+// function recursiveBacktrack()
+// {
+// let firstx = 0; // rint(sizex);
+// let firsty = 0; // rint(sizey);
+//
+// let first = maze[firstx][firsty];
+//
+// recBT(first, []);
+// }
 
 /***********************************************/
 /*               Kruskal's Algorithm           */
@@ -224,7 +326,6 @@ function kruskals()
           conv = set1;
           keep = set2;
         }
-
 
         // convert all elements of set conv to set keep
         for (let i = 0; i < sets[conv].length; ++i)
@@ -562,6 +663,14 @@ function moveCharacter(input)
 /*                    Toggles                  */
 /***********************************************/
 
+function toggleScore()
+{
+  showScore = !showScore;
+  if (showScore)
+    document.getElementById('score').style.display = 'inline';
+  else
+    document.getElementById('score').style.display = 'none';
+}
 function toggleBread()
 {
   showBread = !showBread;
@@ -597,6 +706,11 @@ let keyBind = {
   'P' : togglePath,
   'B' : toggleBread,
   'H' : toggleHint,
+  'Y' : toggleScore,
+  'I' : moveUp,
+  'J' : moveLeft,
+  'K' : moveDown,
+  'L' : moveRight,
   'W' : moveUp,
   'A' : moveLeft,
   'S' : moveDown,
@@ -612,6 +726,7 @@ let newGame = false;
 let showBread = false;
 let showPath = false;
 let showHint = false;
+let showScore = true;
 let doTimer = false;
 let time = 0.0;
 let score = 0.0;
@@ -722,24 +837,21 @@ function start()
 
   [maze, edges] = makeMaze();
 
-  // prims(maze)
-  kruskals();
+  if (document.getElementById('prims').checked)
+    prims(maze);
+  else if (document.getElementById('kruskals').checked)
+    kruskals();
+  else if (document.getElementById('recursiveBT').checked)
+    recursiveBacktrack();
+
   path = [];
 
   resetMaze();
 
-  findPath(maze.start);
+  path = findPath(maze.start, maze.end);
 
   resetMaze();
   maze.character.visited = true;
-
-  // avgFPS.arr.length = 0;
-  // avgFPS.total = 0;
-  // inputs = {};
-  // for (i = 0; i < avgFPS.n; ++i)
-  // {
-  // avgFPS.arr.push(0);
-  // }
 
   console.log('starting game');
 
@@ -753,6 +865,7 @@ function start()
   time = 0.0;
   score = 0.0;
 
+  prevTime = performance.now();
   requestAnimationFrame(gameloop);
 }
 
@@ -760,6 +873,7 @@ function init()
 {
   canvas = document.getElementById('canvas-main');
   context = canvas.getContext('2d');
+  document.getElementById('recursiveBT').checked = true;
   highScores = [];
 
   CanvasRenderingContext2D.prototype.clear = function() {
@@ -783,7 +897,6 @@ function standard(m, n)
   sizex = m;
   sizey = n;
   newGame = true;
-  // start();
 }
 
 function custom()
@@ -802,7 +915,6 @@ function custom()
   sizex = tmpx;
   sizey = tmpy;
   newGame = true;
-  // start();
 }
 
 function showHighScores()

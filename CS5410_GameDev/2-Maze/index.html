@@ -9,32 +9,52 @@
   </head>
 
   <body onload = "init();">
-    <div class = "container-main">
+    <div class = "container-all">
+      <div class = "container-main">
 
-      <div class="container-canvas">
-        <canvas id="canvas-main" width=1000, height=2000"></canvas>
-      </div>
-
-      <div class="container-opts">
-
-        <div class="col"> <input type="submit" class="button" value="5x5" onclick="standard(5,5);"/></div>
-        <div class="col"> <input type="submit" class="button" value="10x10" onclick="standard(10,10);"/></div>
-        <div class="col"> <input type="submit" class="button" value="15x15" onclick="standard(15,15);"/></div>
-        <div class="col"> <input type="submit" class="button" value="20x20" onclick="standard(20,20);"/></div>
-        <div class="col"> <input type="submit" class="button" value="Custom" onclick="custom();"/></div>
-
-        <div class="container-input">
-          <input type="number" id="sizex" class="number-input" name="sizex">
-          <p class="ptagx" >x</p>
-          <input type="number" id="sizey" class="number-input" name="sizey">
+        <div class="container-canvas">
+          <canvas id="canvas-main" width=1000, height=2000"></canvas>
         </div>
 
-        <span class = "inline">TIMER:</span><span id="timer" class="inline">0.00</span>
-        <span class = "inline">SCORE:</span><span id="score" class="inline">0.00</span>
+        <div class="container-opts">
 
-        <div class="col"> <input type="submit" class="button" value="Show High Score" onclick="showHighScores();"/></div>
+          <div class="col"> <input type="submit" class="button" value="5x5" onclick="standard(5,5);"/></div>
+          <div class="col"> <input type="submit" class="button" value="10x10" onclick="standard(10,10);"/></div>
+          <div class="col"> <input type="submit" class="button" value="15x15" onclick="standard(15,15);"/></div>
+          <div class="col"> <input type="submit" class="button" value="20x20" onclick="standard(20,20);"/></div>
+          <div class="col"> <input type="submit" class="button" value="50x50" onclick="standard(50,50);"/></div>
+          <div class="col"> <input type="submit" class="button" value="Custom" onclick="custom();"/></div>
 
-        <p id="fps" class="alignright">FPS HERE</p>
+          <div class="container-input">
+            <input type="number" id="sizex" class="number-input" name="sizex">
+            <p class="ptagx" >x</p>
+            <input type="number" id="sizey" class="number-input" name="sizey">
+          </div>
+
+          <div style="padding:1em;">
+            <input class="radio" id="prims" type="radio" name="algorithm" value="prims" checked><p class="label">Prim's</p><br>
+            <input class="radio" id="kruskals" type="radio" name="algorithm" value="kruskals"><p class="label">Kruskal's</p><br>
+            <input class="radio" id="recursiveBT" type="radio" name="algorithm" value="recursiveBT"><p class="label">Recursive BT</p><br>
+          </div>
+
+          <div style="padding:1em;">
+            <span class = "inline label">TIMER: </span><span id="timer" class="inline label">0.00</span>
+          </div>
+
+          <div style="padding:1em;">
+            <span class = "inline label">SCORE: </span><span id="score" class="inline label">0.00</span>
+          </div>
+
+          <div class="col"> <input type="submit" class="button" value="Show High Score" onclick="showHighScores();"/></div>
+
+          <p id="fps" class="alignright label">FPS HERE</p>
+          <p class="label2">
+          Hint toggle : Keyboard H<br>
+          Breadcrumbs toggle : Keyboard B<br>
+          Path to finish toggle : Keyboard P<br>
+          Score toggle : Keyboard Y
+          </p>
+        </div>
       </div>
     </div>
     <script src="maze.js"></script>
