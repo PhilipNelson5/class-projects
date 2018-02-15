@@ -108,11 +108,6 @@ function makeMaze()
         maze[i][j].e = maze[i][j + 1].w;
         maze[i][j].e.worn = maze[i][j];
       }
-
-      // maze[i][j].n = i === 0 ? makeEdge(id++, true) : maze[i - 1][j].s ? maze[i - 1][j].s : makeEdge(id++, true);
-      // maze[i][j].s = i === size - 1 ? makeEdge(id++, true) : maze[i + 1][j].n ? maze[i + 1][j].n : makeEdge(id++, true);
-      // maze[i][j].e = j === 0 ? makeEdge(id++, true) : maze[i][j - 1].w ? maze[i][j - 1].w : makeEdge(id++, true);
-      // maze[i][j].w = j === size - 1 ? makeEdge(id++, true) : maze[i][j + 1].e ? maze[i][j + 1].e : makeEdge(id++, true);
     }
   }
   maze.start = maze[0][sizex - 1];
@@ -235,8 +230,8 @@ function recBT(cell, stack)
 
 function recursiveBacktrack()
 {
-  let firstx = 0; // rint(sizex);
-  let firsty = 0; // rint(sizey);
+  let firstx = rint(sizex);
+  let firsty = rint(sizey);
 
   let cell = maze[firstx][firsty];
 
@@ -267,16 +262,6 @@ function recursiveBacktrack()
     }
   }
 }
-
-// function recursiveBacktrack()
-// {
-// let firstx = 0; // rint(sizex);
-// let firsty = 0; // rint(sizey);
-//
-// let first = maze[firstx][firsty];
-//
-// recBT(first, []);
-// }
 
 /***********************************************/
 /*               Kruskal's Algorithm           */
