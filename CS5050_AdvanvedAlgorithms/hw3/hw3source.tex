@@ -1,0 +1,224 @@
+% latex first.tex
+% latex first.tex
+% xdvi first.dvi
+% dvips -o first.ps first.dvi
+% gv first.ps
+% lpr first.ps
+% pdflatex first.tex
+% acroread first.pdf
+% dvipdf first.dvi first.pdf
+% xpdf first.pdf
+\documentclass[11pt]{article}
+
+\usepackage{latexsym}
+%\newcommand{\epsfig}{\psfig}
+%\usepackage{tabularx,booktabs,multirow,delarray,array}
+%\usepackage{graphicx,amssymb,amsmath,amssymb,mathrsfs}
+%\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage[linesnumbered, vlined, ruled]{algorithm2e}
+
+
+%\usepackage[T1]{fontenc}
+
+
+%\aboverulesep=0pt
+%\belowrulesep=0pt
+
+%\marginparwidth=0in
+%\marginparsep=0in
+\oddsidemargin=0.0in
+\evensidemargin=0.0in
+\headheight=0.0in
+%\headsep=0in
+\topmargin=-0.40in %0.35
+\textheight=9.0in %9.1in
+\textwidth=6.5in   %6.55in
+
+\usepackage{fullpage}
+
+%\setlength{\headheight}{0.2in}
+%\setlength{\headsep}{0.2in}
+%\setlength{\voffset}{-0.2in}
+
+
+%\pagestyle{plain}
+
+%\usepackage{listings}
+%\lstloadlanguages{C, csh, make} \lstset{
+%    language=C,tabsize=4,
+%    keepspaces=true,
+%    mathescape=true,
+%    breakindent=22pt,
+%    numbers=left,stepnumber=1,numberstyle=\footnotesize,
+%    basicstyle=\normalsize,
+%    showspaces=false,
+%    flexiblecolumns=true,
+%    breaklines=true, breakautoindent=true,breakindent=1em,
+%    escapeinside={/*@}{@*/}
+%}
+
+%\lhead{Solution of Homework 1}
+%\rhead{Haitao Wang}
+
+\begin{document}
+\baselineskip=14.0pt
+
+\title{CS5050 \textsc{Advanced Algorithms}
+\\{\Large Spring Semester, 2018}
+\\ Assignment 3: Prune and Search
+\\ {\large {\bf Due Date: 3:00 p.m.}, Thursday, Feb. 22, 2018 ({\bf at the beginning of CS5050 class})}}
+\date{}
+%\date{\today}
+
+
+\maketitle
+%\theoremstyle{plain}\newtheorem{theorem}{\textbf{Theorem}}
+
+\vspace{-0.7in}
+
+
+\begin{enumerate}
+
+\item
+{\bf (20 points)}
+Suppose you are given an array $A$ with $n$ entries, with each entry
+holding a distinct number (i.e., no two numbers of $A$ are
+		equal). You are told that the sequence of
+		values $A[1], A[2], \ldots, A[n]$ is {\em unimodal:} For some
+		index $p$ between $1$ and $n$, the values in the array entries
+		increase up to position $p$ in $A$ and then decrease the
+		remainder of the way until position $n$. (So if you were to
+		draw a plot with the array position $j$ on the $x$-axis and
+		the value of the entry $A[j]$ on the $y$-axis, the plotted
+		points would rise until $x$-value $p$, where they'd achieve
+		their maximum, and then fall from there on.)
+
+
+You'd like to find the ``peak entry'' $p$ without having to read the entire array -- in fact, by reading as few entries of $A$ as possible. Show how to find
+the entry $p$ by reading at most $O(\log n)$ entries of $A$. In other words, design an $O(\log n)$ time algorithm to find the peak entry $p$.
+
+For example, let $A=\{1, 4, 6, 8, 11, 12, 10, 9, 7\}$, which is be a unimodal array. The peak entry of $A$ is $12$. So the output of your algorithm is either 12 or the index of 12 in $A$.
+
+
+\item
+{\bf (20 points)}
+In the SELECTION algorithm we studied in class, the input numbers are divided into groups of five. Will the algorithm still work in linear time if they are divided into groups of seven? Please justify your answer.
+
+
+
+\item
+{\bf (20 points)}
+Suppose you are consulting for an oil company, which is planning a
+large pipeline (called the {\em main pipeline}) running horizontally from east to west through
+an oil field of $n$ wells. From each well, a {\em spur pipeline} is to
+be connected directly to the main pipeline along a shortest path
+(going to either the north or the south), as shown in Figure
+\ref{fig:wells}.
+
+Suppose there are $n$ wells, represented by $n$ points $p_1,p_2,\ldots,p_n$ in the plane.
+We are given the $x$- and $y$-coordinates of the $n$ wells $p_i=(x_i,y_i)$ for $i=1,2,\ldots,n$. Note that the wells are not given in any sorted order. Our goal is to pick an optimal location for the main pipeline (i.e., find the $y$-coordinate of the main pipeline) such that the
+{\bf total sum of the lengths} of the spur pipelines is minimized. For simplicity, we assume no two wells have the same $x$-coordinate or $y$-coordinate.
+
+Design an $O(n)$ time algorithm to compute an optimal location for the
+main pipeline.
+
+
+
+\begin{figure}[h]
+\begin{minipage}[t]{\linewidth}
+\begin{center}
+\includegraphics[totalheight=2.0in]{wells.eps}
+\caption{Illustrating Problem 3: the horizontal solid line is the main pipeline and the dashed vertical segments are the spur pipelines.}\label{fig:wells}
+\end{center}
+\end{minipage}
+\end{figure}
+
+
+
+\item
+{\bf (30 points)}
+Here is a generalized version of the selection problem, called {\em multiple selection}. Let $A[1\cdots n]$ be an array of $n$ numbers. Given a sequence of $m$ sorted integers $k_1, k_2,\ldots, k_m$, with $1\leq k_1<k_2<\cdots<k_m\leq n$, the {\em multiple selection problem} is to find the $k_i$-th smallest number in $A$ for all $i=1,2,\ldots,m$. For simplicity, we assume that no two numbers of $A$ are equal.
+
+For example, let $A=\{1, 5, 9, 3, 7, 12, 15, 8, 21\}$, and $m=3$ with
+$k_1 = 2$, $k_2 = 5$, and $k_3=7$. Hence, the goal is to find the 2nd,
+the $5$-th, and the $7$-th smallest numbers of $A$, which are $3$,
+$8$, and $12$, respectively.
+
+\begin{enumerate}
+\item
+Design an $O(n\log n)$ time algorithm for the problem. {\hfill \bf (5 points)}
+\item
+Design an $O(nm)$ time algorithm for the problem. Note that this is better than the $O(n\log n)$ time algorithm if $m<\log n$. {\hfill \bf (5 points)}
+
+\item
+Improve your algorithm to $O(n\log m)$ time, which is better than both the $O(n\log n)$ time and the $O(nm)$ time algorithms. {\hfill \bf (20 points)}
+
+\end{enumerate}
+
+
+\end{enumerate}
+
+
+{\bf Total Points:} 90
+
+\end{document}
+
+%\begin{figure}[h]
+%\begin{minipage}[t]{\linewidth}
+%\begin{center}
+%\includegraphics[totalheight=2in]{figexample.eps}
+%\caption{An example}\label{fig:example}
+%\end{center}
+%\end{minipage}
+%\end{figure}
+
+%\begin{table}[h]
+%\begin{center}
+%\begin{tabularx|tabular}{0.75\textwidth}{|p{1.75cm}||X|X|X|X|X|X|X|X|X|X|}%{|l||c|c|c|c|c|c|c|c|c|c|}
+%\hline
+%Capacity & 7 &8&9&6&5&4&7&4&10&9\\
+%\hline
+%Allocation & 7&7&7&0&4&4&4&0&9&9\\
+%\hline
+%\end{tabularx|tabular}
+%\end{center}
+%\label{tab:tabexample}
+%\end{table}
+
+
+%\begin{description}
+%\item[Algorithm Description]
+%\item[Pseudocode for the Algorithm]
+%\item[Analysis of Running time]
+%\item[Argument for Correctness]
+%\end{description}
+
+%\begin{thebibliography}{99}
+%\bibitem{ref:clrs}
+%Thomas~H.~Cormen, Charles~E.~Leiserson, Ronald~E.~Rivest,
+%Clifford~Stein.
+%\newblock{Introduction to Algorithms, Second Edition, pages 568-570,}
+%\newblock{\emph{The MIT Press}, 2005.}
+%\end{thebibliography}
+
+%\begin{figure}[t]
+%\begin{minipage}[t]{0.49\linewidth}
+%\begin{center}
+%\includegraphics[totalheight=0.9in]{visibilitymap.eps}
+%\caption{\footnotesize Illustrating the horizontal visibility map of
+%a splinegon.} \label{fig:visibilitymap}
+%\end{center}
+%\end{minipage}
+%\hspace*{0.02in}
+%\begin{minipage}[t]{0.49\linewidth}
+%\begin{center}
+%\includegraphics[totalheight=0.9in]{trapezoid.eps}
+%\caption{\footnotesize Illustrating the decomposition of a
+%trapezoid: (a) The black points on the base $cd$ are vertices; (b) a
+%decomposition of the trapezoid.} \label{fig:trapezoid}
+%\end{center}
+%\end{minipage}
+%\vspace*{-0.15in}
+%\end{figure}
+
