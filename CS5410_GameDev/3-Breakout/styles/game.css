@@ -1,0 +1,105 @@
+body {
+  margin: 0;
+}
+
+#id-main-div {
+  /* position: absolute; */
+  /* left: 0; */
+  /* top: 0; */
+  width: 95%;
+  height: 95%;
+  margin: 0 auto;
+  margin-top: .5em;
+  padding: .1em;
+  background-color: #697883;
+  font-size: 40px;
+}
+
+#id-main-div .screen {
+  /* position: absolute; */
+  width: 90%;
+  height: 90%;
+  margin: 0 auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  display: none;
+  z-index: 10;
+  overflow: hidden;
+}
+
+#id-main-div .screen.active {
+  display: block;
+}
+
+#main-menu {
+  cursor: pointer;
+  font-size: 0.75em;
+}
+
+ul.menu {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+ul.menu li {
+  margin: 0.8em 0;
+}
+
+ul.menu li button {
+  font-family: Arial, sans-serif;
+  font-size: 0.6em;
+  color: #BCC3C8;
+  width: 10em;
+  height: 1.5em;
+  background: #0F4C72;
+  border: 0.15em solid #061C2A;
+  border-radius: 0.5em;
+  box-shadow: 0.2em 0.2em 0.3em rgb(0, 0, 0);
+}
+
+ul.menu li button:hover {
+  background: #245C7E;
+}
+
+ul.menu li button:active {
+  color: #CECEF6;
+  background: rgb(0, 0, 0);
+}
+
+#id-main-div > div > h1 {
+  font-size: 1em;
+  text-align: center;
+}
+
+#high-scores ol {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+#game div p {
+  font-size: 0.5em;
+}
+
+#about p {
+  text-align: center;
+}
+
+#help p {
+  text-align: center;
+}
+
+#game-play {
+  /* position:relative; */
+}
+
+#invisible {
+  display: none;
+}
+
+#visible {
+  display: inline;
+}

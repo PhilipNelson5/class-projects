@@ -33,9 +33,20 @@ function rint(n)
   return Math.floor(Math.random() * n);
 }
 
-function makeEdge(_id, _wall, _border, _worn, _eors)
+function makeEdge(_id, _wall, _border, _worn, _eors, _startx, _starty, _endx, _endy, _type)
 {
-  return {id : _id, wall : _wall, border : _border, worn : _worn, eors : _eors};
+  return {
+    id : _id,
+    wall : _wall,
+    border : _border,
+    worn : _worn,
+    eors : _eors,
+    startx : _startx,
+    starty : _starty,
+    endx : _endx,
+    endy : _endy,
+    type : _type
+  };
 }
 
 function makeMaze()
@@ -59,7 +70,7 @@ function makeMaze()
       /* NORTH */
       if (i === 0 || maze[i - 1][j].s === undefined)
       {
-        edge = makeEdge(id++, true, i === 0 ? true : false, null, maze[i][j]);
+        edge = makeEdge(id++, true, i === 0 ? true : false, null, maze[i][j], i, j, i, j + 1, 'n');
         edges.push(edge);
         maze[i][j].n = edge;
       }
@@ -68,11 +79,10 @@ function makeMaze()
         maze[i][j].n = maze[i - 1][j].s;
         maze[i][j].n.eors = maze[i][j];
       }
-
       /* SOUTH */
       if (i === sizey - 1 || maze[i + 1][j].n === undefined)
       {
-        edge = makeEdge(id++, true, i === sizey - 1 ? true : false, maze[i][j], null);
+        edge = makeEdge(id++, true, i === sizey - 1 ? true : false, maze[i][j], null, i + 1, j + 1, i + 1, j, 's');
         edges.push(edge);
         maze[i][j].s = edge;
       }
@@ -85,7 +95,7 @@ function makeMaze()
       /* WEST */
       if (j === 0 || maze[i][j - 1].e === undefined)
       {
-        edge = makeEdge(id++, true, j === 0 ? true : false, maze[i][j], null);
+        edge = makeEdge(id++, true, j === 0 ? true : false, maze[i][j], null, i + 1, j, i, j, 'w');
         edges.push(edge);
         maze[i][j].w = edge;
       }
@@ -98,7 +108,7 @@ function makeMaze()
       /* EAST */
       if (j === sizex - 1 || maze[i][j + 1].w === undefined)
       {
-        edge = makeEdge(id++, true, j === sizex - 1 ? true : false, null, maze[i][j]);
+        edge = makeEdge(id++, true, j === sizex - 1 ? true : false, null, maze[i][j], i, j + 1, i + 1, j + 1, 'e');
         edges.push(edge);
         maze[i][j].e = edge;
         maze[i][j].w.worn = maze[i][j - 1];
@@ -353,12 +363,10 @@ function addWalls(cell, list)
 
 function prims(theMaze, edges)
 {
-  let inMaze = [];
   let wallList = [];
 
   let first = theMaze[rint(sizey)][rint(sizex)];
   first.visited = true;
-  inMaze.push(first);
   addWalls(first, wallList);
 
   while (wallList.length !== 0)
@@ -418,6 +426,34 @@ function drawCell(cell, weight)
   }
 }
 
+function drawEdge(edge, weight)
+{
+  let unitx = width / sizex;
+  let unity = height / sizey;
+  let off = weight / 2;
+
+  if (edge.type === 'n')
+  {
+    context.moveTo(edge.starty * unity - off, edge.startx * unitx);
+    context.lineTo(edge.endy * unity + off, edge.endx * unitx);
+  }
+  else if (edge.type === 's')
+  {
+    context.moveTo(edge.starty * unity + off, edge.startx * unitx);
+    context.lineTo(edge.endy * unity - off, edge.endx * unitx);
+  }
+  else if (edge.type === 'e')
+  {
+    context.moveTo(edge.starty * unity, edge.startx * unitx);
+    context.lineTo(edge.endy * unity, edge.endx * unitx);
+  }
+  else if (edge.type === 'w')
+  {
+    context.moveTo(edge.starty * unity, edge.startx * unitx);
+    context.lineTo(edge.endy * unity, edge.endx * unitx);
+  }
+}
+
 function drawSquareCell(cell, offx, offy, color)
 {
   let unitx = (width / sizex);
@@ -436,18 +472,24 @@ function renderMaze()
 {
   let weight = Math.floor(width / sizex / 7);
   context.beginPath();
-  for (let i = 0; i < maze.length; ++i)
-    for (let j = 0; j < maze[i].length; ++j)
-      drawCell(maze[i][j], weight); // TODO: draw by edges
+  // for (let i = 0; i < maze.length; ++i)
+  // for (let j = 0; j < maze[i].length; ++j)
+  // drawCell(maze[i][j], weight); // TODO: draw by edges
 
-  context.moveTo(0, 0);
-  context.lineTo(width, 0);
-  context.lineTo(width, height);
-  context.lineTo(0, height);
+  for (let i = 0; i < edges.length; ++i)
+    if (edges[i].wall)
+      drawEdge(edges[i], weight);
+
+  // context.moveTo(0, 0);
+  // context.lineTo(width, 0);
+  // context.lineTo(width, height);
+  // context.lineTo(0, height);
+
   context.strokeStyle = 'rgb(0, 69, 104)';
+  context.lineWidth = weight;
+
   context.closePath();
 
-  context.lineWidth = weight;
   context.stroke();
 
   drawSquareCell(maze.start, 1, 1, 'red');
@@ -484,24 +526,30 @@ function renderHint()
 /***********************************************/
 /*                Input Processing             */
 /***********************************************/
-var Key = {
-  _pressed : {},
-
-  LEFT : 37,
-  UP : 38,
-  RIGHT : 39,
-  DOWN : 40,
-
-  isDown : function(keyCode) { return this._pressed[keyCode]; },
-
-  onKeydown : function(event) { this._pressed[event.keyCode] = true; },
-
-  onKeyup : function(event) { delete this._pressed[event.keyCode]; }
-};
-
-window.addEventListener('keydown', function(event) { inputs[event.keyCode] = event.keyCode; });
+// var Key = {
+  // _pressed : {},
+//
+  // LEFT : 37,
+  // UP : 38,
+  // RIGHT : 39,
+  // DOWN : 40,
+//
+  // isDown : function(keyCode) { return this._pressed[keyCode]; },
+//
+  // onKeydown : function(event) { this._pressed[event.keyCode] = true; },
+//
+  // onKeyup : function(event) { delete this._pressed[event.keyCode]; }
+// };
 // window.addEventListener('keyup', function(event) { Key.onKeyup(event); }, false);
 // window.addEventListener('keydown', function(event) { Key.onKeydown(event); }, false);
+
+window.addEventListener('keydown', function(event) {
+  if ([ 37, 38, 39, 40 ].indexOf(event.keyCode))
+  {
+    event.preventDefault();
+  }
+  inputs[event.keyCode] = event.keyCode;
+});
 
 function updateHighScore()
 {
@@ -519,6 +567,12 @@ function updateHighScore()
         highScores.pop();
       return true;
     }
+
+  if (highScores.length < 3)
+  {
+    highScores.push(score);
+    return true;
+  }
 
   return false;
 }
@@ -700,10 +754,10 @@ let keyBind = {
   'A' : moveLeft,
   'S' : moveDown,
   'D' : moveRight,
-  'UP' : moveUp,
-  'LEFT' : moveLeft,
-  'DOWN' : moveDown,
-  'RIGHT' : moveRight,
+  'Up' : moveUp,
+  'Left' : moveLeft,
+  'Down' : moveDown,
+  'Right' : moveRight,
   'C' : cheatMove,
 };
 let gameWon = false;
@@ -731,9 +785,15 @@ function update(dTime)
     showBread = false;
     path.pop();
     if (updateHighScore())
-      window.alert('HIGH SCORE! ' + score + '\n\n' + highScores.reduce((a, v) => a + v + '\n', ''));
+      window.alert('HIGH SCORE! ' + score + ' pts\n' +
+                   'Time to Complete: ' + (time / 1000).toFixed(2) + 's\n\n-------- [ HIGH SCORES ] --------\n' +
+                   highScores.reduce((a, v) => a + v + '\n', ''));
     else
-      window.alert('YOUR SCORE: ' + score + '\n\n' + highScores.reduce((a, v) => a + v + '\n', ''));
+      window.alert('YOUR SCORE: ' + score + 'pts \n' +
+                   'Time to Complete: ' + (time / 1000).toFixed(2) + 's\n\n-------- [ HIGH SCORES ] --------\n' +
+                   highScores.reduce((a, v) => a + v + '\n', ''));
+
+    newGame = true;
   }
 }
 
@@ -790,7 +850,6 @@ function gameloop()
 
   if (gameWon && !newGame)
   {
-    // window.alert('YOU WIN')
     console.log('YOU WIN');
     gameWon = false;
     maze.character = null;
@@ -890,13 +949,9 @@ function custom()
   let tmpy = Math.abs(document.getElementById('sizey').value);
   if (tmpx == 0 || tmpy == 0)
   {
-    window.alert('maze must have nonzero width and height');
+    window.alert('maze must have non-zero width and height');
     return;
   }
-  // else if (tmpx > 150 || tmpy > 150)
-  // if (!window.confirm('Woah! That\'s a pretty big maze, proceed at your own risk!'))
-  // return;
-
   sizex = tmpx;
   sizey = tmpy;
   newGame = true;
@@ -904,7 +959,7 @@ function custom()
 
 function showHighScores()
 {
-  alert(highScores.reduce((a, v) => a + v + '\n', ''));
+  alert('-------- [ HIGH SCORES ] --------\n' + highScores.reduce((a, v) => a + v + '\n', ''));
 }
 
 let keyCodeToChar = {

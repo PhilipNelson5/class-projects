@@ -1,0 +1,62 @@
+[X] eight rows of bricks correctly colored (5 pts)
+  [X] bricks 8 x 14
+  [X] From the bottom, two rows yellow, two rows orange, two rows blue, and two rows green
+  [X] Have a small space between each of the rows and bricks
+
+[X] 3, 2, 1, countdown at start of game, and new paddles (8 pts)
+
+[X] Paddle movement, control (5 pts)
+  [X] WASD
+  [X] Arrow keys
+
+[X] Correct ball reflection, based on where it hits the paddle (5 pts)
+  [X] Ball reflects off paddle
+  [X] Ball changes angle
+
+[X] Paddle shrinks to half-size when a brick in the top row is cleared (5 pts)
+  [X] On start of new paddle, if top row already has a hole,
+      start with the full size paddle and then shrink to half size when a brick in the top green row is destroyed.
+
+[X] Start with 3 paddles, game ends when all are used (5 pts)
+  [X] implement lives
+  [X] game ends when lives are reduced to zero
+
+[X] In-game display of remaining paddles as graphic (not text) elements (5 pts)
+
+[X] The ball speed increases at the following intervals (5 pts)
+  [X] 4 bricks removed
+  [X] 12 bricks removed
+  [X] 36 bricks removed
+  [X] 62 bricks removed
+  [X] start over when starting a new paddle
+
+[X] scoring (8 pts)
+  [X] 1 point for each yellow brick
+  [X] 2 points for each orange brick
+  [X] 3 points for each blue brick
+  [X] 5 points for each green brick
+  [X] 25 points when a line is cleared
+  [X] Every 100 points the player earns a second ball at the middle of the paddle (no space bar to release it).
+
+[X] in game display of current score (5 pts)
+
+[X] "tasteful" particles that cover the surface area of the brick (10 pts)
+  [X] Every time a brick is hit, a tasteful explosion of particles occurs
+  [X] The explosion happens by having particles take up the same space (surface area)
+      as the brick and then explode out based upon their position relative to the center
+
+[X] User interface/menu (8 pts)
+  [X] New Game
+  [X] High Scores
+  [X] Credits
+
+[X] High Scores are persisted to the browser's local storage; keep and display up to the top 5 scores (8 pts)
+  [X] option to clear high scores
+
+[X] Correct collision detection and reflection (10 pts)
+  [X] Collision detection
+  [X] Reflection
+
+[X] Background image for gameplay area (3 pts)
+
+[x] Works on Chrome and Firefox; highly, highly prefer (but not require) it also works on Edge (5 pts)
