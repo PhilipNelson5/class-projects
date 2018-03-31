@@ -13,20 +13,20 @@ std::istream& operator>> (std::istream& i, Rational& a);
 class Rational {
 
 public:
-	Rational(int n = 0, int d = 1);
-	Rational(std::string s){std::stringstream ss { s }; ss>>*this;}
-	int getNumerator() const;
-	int getDenominator() const;
-	void setNumerator(int n);
-	void setDenominator(int d);
-	void simplify();
+  Rational(int n = 0, int d = 1);
+  Rational(std::string s){std::stringstream ss { s }; ss >> *this;}
+  int getNumerator() const;
+  int getDenominator() const;
+  void setNumerator(int n);
+  void setDenominator(int d);
+  void simplify();
 
-	operator float();
-	operator double();
+  operator float();
+  operator double();
 
 private:
-	int numerator;
-	int denominator;
+  int numerator;
+  int denominator;
 
 };
 
