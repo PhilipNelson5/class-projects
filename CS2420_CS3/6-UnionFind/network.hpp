@@ -5,18 +5,18 @@
 
 class Network
 {
-	public:
-		Network() : size(0), days(0) {}
-		void simulate(int);
+public:
+  Network() : size(0), days(0) {}
+  void simulate(int);
 
-	private:
-		UnionFind network;
-		int size;
-		int days;
+private:
+  UnionFind network;
+  int size;
+  int days;
 
-		void init();
-		void makeFriend();
-		void report();
+  void init();
+  void makeFriend();
+  void report();
 };
 
 #endif
