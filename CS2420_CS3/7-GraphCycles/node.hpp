@@ -7,10 +7,10 @@
 
 struct Node
 {
-	Node(int id = -1) : ID(id), visited(false) {};
-	int ID;
-	std::vector<Edge> adj;//adjacent list
-	bool visited;
+  Node(int id = -1) : ID(id), visited(false) {};
+  int ID;
+  std::vector<Edge> adj;//adjacent list
+  bool visited;
 };
 
 #endif
