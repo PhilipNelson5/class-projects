@@ -1,0 +1,139 @@
+% latex first.tex
+% latex first.tex
+% xdvi first.dvi
+% dvips -o first.ps first.dvi
+% gv first.ps
+% lpr first.ps
+% pdflatex first.tex
+% acroread first.pdf
+% dvipdf first.dvi first.pdf
+% xpdf first.pdf
+\documentclass[11pt]{article}
+
+\usepackage{latexsym}
+%\newcommand{\epsfig}{\psfig}
+%\usepackage{tabularx,booktabs,multirow,delarray,array}
+%\usepackage{graphicx,amssymb,amsmath,amssymb,mathrsfs}
+%\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage[linesnumbered, vlined, ruled]{algorithm2e}
+
+
+%\usepackage[T1]{fontenc}
+
+
+%\aboverulesep=0pt
+%\belowrulesep=0pt
+
+%\marginparwidth=0in
+%\marginparsep=0in
+\oddsidemargin=0.0in
+\evensidemargin=0.0in
+\headheight=0.0in
+%\headsep=0in
+\topmargin=-0.40in %0.35
+\textheight=9.0in %9.1in
+\textwidth=6.5in   %6.55in
+
+\usepackage{fullpage}
+
+%\setlength{\headheight}{0.2in}
+%\setlength{\headsep}{0.2in}
+%\setlength{\voffset}{-0.2in}
+
+\def\report{{\em Report-Max}$(1)$}
+\def\reportk{{\em Report-Max}$(k)$}
+
+%\pagestyle{plain}
+
+%\usepackage{listings}
+%\lstloadlanguages{C, csh, make} \lstset{
+%    language=C,tabsize=4,
+%    keepspaces=true,
+%    mathescape=true,
+%    breakindent=22pt,
+%    numbers=left,stepnumber=1,numberstyle=\footnotesize,
+%    basicstyle=\normalsize,
+%    showspaces=false,
+%    flexiblecolumns=true,
+%    breaklines=true, breakautoindent=true,breakindent=1em,
+%    escapeinside={/*@}{@*/}
+%}
+
+%\lhead{Solution of Homework 1}
+%\rhead{Haitao Wang}
+
+\begin{document}
+\baselineskip=14.0pt
+
+\title{CS5050 \textsc{Advanced Algorithms}
+\\{\Large Spring Semester, 2018}
+\\ Assignment 7: Graph Algorithms II
+\\ {\large {\bf Due Date: 3:00 p.m.}, Tuesday, Apr. 24, 2018 ({\bf at the beginning of CS5050 class})}}
+\date{}
+%\date{\today}
+
+
+\maketitle
+%\theoremstyle{plain}\newtheorem{theorem}{\textbf{Theorem}}
+
+\vspace{-0.6in}
+
+{\bf Note:} In this assignment, we assume all input graphs are represented by adjacency lists.
+
+\begin{enumerate}
+
+\item
+{\bf (20 points)}
+Given a directed graph $G$ of $n$ vertices and $m$ edges, each edge $(u,v)$ has a weight $w(u,v)$, which can be positive, zero, or negative.
+The {\em bottleneck-weight} of any path in $G$ is defined to be the
+{\bf largest} weight of all edges in the path. Let $s$ and $t$ be two vertices of $G$. A {\em minimum bottleneck-weight path} from $s$ to $t$ is a path with the smallest bottleneck-weight among all paths from $s$ to $t$ in $G$. Refer to Fig.~\ref{fig:bottleneck} for an example.
+
+
+Modify Dijkstra's algorithm to compute a  minimum bottleneck-weight path from $s$ to $t$. Your algorithm should have the same time complexity as Dijkstra's algorithm.
+
+
+\begin{figure}[h]
+\begin{minipage}[t]{\linewidth}
+\begin{center}
+\includegraphics[totalheight=1.5in]{bottleneck.eps}
+\caption{\footnotesize The following path is a minimum bottleneck-weight path from $s$ to $t$: $s,b,c,d,t$, whose bottleneck weight is $4$.}\label{fig:bottleneck}
+\end{center}
+\end{minipage}
+\end{figure}
+
+
+
+
+
+\item
+Let $G=(V,E)$ be an undirected connected graph, and each edge $(u,v)$ has a positive weight $w(u,v)>0$. Let $s$ and $t$ be two vertices of $G$. Let $\pi(s,t)$ denote a shortest path from $s$ to $t$ in $G$. Let $T$ be a minimum spanning tree of $G$. Please answer the following questions and explain why you obtain your answers.
+
+\begin{enumerate}
+\item
+Suppose we increase the weight of every edge of $G$ by a positive value $\delta>0$. Then, is $\pi(s,t)$ still a shortest path from $s$ to $t$?
+{\hfill \bf (10 points)}
+
+
+
+\item
+Suppose we increase the weight of every edge of $G$ by a positive value $\delta>0$. Then, is $T$ still a minimum spanning tree of $G$?
+{\hfill \bf (10 points)}
+
+\end{enumerate}
+
+{\bf Note:} For each of the two questions, your answer should be either ``Yes'' or ``Not necessary''. Again, please explain why you obtain your answers.
+
+\item
+{\bf (20 points)}
+Let $G=(V,E)$ be an undirected connected graph of $n$ vertices and $m$ edges. Suppose each edge of $G$ has a color of either {\em blue} or {\em red}. Design an algorithm to
+find a spanning tree $T$ of $G$ such that $T$ has as few red edges as possible. Your algorithm should run in $O((n+m)\log n)$ time. 
+
+
+
+\end{enumerate}
+
+
+{\bf Total Points: 60}
+\end{document}
+

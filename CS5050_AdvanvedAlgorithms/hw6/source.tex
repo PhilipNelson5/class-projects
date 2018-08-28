@@ -1,0 +1,250 @@
+% latex first.tex
+% latex first.tex
+% xdvi first.dvi
+% dvips -o first.ps first.dvi
+% gv first.ps
+% lpr first.ps
+% pdflatex first.tex
+% acroread first.pdf
+% dvipdf first.dvi first.pdf
+% xpdf first.pdf
+\documentclass[11pt]{article}
+
+\usepackage{latexsym}
+%\newcommand{\epsfig}{\psfig}
+%\usepackage{tabularx,booktabs,multirow,delarray,array}
+%\usepackage{graphicx,amssymb,amsmath,amssymb,mathrsfs}
+%\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage[linesnumbered, vlined, ruled]{algorithm2e}
+
+
+%\usepackage[T1]{fontenc}
+
+
+%\aboverulesep=0pt
+%\belowrulesep=0pt
+
+%\marginparwidth=0in
+%\marginparsep=0in
+\oddsidemargin=0.0in
+\evensidemargin=0.0in
+\headheight=0.0in
+%\headsep=0in
+\topmargin=-0.40in %0.35
+\textheight=9.0in %9.1in
+\textwidth=6.5in   %6.55in
+
+\usepackage{fullpage}
+
+%\setlength{\headheight}{0.2in}
+%\setlength{\headsep}{0.2in}
+%\setlength{\voffset}{-0.2in}
+
+\def\report{{\em Report-Max}$(1)$}
+\def\reportk{{\em Report-Max}$(k)$}
+
+%\pagestyle{plain}
+
+%\usepackage{listings}
+%\lstloadlanguages{C, csh, make} \lstset{
+%    language=C,tabsize=4,
+%    keepspaces=true,
+%    mathescape=true,
+%    breakindent=22pt,
+%    numbers=left,stepnumber=1,numberstyle=\footnotesize,
+%    basicstyle=\normalsize,
+%    showspaces=false,
+%    flexiblecolumns=true,
+%    breaklines=true, breakautoindent=true,breakindent=1em,
+%    escapeinside={/*@}{@*/}
+%}
+
+%\lhead{Solution of Homework 1}
+%\rhead{Haitao Wang}
+
+\begin{document}
+\baselineskip=14.0pt
+
+\title{CS5050 \textsc{Advanced Algorithms}
+\\{\Large Spring Semester, 2018}
+\\ Assignment 6: Graph Algorithms I
+\\ {\large {\bf Due Date: 3:00 a.m.}, Thursday, Apr. 12, 2018 ({\bf at the beginning of CS5050 class})}}
+\date{}
+%\date{\today}
+
+
+\maketitle
+%\theoremstyle{plain}\newtheorem{theorem}{\textbf{Theorem}}
+
+\vspace{-0.6in}
+
+{\bf Note:} In this assignment, we assume that all input graphs are represented by adjacency lists.
+
+\begin{enumerate}
+\item
+
+We say that a {\bf directed} graph $G$ is {\em strongly connected} if for every pair of vertices $u$ and $v$, there exists a path from $u$ to $v$ and there also exists a path from $v$ to $u$ in $G$.
+
+Given a directed graph $G$ of $n$ vertices and $m$ edges, let $s$ be a vertex of $G$.
+
+\begin{enumerate}
+\item
+Design an $O(m+n)$ time algorithm to determine whether the following is true: there exists a path from $s$ to $v$ in $G$ for all vertices $v$ of $G$. {\hfill \bf (10 points)}
+
+\item
+Design an $O(m+n)$ time algorithm to determine whether the following is true: there exists a path from $v$ to $s$ in $G$ for all vertices $v$ of $G$. {\hfill \bf (10 points)}
+
+\item
+Prove the following statement: {\em $G$ is strongly connected if and only if there exists a path in $G$ from $s$ to $v$ and there is also a path from $v$ to $s$  for all vertices $v$ of $G$}.
+
+{\hfill \bf (10 points)}
+
+{\bf Remark:} According to the above statement, we can determine whether $G$ is strongly connected in $O(m+n)$ time by using your algorithms for the above two questions (a) and (b).
+
+\end{enumerate}
+
+
+\item
+Given an undirected graph $G$ of $n$ vertices and $m$ edges, suppose $s$ and $t$ are two vertices in $G$. We have already known that we can find a shortest path from $s$ to $t$ by using the breadth-first-search (BFS) algorithm. However, there might be multiple different shortest paths from $s$ to $t$ (e.g., see Fig.~\ref{fig:undirectedpaths} as an example).
+
+Design an $O(m+n)$ time algorithm to compute the number of different shortest paths from $s$ to $t$ (your algorithm does not need to list all the shortest paths, but only report their number). (Hint: Modify the BFS algorithm.)
+{\hfill \bf (20 points)}
+
+\begin{figure}[h]
+\begin{minipage}[t]{\linewidth}
+\begin{center}
+\includegraphics[totalheight=1.2in]{undirectedpaths.eps}
+\caption{There are three different shortest paths from $s$ to $t$: $(s,a,b,t),(s,c,b,t), (s,c,e,t)$. }\label{fig:undirectedpaths}
+\end{center}
+\end{minipage}
+\end{figure}
+
+{\bf Note:} In case you are interested, the following is an application of the above problem in social networks. 
+
+A number of art museums around the country have been featuring work
+by an artist named Mark Lombardi (1951--2000), consisting of a set of
+intricately rendered graphs. Building on a great deal of research, these
+graphs encode the relationships among people involved in major political
+scandals over the past several decades: the vertices correspond to participants,
+and each edge indicates some type of relationship between a pair
+of participants. And so, if you peer closely enough at the drawings, you
+can trace out ominous-looking paths from a high-ranking government
+official, to a former business partner, to a bank in Switzerland, to
+a shadowy arms dealer.
+
+Such pictures form striking examples of {\em social networks}, which
+have vertices representing people and organizations,
+and edges representing relationships of various kinds. And the
+short paths that abound in these networks have attracted considerable
+attention recently, as people ponder what they mean. In the case of Mark
+Lombardi¡¯s graphs, they hint at the short set of steps that can carry you
+from the reputable to the disreputable.
+
+
+Of course, a single, spurious short path between vertices $s$ and $t$ in
+such a network may be more coincidental than anything else; a large
+number of short paths between $s$ and $t$ can be much more convincing.
+So in addition to the problem of computing a single shortest $s$-$t$ path
+in a graph $G$, social networks researchers have looked at the problem of
+determining the number of shortest $s$-$t$ paths, which is the problem we are now considering.
+
+\item
+Given a directed-acyclic-graph (DAG) $G$ of $n$ vertices and $m$ edges,
+let $s$ and $t$ be two vertices of $G$. There might be multiple different paths (not necessarily shortest paths) from $s$ to $t$ (e.g., see Fig.~\ref{fig:paths} for an example).
+Design an $O(m+n)$ time algorithm to compute the number of different paths in $G$ from $s$ to $t$. {\hfill \bf (20 points)}
+
+\begin{figure}[h]
+\begin{minipage}[t]{\linewidth}
+\begin{center}
+\includegraphics[totalheight=1.0in]{paths.eps}
+\caption{\footnotesize There are three different paths from $s$ to $t$: $s\rightarrow t$, $s\rightarrow b\rightarrow t$, and $s\rightarrow a\rightarrow b\rightarrow t$.} \label{fig:paths}
+\end{center}
+\end{minipage}
+\vspace*{-0.10in}
+\end{figure}
+
+\item
+In class we have studied an algorithm for computing shortest paths in DAGs. Particularly, the {\em length} of a path is defined to be the total sum of the weights of all edges in the path.
+
+Sometimes we are not only interested in a shortest path but also care about the number of edges of the path. For example, consider a flight graph in which each vertex is an airport and each edge represents a flight segment from one airport to another, and the weight of every edge represents the price of that flight segment. If you want to fly from airport $s$ to another one $t$, you are certainly interested in a shortest path from $s$ to $t$ to minimize the total price you have to pay. But you probably do not want a path with too many stops (i.e., too many edges) even if it is relatively cheap. For example, suppose you can only accept a path with at most two stops (i.e., three edges). Then, your goal is essentially to find a shortest path from $s$ to $t$ such that the path has at most three edges. This is the problem we are considering in this exercise.
+
+Let $G$ be a DAG (directed-acyclic-graph) of $n$ vertices and $m$ edges. Each edge $(u,v)$ of $E$ has a weight $w(u,v)$ (which can be positive, zero, or negative). Let $k$ be a positive integer, which is given in the input. A path in $G$ is called a {\em $k$-link} path if the path has {\bf no more than} $k$ edges. Let $s$ and $t$ be two vertices of $G$. A {\em $k$-link shortest path} from $s$ to $t$ is defined as a $k$-link path from $s$ to $t$ that has the minimum total sum of edge weights among all possible $k$-link $s$-to-$t$ paths in $G$. Refer to Fig.~\ref{fig:klinkpath} for an example.
+
+Design an $O(k(m+n))$ time algorithm to compute a $k$-link shortest path from $s$ to $t$. For simplicity, you only need to return the length of the path and do not need to report the actual path. (Hint: use dynamic programming and modify the shortest path algorithm on DAG we discussed in class.)
+{\hfill \bf (20 points)}
+
+\begin{figure}[h]
+\begin{minipage}[t]{\linewidth}
+\begin{center}
+\includegraphics[totalheight=1.0in]{klinkpath.eps}
+\caption{\footnotesize Illustrating a DAG: the number besides each edge is the weight of the edge. If we are looking for a $2$-link (i.e., $k=2$) shortest path from $s$ to $t$, then it is the path consisting of the only edge $(s,t)$, whose length is $5$. Although the path $s\rightarrow a\rightarrow b\rightarrow t$ is shorter, it is not a $2$-link path since it has three edges. Note that the path with the only edge $(s,t)$ is a $2$-link path because it has one edge, which is indeed {\bf no more than} two edges.} \label{fig:klinkpath}
+\end{center}
+\end{minipage}
+\vspace*{-0.10in}
+\end{figure}
+
+\end{enumerate}
+
+
+{\bf Total Points:} 90
+\end{document}
+
+%\begin{figure}[h]
+%\begin{minipage}[t]{\linewidth}
+%\begin{center}
+%\includegraphics[totalheight=2in]{figexample.eps}
+%\caption{An example}\label{fig:example}
+%\end{center}
+%\end{minipage}
+%\end{figure}
+
+%\begin{table}[h]
+%\begin{center}
+%\begin{tabularx|tabular}{0.75\textwidth}{|p{1.75cm}||X|X|X|X|X|X|X|X|X|X|}%{|l||c|c|c|c|c|c|c|c|c|c|}
+%\hline
+%Capacity & 7 &8&9&6&5&4&7&4&10&9\\
+%\hline
+%Allocation & 7&7&7&0&4&4&4&0&9&9\\
+%\hline
+%\end{tabularx|tabular}
+%\end{center}
+%\label{tab:tabexample}
+%\end{table}
+
+
+%\begin{description}
+%\item[Algorithm Description]
+%\item[Pseudocode for the Algorithm]
+%\item[Analysis of Running time]
+%\item[Argument for Correctness]
+%\end{description}
+
+%\begin{thebibliography}{99}
+%\bibitem{ref:clrs}
+%Thomas~H.~Cormen, Charles~E.~Leiserson, Ronald~E.~Rivest,
+%Clifford~Stein.
+%\newblock{Introduction to Algorithms, Second Edition, pages 568-570,}
+%\newblock{\emph{The MIT Press}, 2005.}
+%\end{thebibliography}
+
+%\begin{figure}[t]
+%\begin{minipage}[t]{0.49\linewidth}
+%\begin{center}
+%\includegraphics[totalheight=0.9in]{visibilitymap.eps}
+%\caption{\footnotesize Illustrating the horizontal visibility map of
+%a splinegon.} \label{fig:visibilitymap}
+%\end{center}
+%\end{minipage}
+%\hspace*{0.02in}
+%\begin{minipage}[t]{0.49\linewidth}
+%\begin{center}
+%\includegraphics[totalheight=0.9in]{trapezoid.eps}
+%\caption{\footnotesize Illustrating the decomposition of a
+%trapezoid: (a) The black points on the base $cd$ are vertices; (b) a
+%decomposition of the trapezoid.} \label{fig:trapezoid}
+%\end{center}
+%\end{minipage}
+%\vspace*{-0.15in}
+%\end{figure}
+

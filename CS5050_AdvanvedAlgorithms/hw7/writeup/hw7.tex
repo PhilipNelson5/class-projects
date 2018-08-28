@@ -1,0 +1,154 @@
+\documentclass[11pt]{article}
+
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{blindtext,pgffor}
+\usepackage{tcolorbox}
+\usepackage{mathtools}
+\tcbuselibrary{breakable}
+\usepackage{algorithmic}
+\usepackage{listings}
+\usepackage[linesnumbered, vlined, ruled]{algorithm2e}
+\oddsidemargin=0.0in
+\evensidemargin=0.0in
+\headheight=0.0in
+\topmargin=-0.40in %0.35
+\textheight=9.0in %9.1in
+\textwidth=6.5in   %6.55in
+\usepackage{fullpage}
+\def\report{{\em Report-Max}$(1)$}
+\def\reportk{{\em Report-Max}$(k)$}
+
+\tcbset{
+  colbacktitle = black!50!white,
+  colback = white,
+  title = {\bf Solution},
+}
+
+\begin{document}
+\baselineskip=14.0pt
+
+\title{CS5050 \textsc{Advanced Algorithms}
+\\ {\bf Philip Nelson}
+\\{\Large Spring Semester, 2018}
+\\ Assignment 7: Graph Algorithms II
+\\ {\large Worked with: Ammon H, Raul R, Hailee M, and Jack K}}
+\date{}
+
+\maketitle
+
+\vspace{-0.6in}
+
+{\bf Note:} In this assignment, we assume all input graphs are represented by adjacency lists.
+
+\begin{enumerate}
+
+\item
+{\bf (20 points)}
+Given a directed graph $G$ of $n$ vertices and $m$ edges, each edge $(u,v)$ has a weight $w(u,v)$, which can be positive, zero, or negative.
+The {\em bottleneck-weight} of any path in $G$ is defined to be the
+{\bf largest} weight of all edges in the path. Let $s$ and $t$ be two vertices of $G$. A {\em minimum bottleneck-weight path} from $s$ to $t$ is a path with the smallest bottleneck-weight among all paths from $s$ to $t$ in $G$.
+
+Modify Dijkstra's algorithm to compute a  minimum bottleneck-weight path from $s$ to $t$. Your algorithm should have the same time complexity as Dijkstra's algorithm.
+
+\begin{tcolorbox}[breakable]
+
+  In order to find a path from $s$ to $t$ with the lowest bottle-neck, we will
+  modify Dijkstra's algorithm. To begin, initialize the bottle-neck, $v.b$, for all
+  $v \in G$ to $\infty$ and $s.b$ to $-\infty$. Then following Dijkstra's algorithm,
+  we will prioritize the path with the smallest bottle-neck.
+
+\begin{lstlisting}
+lowestBottleNeck(G, s, t) {
+  for each v in graph {
+    v.pre = null
+    v.b = inf
+  }
+  s.b = -inf
+  Q : add all vertices
+
+  while(!Q.empty()) {
+    u = Q.extractMin()
+    for each v in adj(u) {
+      if(v.b == inf) {
+        v.b = max(u.b, w(u, v))
+        v.pre = u
+      }
+      else {
+        min = min(v.b, max(w(u, v), u.b))
+        if (min != v.b) {
+          v.pre = u
+        }
+        v.b = min
+      }
+      Q.decreaseKey(v, v.b)
+    }
+  }
+}
+\end{lstlisting}
+
+This algorithm has the same running time as Dijkstra's algorithm, $O( m + n \log n)$, because
+each vertex is removed once from the priority queue, and each edge is followed once. Then,
+the extract min operation is performed $n$ times and the decrease key operation is
+performed $m$ times which takes $O(\log n)$ and $O(1)$ time respectively. This gives
+the function lowestBottleNeck the time complexity of $O(m + n \log n)$\\
+
+In order to retrieve the path, simply push and follow the predecessors onto a stack
+then read the sack.
+
+\end{tcolorbox}
+
+\item
+Let $G=(V,E)$ be an undirected connected graph, and each edge $(u,v)$ has a positive weight $w(u,v)>0$. Let $s$ and $t$ be two vertices of $G$. Let $\pi(s,t)$ denote a shortest path from $s$ to $t$ in $G$. Let $T$ be a minimum spanning tree of $G$. Please answer the following questions and explain why you obtain your answers.
+
+\begin{enumerate}
+\item
+Suppose we increase the weight of every edge of $G$ by a positive value $\delta>0$. Then, is $\pi(s,t)$ still a shortest path from $s$ to $t$?
+{\hfill \bf (10 points)}
+
+\begin{tcolorbox}
+  No, the following is a counter example: the two paths from $s$ to $t$,
+  \[s\xrightarrow{\text{1}}a\xrightarrow{\text{1}}b\xrightarrow[\text{}]{\text{1}}c\xrightarrow{\text{1}}s
+  \text{ and }c\xrightarrow{\text{5}}s\] With the current edge weights, the first path is lighter,
+  however; if $1$ were to be added to each edge, the better path would become the second path. Longer
+  paths gain more weight when a fixed amount is added to each vertex.
+\end{tcolorbox}
+
+\item
+Suppose we increase the weight of every edge of $G$ by a positive value $\delta>0$. Then, is $T$ still a minimum spanning tree of $G$?
+{\hfill \bf (10 points)}
+
+\begin{tcolorbox}
+  Yes, because of to the cut property. If the vertices are partitioned into
+  two sets, and the edge with the lowest weight is selected to be part of the minimal
+  spanning tree, the same edge would still be selected even if some $\delta > 0$ were
+  added to each edge.
+\end{tcolorbox}
+
+\end{enumerate}
+
+\item
+{\bf (20 points)}
+Let $G=(V,E)$ be an undirected connected graph of $n$ vertices and $m$ edges. Suppose each edge of $G$ has a color of either {\em blue} or {\em red}. Design an algorithm to
+find a spanning tree $T$ of $G$ such that $T$ has as few red edges as possible. Your algorithm should run in $O((n+m)\log n)$ time.
+
+\begin{tcolorbox}
+
+  To solve this problem we can reduce the problem to a different problem that can be solved
+  with Prim's algorithm. Begin by weighting red edges with $1$ and blue edges with $0$. This
+  reduction can be done in $O(m)$ time. Then we will use Prim's algorithm for
+  finding minimum spanning trees.
+  This method is correct because you will always select the
+  less weighted edge which, given the option, will be a blue edge.\\
+
+  The time complexity can be $O( (n+m) \log n)$ or $O( m + n \log n)$ depending on
+  which priority queue is used, min heap or Fibonacci heap.
+
+\end{tcolorbox}
+
+\end{enumerate}
+
+
+{\bf Total Points: 60}
+\end{document}
+
