@@ -1,5 +1,7 @@
 ~~~~
 .
+├── assets
+│   └── css
 ├── CS1400_CS1
 │   ├── 1-EggLaunch
 │   ├── 2-DevilsDice
@@ -55,7 +57,26 @@
 │   ├── 6-JuliaJulia
 │   └── notes
 ├── CS5050_AdvanvedAlgorithms
+│   ├── hw1
+│   ├── hw2
+│   ├── hw3
+│   ├── hw4
+│   ├── hw5
+│   ├── hw6
+│   └── hw7
 ├── CS5410_GameDev
+│   ├── 1-GameLoop
+│   ├── 2-Maze
+│   ├── 3-Breakout
+│   └── class
 ├── ECE5930_NeuralNetworks
 │   └── 1-perceptron
+├── _includes
+├── _layouts
 └── MATH5620_NumericalSolutionsOfDifferentialEquations
+    ├── error
+    ├── HW
+    ├── logistic
+    ├── machineEpsilon
+    ├── matrix
+    └── secondOrderLinear
