@@ -1,0 +1,179 @@
+\documentclass[12pt]{article}
+
+%\usepackage{latexsym}
+%\newcommand{\epsfig}{\psfig}
+%\usepackage{tabularx,booktabs,multirow,delarray,array}
+%\usepackage{graphicx,amssymb,amsmath,amssymb,mathrsfs}
+%\usepackage{hyperref}
+%\usepackage[linesnumbered, vlined, ruled]{algorithm2e}
+
+%\usepackage{fullpage}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{listings}
+
+\newcommand{\imp}{\rightarrow}
+\newcommand\qedsym{\hfill \rule{2mm}{2mm}}
+
+\begin{document}
+\baselineskip=14.0pt
+
+\title{MATH5210 \textsc{Analysis}
+  \\ Assignment 2: Limit Problems pt. 2
+  \\ Philip Nelson
+}
+\date{}
+
+\maketitle
+
+\vspace{-0.5in}
+
+\section*{2}
+Prove $\lim_{n\to \infty}\frac{2n+1}{2n-4} = 1$
+
+\bigskip
+
+\textbf{Lemma 1:} $2n-4$ is greater than $n$
+
+We will show that $2n-4$ is greater than $n$ by the following:
+
+$2n-4 = n + n - 4$ and $n - 4 > 1$ for all $n > 4$ thus $2n - 4 > n$ for all $n > 4$.
+
+\bigskip
+
+\textbf{Proof:} Let there be given an $\epsilon > 0$. $n$ is larger than $N$. We will show that the above limit, $\lim_{n\to \infty}\frac{2n+1}{2n-4}$, converges to $1$ by showing that $|a_n - A| < \epsilon$ for all $n > N$. Begin by choosing $N > 5 \cdot \epsilon$. Then $|a_n - A| = |\frac{2n+1}{2n-4} - 1 | < \epsilon$. Next we change $1$ into $\frac{2n-4}{2n-4}$ and combine both fractions leaving us with $|\frac{2n+1-2n+4}{2n-4}| < \epsilon$. By lemma 1 we will make an estimation that makes the denominator smaller. We will also simplify the numerator. This gives us $|\frac{2n+1-2n+4}{2n-4}| < |\frac{5}{n}|$. Since we know that $n > N$ from the beginning, we can say that $|\frac{5}{n}| < \frac{5}{N}$. Finally, because we chose $N > 5 \cdot \epsilon$, then $\frac{5}{N} < \epsilon$. This proves that $\lim_{n\to \infty}\frac{2n+1}{2n-4}$, converges to $1$ for all $N > 5\cdot \epsilon$. \qedsym{}
+
+\section*{5}
+Prove $\lim_{n\to \infty}\frac{n}{2^n} = 0$
+
+\bigskip
+
+\textbf{Lemma 2:} $2^n$ is greater than $n^3$
+
+We will show that $2^n$ is greater than $n^3$ by the following:
+
+$2^n > n^3
+  \imp \ln(2^n) > \ln(n^3)
+  \imp n\ln(2) > 3\ln(n)
+  \imp \frac{n}{\ln(n)} > \frac{3}{\ln(2)}$.
+
+  Thus $\frac{n}{\ln(n)} > \frac{3}{\ln(2)}$ is true for $n>10$ and so $2^n$ is greater than $n^3$ for $n>10$.
+
+\bigskip
+
+\textbf{Lemma 3:} $n^2$ is greater than $n$
+
+We will show that $n^2$ is greater than $n$ by the following:
+
+$n^2 > n
+  \imp n > 1$
+
+  Thus $n>1$ is true for $n>1$ and so $n^2$ is greater than $n$ for $n>1$.
+
+\bigskip
+
+\textbf{Proof:} Let there be given an $\epsilon > 0$. $n$ is larger than $N$. We will show that the above limit, $\lim_{n\to \infty}\frac{n}{2^n}$, converges to $0$ by showing that $|a_n - A| < \epsilon$ for all $n > N$. Begin by choosing $N > \frac{1}{\epsilon}$. Then $|a_n - A| = |\frac{n}{2^n} - 0 | < \epsilon$. By lemma 2 we will make an estimation that makes the denominator smaller. This gives us $|\frac{n}{2^n}| < |\frac{n}{n^3}|$. We will continue by making another estimation using lemma 3 that makes the numerator larger. This gives us that $|\frac{n}{n^3}| < |\frac{n^2}{n^3}|$. Then we can continue to transform this by $|\frac{n^2}{n^3}| < |\frac{1}{n}|$ and since we know that $n > N$ from the beginning, we can say that $|\frac{1}{n}| < \frac{1}{N}$. Finally, because we chose $N > \frac{1}{\epsilon}$, then $\frac{1}{N} < \epsilon$. This proves that $\lim_{n\to \infty}\frac{n}{2^n}$, converges to $0$.
+
+\qedsym{}
+
+\section*{7}
+Prove $\lim_{n\to \infty}\frac{1}{\ln n} = 0$
+
+\bigskip
+
+\textbf{Lemma 4:} $e^{\frac{2}{\epsilon}}$ is greater than $e^{\frac{1}{\epsilon}}$
+
+We will show that $e^{\frac{2}{\epsilon}}$ is greater than $e^{\frac{1}{\epsilon}}$ by the following:
+
+$e^{\frac{2}{\epsilon}} > e^{\frac{1}{\epsilon}}
+  \imp \frac{2}{\epsilon} > \frac{1}{\epsilon}
+  \imp 2 > 1$
+
+Thus $2 > 1$ is true for all $\epsilon$ and so $e^{\frac{2}{\epsilon}}$ is greater than $e^{\frac{1}{\epsilon}}$.
+
+\bigskip
+
+\textbf{Proof:} Let there be given an $\epsilon > 0$. $n$ is larger than $N$. We will show that the above limit, $\lim_{n\to \infty}\frac{1}{\ln n}$, converges to $0$ by showing that $|a_n - A| < \epsilon$ for all $n > N$. Begin by choosing $N > e^{\frac{1}{\epsilon}}$. Then $|a_n - A| = | \frac{1}{\ln n} - 0 | < \epsilon$. Since $\ln n > 0$ for all $n > 1$ we have $|\frac{1}{\ln n}| = \frac{1}{\ln n} < \epsilon$. As stated above, $n > N$, thus $\frac{1}{\ln n} < \frac{1}{\ln N} < \epsilon$. Now since we chose $N > e^\frac{1}{\epsilon}$ we can use lemma 4 and replace $\frac{1}{\ln N} < \epsilon$ with $\frac{1}{\ln e^\frac{2}{\epsilon}}$ which is equal to $\frac{\epsilon}{2} < \epsilon$ which is true for all $\epsilon$. Thus we see that $|a_n - A| < \epsilon$ for all $n > N$ and $\lim_{n\to \infty}\frac{1}{\ln n}$ converges to $0$.
+\qedsym{}
+
+\section*{8}
+Prove $\lim_{n\to \infty}\frac{1}{\ln(\ln n)} = 0$
+
+\bigskip
+
+\textbf{Lemma 5:} $e^{e^{\frac{2}{\epsilon}}}$ is greater than $e^{e^{\frac{1}{\epsilon}}}$
+
+We will show that $e^{e^{\frac{2}{\epsilon}}}$ is greater than $e^{e^{\frac{1}{\epsilon}}}$ by the following:
+
+$e^{e^{\frac{2}{\epsilon}}} > e^{e^{\frac{1}{\epsilon}}}
+  \imp e^{\frac{2}{\epsilon}} > e^{\frac{1}{\epsilon}}
+  \imp \frac{2}{\epsilon} > \frac{1}{\epsilon}
+  \imp 2 > 1$
+
+Thus $2 > 1$ is true for all $\epsilon$ and so $e^{e^{\frac{2}{\epsilon}}}$ is greater than $e^{e^{\frac{1}{\epsilon}}}$.
+
+\bigskip
+
+\textbf{Proof:} Let there be given an $\epsilon > 0$. $n$ is larger than $N$. We will show that the above limit, $\lim_{n\to \infty}\frac{1}{\ln(\ln n)}$, converges to $0$ by showing that $|a_n - A| < \epsilon$ for all $n > N$. Begin by choosing $N > e^{e^{\frac{1}{\epsilon}}}$. Then $|a_n - A| = | \frac{1}{\ln(\ln n)} - 0 | < \epsilon$. Since $\ln(\ln n) > 0$ for all $n > 3$ we have $|\frac{1}{\ln(\ln n)}| = \frac{1}{\ln(\ln n)} < \epsilon$. As stated above, $n > N$, thus $\frac{1}{\ln(\ln n)} < \frac{1}{\ln(\ln N)} < \epsilon$. Now since we chose $N > e^{e^\frac{1}{\epsilon}}$ we can use lemma 5 and replace $\frac{1}{\ln(\ln N)} < \epsilon$ with $\frac{1}{\ln(\ln e^{e^\frac{2}{\epsilon}})}$ which is equal to $\frac{1}{\frac{2}{\epsilon}} = \frac{\epsilon}{2} < \epsilon$ which is true for all $\epsilon$. Thus we see that $|a_n - A| < \epsilon$ for all $n > N$ and $\lim_{n\to \infty}\frac{1}{\ln(\ln n)}$ converges to $0$.
+\qedsym{}
+
+\section*{10}
+Prove $\lim_{n\to \infty}\frac{n}{\ln n} = \infty$
+
+\bigskip
+
+\textbf{Lemma 6:} $\sqrt{n}$ is unbounded
+
+We will show that $\sqrt{n}$ is unbound by the following:
+
+Recall that a set $s$ is bounded if $\exists M$ s.t. $\forall x\in s$ we have $x\leq M$. Then observe, let $M$ be given, then $n > M^2$ and $\sqrt{n} > M$. So we see that $\sqrt{n}$ is unbounded.
+
+\bigskip
+
+\textbf{Proof:} Let there be given an $\epsilon > 0$. $n$ is larger than $N$. We will show that the above limit, $\lim_{n\to \infty}\frac{n}{\ln n}$, does not converge by showing that $\frac{n}{\ln n}$ is unbounded. Our first step will be to make an estimate which is less than $\frac{n}{\ln n}$. From discussion in class we can say that $\sqrt{n} < \frac{n}{\ln n}$. Then using lemma 6 we know that $\sqrt{n}$ is not bounded. Since $\sqrt{n}$ is less than $\frac{n}{\ln n}$, $\frac{n}{\ln n}$ is also unbounded and therefor the limit does not converge.\qedsym{}
+
+\section*{14}
+Prove $\lim_{n\to \infty} \sqrt{n+2} - \sqrt{n} = 0$
+
+\bigskip
+
+\textbf{Lemma 7:} $\sqrt{n+2} + \sqrt{n}$ is greater than $\sqrt{n}$
+
+We will show that $\sqrt{n+2} + \sqrt{n}$ is greater than $\sqrt{n}$ by the following:
+
+$\sqrt{n+2} + \sqrt{n} > \sqrt{n}
+  \imp \sqrt{n+2} + \sqrt{n} - \sqrt{n} > 0
+  \imp \sqrt{n+2} > 0$
+
+Thus $\sqrt{n+2} > 0$ is true for all $n \geq 0$ and so $\sqrt{n+2} + \sqrt{n}$ is greater than $\sqrt{n}$
+
+\bigskip
+
+\textbf{Lemma 8:} $\sqrt{a} - \sqrt{b} = \frac{a - b}{\sqrt{a} + {\sqrt{b}}}$
+
+We will show that $\sqrt{a} - \sqrt{b}$ is equal to $\frac{a - b}{\sqrt{a} + {\sqrt{b}}}$ by the following:
+
+$\sqrt{a} - \sqrt{b}
+  = \sqrt{a} - \sqrt{b} \cdot \frac{\sqrt{a} + \sqrt{b}}{\sqrt{a} + \sqrt{b}}
+  = \frac{a - b}{\sqrt{a} + {\sqrt{b}}}$
+
+\bigskip
+
+\textbf{Proof:} Let there be given an $\epsilon > 0$. $n$ is larger than $N$. We will show that the above limit, $\lim_{n\to \infty} \sqrt{n+2} - \sqrt{n}$, converges to $0$ by showing that $|a_n - A| < \epsilon$ for all $n > N$. Begin by choosing $N > \frac{4}{\epsilon^2}$. Then $|a_n - A| = | \sqrt{n+2} - \sqrt{n} - 0 | < \epsilon$. By using lemma 8 we can transform the equation into $| \sqrt{n+2} - \sqrt{n} | = |\frac{n + 2 - n}{\sqrt{n + 2} + {\sqrt{n}}|}$. By lemma 7 we can make an estimation that makes the denominator smaller, and simplify the numerator, $|\frac{n + 2 - n}{\sqrt{n + 2} + {\sqrt{n}}}| < |\frac{2}{\sqrt{n}}|$. Since $\sqrt{n} > 0$ for all $n\geq0$ and as stated above, $n > N$, we have $\frac{2}{\sqrt{n}} < \frac{2}{\sqrt{N}} < \epsilon$. Since we chose $N > \frac{4}{\epsilon^2}$, thus we see that $|a_n - A| < \epsilon$ for all $n > N$ and $\lim_{n\to \infty} \sqrt{n+2} - \sqrt{n}$ converges to $0$.
+
+\section*{15}
+Prove $\lim_{n\to \infty}\frac{\sqrt{n+2}}{\sqrt{n-3}} = 1$
+
+\bigskip
+
+\textbf{Proof:} Let there be given an $\epsilon > 0$. $n$ is larger than $N$. We will show that the above limit, $\lim_{n\to \infty}\frac{\sqrt{n+2}}{\sqrt{n-3}}$, converges to $1$ by showing that $|a_n - A| < \epsilon$ for all $n > N$. Begin by choosing $N > 3 + \frac{5}{\epsilon}$. Then $|a_n - A| = | \frac{\sqrt{n+2}}{\sqrt{n-3}} - 1 | < \epsilon$. We will continue by using a series of algebraic techniques to simplify the equation as follows: $|\frac{\sqrt{n+2}}{n-3} - 1| = |\frac{\sqrt{n+2}-\sqrt{n-3}}{\sqrt{n-3}}|$. Then we will multiply the top and bottom by the conjugate of the numerator $|\frac{n+2-n+3}{n-3+\sqrt{(n+2)(n-3)}}|$. Then we can make an estimate and make the denominator smaller giving us $|\frac{5}{n-3}|$ which is positive for $n>3$. Since $n > N$, we have $\frac{5}{n-3} < \frac{5}{N-3}$. Then, since we chose $N > 3 + \frac{5}{\epsilon}$, we see that $|a_n - A| < \epsilon$ for all $n > N$ and $\lim_{n\to \infty}\frac{\sqrt{n+2}}{\sqrt{n-3}}$ converges to $1$.
+
+\bigskip
+
+\section*{16}
+Prove $\lim_{n\to \infty}\sqrt{n^2+2}-\sqrt{n^2+1} = 0$
+
+\bigskip
+
+\textbf{Proof:} Let there be given an $\epsilon > 0$. $n$ is larger than $N$. We will show that the above limit, $\lim_{n\to \infty}\sqrt{n^2+2}-\sqrt{n^2+1}$, converges to $0$ by showing that $|a_n - A| < \epsilon$ for all $n > N$. Begin by choosing $N > \frac{1}{\epsilon}$. Then $|a_n - A| = | \lim_{n\to \infty}\sqrt{n^2+2}-\sqrt{n^2+1} - 0 | < \epsilon$. Using lemma 8 we rewrite as $|\frac{n^2+2-n^2-1}{\sqrt{n^2+2}+\sqrt{n^2+1}}|$. Then we simplify the numerator and drop positive terms from the denominator to make a smaller estimate which leaves us $\frac{1}{\sqrt{n^2}\sqrt{n^2}} = \frac{1}{n}$. Since $n>N$ $\frac{1}{n} < \frac{1}{N} < \epsilon$ Finally, since we chose $N > \frac{1}{\epsilon}$, we see that $|a_n - A| < \epsilon$ for all $n > N$ and $\lim_{n\to \infty}\sqrt{n^2+2}-\sqrt{n^2+1}$ converges to $0$.\qedsym{}
+\end{document}
