@@ -101,6 +101,7 @@ $\lim\limits_{n\to\infty} \frac{n^2 + n + 1}{n^2 - 4} = \frac{1}{1} = 1$
 # 2.3
 
 **Claim:** $\lim\limits_{n\to\infty} \frac{\sqrt{n^3 + 1}}{n + 2} = \infty$
+
 **Proof:** Begin by multiplying by $\sfrac{\frac{1}{n}}{\frac{1}{n}}$
 $$
 \lim\limits_{n\to\infty} \frac{\sqrt{n^3 + 1}}{n + 2}
