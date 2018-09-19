@@ -50,51 +50,76 @@ List the properties of limits discussed in class. Give the citation for these pr
 
 **Claim:** $\lim\limits_{n\to\infty} \frac{5n-6}{6n+7} = \frac{5}{6}$
 
-**Proof:** $\lim\limits_{n\to\infty} \frac{5n-6}{6n+7} = \lim\limits_{n\to\infty} \frac{5-\frac{6}{n}}{6+\frac{7}{n}}$
+**Proof:** By the fraction property $\frac{a}{b} = \frac{ra}{rb}$ multiply by $\sfrac{\frac{1}{n}}{\frac{1}{n}}$
 
-Let $a_n = 5 - \frac{6}{n}$\
-Then the $\lim\limits_{n\to\infty} a_n = \lim\limits_{n\to\infty} 5 - \frac{6}{n}$\
-Using the sum property of limits,
-$\lim\limits_{n\to\infty} 5 - \frac{6}{n} = \lim\limits_{n\to\infty} 5 - \lim\limits_{n\to\infty} \frac{6}{n}$\
-From common knowledge and previous $\epsilon - N$ proofs, we know
-$\lim\limits_{n\to\infty} 5 = 5$ and $\lim\limits_{n\to\infty} \frac{6}{n} = 0$\
-Thus $\lim\limits_{n\to\infty} 5 - \frac{6}{n} = 5 + 0 = 5$
+$$\lim\limits_{n\to\infty} \frac{5n-6}{6n+7}
+= \lim\limits_{n\to\infty} \frac{5-\frac{6}{n}}{6+\frac{7}{n}}$$
 
-Let $b_n = 6 + \frac{7}{n}$\
-Then the $\lim\limits_{n\to\infty} b_n = \lim\limits_{n\to\infty} 6 + \frac{7}{n}$\
-Using the sum property of limits,
-$\lim\limits_{n\to\infty} 6 - \frac{7}{n} = \lim\limits_{n\to\infty} 6 - \lim\limits_{n\to\infty} \frac{7}{n}$\
-From common knowledge and previous $\epsilon - N$ proofs, we know
-$\lim\limits_{n\to\infty} 6 = 6$ and $\lim\limits_{n\to\infty} \frac{7}{n} = 0$\
-Thus $\lim\limits_{n\to\infty} 6 - \frac{7}{n} = 6 + 0 = 6$
+Then by the quotient property of limits
+$$
+= \frac
+{\lim\limits_{n\to\infty}5 - \frac{6}{n}}
+{\lim\limits_{n\to\infty}6 + \frac{7}{n}}
+$$
 
-Finally, using the quotient property of limits and  previous two statements
-$\lim\limits_{n\to\infty} \frac{5n-6}{6n+7} = \lim\limits_{n\to\infty}\frac{a_n}{b_n} = \frac{5}{6}$ \qedsym{}
+Then by the summation property of limits
+$$
+= \frac
+{\lim\limits_{n\to\infty}5 - \lim\limits_{n\to\infty}\frac{6}{n}}
+{\lim\limits_{n\to\infty}6 + \lim\limits_{n\to\infty}\frac{7}{n}}
+$$
+
+Then by common knowledge and previous $\epsilon - N$ proofs
+$$
+= \frac
+{5 - 0}
+{6 + 0}
+= \frac
+{5}
+{6}
+$$
+
+Thus we have shown that $\lim\limits_{n\to\infty} \frac{5n-6}{6n+7} = \frac{5}{6}$
+
+\qedsym{}
 
 # 2.2
 
 **Claim:** $\lim\limits_{n\to\infty} \frac{n^2 + n + 1}{n^2 - 4} = 1$
 
-**Proof:** $\lim\limits_{n\to\infty} \frac{n^2 + n + 1}{n^2 - 4} = \lim\limits_{n\to\infty} \frac{1 + \frac{1}{n} + \frac{1}{n^2}}{1 - \frac{4}{n^2}}$
+**Proof:** By the fraction property $\frac{a}{b} = \frac{ra}{rb}$ multiply by $\sfrac{\frac{1}{n}}{\frac{1}{n}}$
 
-Let $a_n = 1+\frac{1}{n} + \frac{1}{n^2}$ \
-Then $\lim\limits_{n\to\infty} a_n = \lim\limits_{n\to\infty} 1+\frac{1}{n} + \frac{1}{n^2}$ \
-Using the sum property of limits,
-$\lim\limits_{n\to\infty} 1+\frac{1}{n} + \frac{1}{n^2} = \lim\limits_{n\to\infty} 1 +  \lim\limits_{n\to\infty} \frac{1}{n} +  \lim\limits_{n\to\infty} \frac{1}{n^2}$\
-From common knowledge and previous $\epsilon - N$ proofs, we know\
-$\lim\limits_{n\to\infty} 1 = 1$, $\lim\limits_{n\to\infty} \frac{1}{n} = 0$, and $\lim\limits_{n\to\infty} \frac{1}{n^2} = 0$\
-Thus $\lim\limits_{n\to\infty} 1+\frac{1}{n} + \frac{1}{n^2} = 1 + 0 + 0 = 1$
+$$\lim\limits_{n\to\infty} \frac
+{n^2 + n + 1}
+{n^2 - 4}
+= \lim\limits_{n\to\infty} \frac
+{1 + \frac{1}{n} + \frac{1}{n^2}}
+{1 - \frac{4}{n^2}}
+$$
 
-Let $b_n = 1-\frac{4}{n^2}$ \
-Then $\lim\limits_{n\to\infty} b_n = \lim\limits_{n\to\infty} = 1-\frac{4}{n^2}$ \
-Using the sum property of limits,
-$\lim\limits_{n\to\infty} = 1-\frac{4}{n^2} = \lim\limits_{n\to\infty} 1 - \lim\limits_{n\to\infty} \frac{4}{n^2}$\
-From common knowledge and previous $\epsilon - N$ proofs, we know\
-$\lim\limits_{n\to\infty} 1 = 1$ and $\lim\limits_{n\to\infty} \frac{4}{n^2} = 0$\
-Thus $\lim\limits_{n\to\infty} 1-\frac{4}{n^2} = 1 + 0 = 1$
+Then by the quotient property of limits
+$$= \frac
+{\lim\limits_{n\to\infty}1 + \frac{1}{n} + \frac{1}{n^2}}
+{\lim\limits_{n\to\infty}1 - \frac{4}{n^2}}
+$$
 
-Finally, using the quotient property of limits and previous two statements
-$\lim\limits_{n\to\infty} \frac{n^2 + n + 1}{n^2 - 4} = \frac{1}{1} = 1$
+Then by the summation property of limits
+$$= \frac
+{\lim\limits_{n\to\infty}1 + \lim\limits_{n\to\infty}\frac{1}{n} + \lim\limits_{n\to\infty}\frac{1}{n^2}}
+{\lim\limits_{n\to\infty}1 - \lim\limits_{n\to\infty}\frac{4}{n^2}}
+$$
+
+Then by common knowledge and previous $\epsilon - N$ proofs
+$$= \frac
+{1 + 0 + 0}
+{1 - 0}
+=\frac
+{1}
+{1}
+= 1
+$$
+
+Thus we have shown that $\lim\limits_{n\to\infty} \frac{n^2 + n + 1}{n^2 - 4} = 1$
 
 \qedsym{}
 
@@ -102,7 +127,7 @@ $\lim\limits_{n\to\infty} \frac{n^2 + n + 1}{n^2 - 4} = \frac{1}{1} = 1$
 
 **Claim:** $\lim\limits_{n\to\infty} \frac{\sqrt{n^3 + 1}}{n + 2} = \infty$
 
-**Proof:** Begin by multiplying by $\sfrac{\frac{1}{n}}{\frac{1}{n}}$
+**Proof:** By the fraction property $\frac{a}{b} = \frac{ra}{rb}$ multiply by $\sfrac{\frac{1}{n}}{\frac{1}{n}}$
 $$
 \lim\limits_{n\to\infty} \frac{\sqrt{n^3 + 1}}{n + 2}
 = \lim\limits_{n\to\infty} \frac
@@ -131,7 +156,7 @@ $$
 {\lim\limits_{n\to\infty}1 + \lim\limits_{n\to\infty}\frac{2}{n}}
 $$
 
-Then by common knowledge and previous proofs
+Then by common knowledge and previous $\epsilon - N$ proofs
 $$
 =\frac
 {\sqrt{\lim\limits_{n\to\infty}n + 0}}
@@ -152,7 +177,7 @@ $$
 =\lim\limits_{n\to\infty}\sqrt{n} = \infty
 $$
 
-Thus we can see that $\lim\limits_{n\to\infty} \frac{\sqrt{n^3 + 1}}{n + 2} = \infty$
+Thus we have shown that $\lim\limits_{n\to\infty} \frac{\sqrt{n^3 + 1}}{n + 2} = \infty$
 
 \qedsym{}
 
@@ -172,7 +197,7 @@ Then let $b_n = \frac{1}{n}$. \
 We know from previous $\epsilon - N$ proofs that
 $\lim\limits_{n\to\infty} b_n = \lim\limits_{n\to\infty}\frac{1}{n} = 0$
 
-Therefore $\lim\limits_{n\to\infty} \frac{\sin(n)}{n} = 0$ \qedsym
+Thus we have shown that $\lim\limits_{n\to\infty} \frac{\sin(n)}{n} = 0$ \qedsym
 
 # 2.5
 
@@ -195,7 +220,6 @@ The convergent subsequence property states that if $\lim\limits_{n\to\infty} a_n
 
 \qedsym{}
 
-\pagebreak
 # 2.6
 
 **Claim:** $\lim\limits_{n\to\infty} \frac{(-1)^n}{n} = 0$
@@ -212,7 +236,7 @@ Then let $b_n = \frac{1}{n}$. \
 We know from previous $\epsilon - N$ proofs that
 $\lim\limits_{n\to\infty} b_n = \lim\limits_{n\to\infty}\frac{1}{n} = 0$
 
-Therefore $\lim\limits_{n\to\infty} \frac{(-1)^n}{n} = 0$ \qedsym
+Thus we have shown that $\lim\limits_{n\to\infty} \frac{(-1)^n}{n} = 0$ \qedsym
 
 # 2.7
 
@@ -231,14 +255,16 @@ Next, as we just proved $n > \ln n$\
 Then $\Rightarrow \ln n > \ln( \ln n)$\
 And $\Rightarrow \frac{1}{\ln n} < \frac{1}{\ln( \ln n)}$
 
-Note, from previous proofs we know that $\lim\limits_{n\to\infty} a_n = \lim\limits_{n\to\infty} \frac{1}{n} = 0$
+Note, from previous $\epsilon - N$ proofs we know $\lim\limits_{n\to\infty} a_n = \lim\limits_{n\to\infty} \frac{1}{n} = 0$
 and $\lim\limits_{n\to\infty} c_n = \lim\limits_{n\to\infty} \frac{1}{\ln( \ln n)} = 0$\
-So we have two series, $a_n < b_n < c_n$ and since $\lim\limits_{n\to\infty} a_b = 0$
-and $\lim\limits_{n\to\infty} c_n = 0$ then $\lim\limits_{n\to\infty} b_n = 0$
+So we have two series, $a_n$ and $c_n$, such that $a_n < b_n < c_n$. Since $\lim\limits_{n\to\infty} a_b = 0$
+and $\lim\limits_{n\to\infty} c_n = 0$ then by the squeeze property of limits $\lim\limits_{n\to\infty} b_n = 0$
+
+
+Thus we have shown that $\lim\limits_{n\to\infty} \frac{1}{\ln(n)} = 0$
 
 \qedsym{}
 
-\pagebreak
 # 2.8
 
 **Claim:** $\lim\limits_{n\to\infty} \sin\frac{n\pi}{3}$ does not exist
@@ -278,7 +304,6 @@ Finally, by the product of limits property, we have the product of a bounded ser
 
 \qedsym{}
 
-\pagebreak
 # 2.10
 
 **Claim:** $\lim\limits_{n\to\infty} \frac{\sqrt{n + 4}}{\sqrt{n - 12}} = 1$
@@ -287,17 +312,23 @@ Finally, by the product of limits property, we have the product of a bounded ser
 = \lim\limits_{n\to\infty} \sqrt{\frac{n + 4}{n - 12}}$
 
 By the polynomial property of limits
-$$\lim\limits_{n\to\infty} \sqrt{\frac{n + 4}{n - 12}} = \sqrt{\lim\limits_{n\to\infty} \frac{n + 4}{n - 12}}
 $$
+\lim\limits_{n\to\infty} \sqrt{\frac{n + 4}{n - 12}}
+= \sqrt{\lim\limits_{n\to\infty} \frac{n + 4}{n - 12}}
+$$
+
 Then by the quotient properties of limits\
 $$=\sqrt{\frac
 {\lim\limits_{n\to\infty}n+4}
 {\lim\limits_{n\to\infty}n-12}
-}
-= \sqrt{\frac
+}$$
+
+Then by the fraction property $\frac{a}{b} = \frac{ra}{rb}$ multiply by $\sfrac{\frac{1}{n}}{\frac{1}{n}}$
+$$\sqrt{\frac
 {\lim\limits_{n\to\infty}1+\frac{4}{n}}
 {\lim\limits_{n\to\infty}1-\frac{12}{n}}
 }$$
+
 Then by the sum property of limits
 $$= \sqrt{\frac
 {\lim\limits_{n\to\infty}1+\lim\limits_{n\to\infty}\frac{4}{n}}
@@ -314,7 +345,6 @@ Thus we have shown that $\lim\limits_{n\to\infty} \frac{\sqrt{n + 4}}{\sqrt{n - 
 
 \qedsym{}
 
-\pagebreak
 # 2.11
 
 **Claim:** $\lim\limits_{n\to\infty} \sqrt{n^2 + n + 1} - \sqrt{n^2 - n} = 1$
@@ -330,7 +360,7 @@ $$\lim\limits_{n\to\infty} \sqrt{n^2 + n + 1} - \sqrt{n^2 - n}
 {\sqrt{n^2+n+1} + \sqrt{n^2-n}}
 $$
 
-Then multiplying by $\sfrac{\frac{1}{n}}{\frac{1}{n}}$
+Then by the fraction property $\frac{a}{b} = \frac{ra}{rb}$ multiply by $\sfrac{\frac{1}{n}}{\frac{1}{n}}$
 $$=\lim\limits_{n\to\infty}\frac
 {2+\frac{1}{n}}
 {\sqrt{1+\frac{1}{n}+\frac{1}{n^2}} + \sqrt{1-\frac{1}{n}}}
@@ -364,7 +394,7 @@ $$
 {\sqrt{\lim\limits_{n\to\infty}1+\lim\limits_{n\to\infty}\frac{1}{n}+\lim\limits_{n\to\infty}\frac{1}{n^2}} + \sqrt{\lim\limits_{n\to\infty}1-\lim\limits_{n\to\infty}\frac{1}{n}}}
 $$
 
-Then by common knowledge and previous proofs
+Then by common knowledge and previous $\epsilon - N$ proofs
 $$
 =\frac
 {2+0}
@@ -374,5 +404,7 @@ $$
 =\frac{2}{2}
 =1
 $$
+
+Thus we have shown that $\lim\limits_{n\to\infty} \sqrt{n^2 + n + 1} - \sqrt{n^2 - n} = 1$
 
 \qedsym{}
