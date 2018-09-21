@@ -1,0 +1,1 @@
+This project contains two demonstrations of curve rendering. index.html shows all four curves: Hermite, Cardinal, and both Bezier curves. demoIndex.html contains another demonstration of only the Bezier curve. Click and drag the control points to modify any curve. Press 'n' to add a new Bezier curve, then click four times to place the four control points. Enjoy!
