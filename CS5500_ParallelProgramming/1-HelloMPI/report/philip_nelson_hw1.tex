@@ -1,0 +1,68 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{courier}
+
+\title{HW 1 \\ Get MPI working on your computer}
+\author{Philip Nelson}
+\date{2018 September 7}
+
+\lstset{basicstyle=\footnotesize\ttfamily\normalsize,
+        breaklines=true,
+        stepnumber=1,
+       }
+
+\begin{document}
+
+\maketitle
+
+\section*{Installation}
+
+I am currently using Manjaro, a Linux distro based on Arch, on which MPI is already installed.
+
+\section*{Code}
+
+\begin{lstlisting}[showstringspaces=false, language=c++, numbers=left]
+#include <iostream>
+#include <mpi.h>
+
+#define MCW MPI_COMM_WORLD
+
+int main(int argc, char** argv)
+{
+  int rank, size, data;
+
+  MPI_Init(&argc, &argv);
+  MPI_Comm_rank(MCW, &rank);
+  MPI_Comm_size(MCW, &size);
+
+  MPI_Send(&rank, 1, MPI_INT, (rank + 1) % size, 0, MCW);
+  MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE, 0, MCW, MPI_STATUS_IGNORE);
+
+  std::cout << "I am process " << rank << " of " << size
+            << " and received a message from process " << data
+            << std::endl;
+
+  MPI_Finalize();
+
+  return EXIT_SUCCESS;
+}
+\end{lstlisting}
+
+\section*{Output}
+
+\begin{lstlisting}[showstringspaces=false]
+
+# mpiexec -n 4 release
+
+I am process 2 of 4 and received a message from process 1
+I am process 3 of 4 and received a message from process 2
+I am process 0 of 4 and received a message from process 3
+I am process 1 of 4 and received a message from process 0
+
+\end{lstlisting}
+
+
+\end{document}
