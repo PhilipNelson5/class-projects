@@ -1,0 +1,70 @@
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{array}
+
+\newcommand\Q{\mathbf{Q}}
+\newcommand\Z{\mathbf{Z}}
+\newcommand\R{\mathbf{R}}
+\newcommand\C{\mathbf{C}}
+\newcommand\ds{\displaystyle}
+
+\newcommand{\imp}{\Rightarrow}
+\newcommand\qedsym{\hfill \rule{2mm}{2mm}}
+
+\parindent=0pt
+\begin{document}
+
+\title{MATH5210 \textsc{Analysis}
+  \\ Assignment 4
+  \\ Monotone Convergence Theorem
+  \\ Philip Nelson
+}
+
+\date{}
+
+\maketitle
+
+\section*{1} Let $\{a_n\}$ be a sequence of non-negative real numbers. Show that the partial sums for the infinite series $\ds \sum_{n=1}^{\infty } a_n$ form a monotone series.
+
+\section*{2} What is the approximation property for the infimum of a set $A$? If $m = \inf(A)$, prove that there is a sequence $a_n \in $ with $\lim a_n = m$. Follow the proof given in class.
+
+\section*{3} Give a detailed proof of the MCT in the case of a monotone decreasing sequence which is bounded below. Follow the proof given in class.
+
+\section*{4} If $0 < r < 1$, show that $\ds \lim_{n \to \infty} r^n= 0$. Note that with $a_n = r^n$, $a_{n+1} = r a_n$. What happens if $0 \leq r \leq 1$?
+
+\section*{5} Let $a_1 \in (0, 1)$ Prove that $a_{n+1} = \sqrt{a_{n} +1} -1 $ is a increasing sequence which converges to 0. What happens if $a_0 = 0$, if $a_0 = -1$?
+
+\section*{6} Suppose $a_1 \geq 2$ and $a_{n +1} = 2 + \sqrt{a_n - 2}$. Show that $a_n$ converges to 2 or 3. How does the limit depend upon the value of $a_1$
+
+\section*{7} (Bonus) Let $0 < b_1 < a_1$ and let
+
+\[a_{n+1} = \frac{a_n + b_n}{2} \quad \text{and} \quad b_{n+1} = \sqrt{a_n b_n}\]
+
+
+\subsection*{a} Show that $0 < b_n < a_n$
+
+
+\subsection*{b} Show that $b_n$ is increasing and bounded above.
+
+
+\subsection*{c} Show that $a_n$ is decreasing and bounded below.
+
+
+\subsection*{d} Show that $ 0 < a_{n+1} - b_{n+1} < (a_1 - b_1)/2^n$
+
+
+\subsection*{e} Conclude that the sequences $a_n$ and $b_n$ converge to a common limit.
+
+
+\end{document}
+
+
+
+
+
+
+
