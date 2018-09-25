@@ -10,6 +10,7 @@
 \newcommand\Z{\mathbf{Z}}
 \newcommand\R{\mathbf{R}}
 \newcommand\C{\mathbf{C}}
+\newcommand\A{\mathbf{A}}
 \newcommand\ds{\displaystyle}
 
 \newcommand{\imp}{\Rightarrow}
@@ -30,7 +31,39 @@
 
 \section*{1} Let $\{a_n\}$ be a sequence of non-negative real numbers. Show that the partial sums for the infinite series $\ds \sum_{n=1}^{\infty } a_n$ form a monotone series.
 
-\section*{2} What is the approximation property for the infimum of a set $A$? If $m = \inf(A)$, prove that there is a sequence $a_n \in $ with $\lim a_n = m$. Follow the proof given in class.
+\section*{2} What is the approximation property for the infimum of a set $\A$? If $m = \inf(\A)$, prove that there is a sequence $a_n \in \A$ with $\lim a_n = m$.
+
+\bigskip
+
+The approximation property for the infimum of a set $\A$ states
+
+Suppose that $m = \inf(\A)$
+
+Then for any $\epsilon > 0, \exists x \in \A \text{ s.t. }  m \leq x \leq m + \epsilon$
+
+\bigskip
+
+Since $m = \inf(\A)$, $\{a_n\}$ is bounded below and has a greatest upper bound (gub) s.t. $\text{gub}(\{a_n\}) = m$.
+We will prove will prove that $\lim\limits_{n \to \infty} a_n = m$.
+
+Let $\epsilon > 0$ be given. We have to find $N$ s.t. $| a_n - m | < \epsilon$ and $a_n - m$ is always positive because $a_n > m$. So $a_n - m < \epsilon$ for all $n > N$.
+
+Then by the approximation property of the infimum of $\A$, there exists an $x \in \{a_n\}$ s.t. $m \leq x < m + \epsilon$ where $x = a_N$. So
+
+\begin{equation}
+a_N \leq m + \epsilon
+\end{equation}
+
+Finally if $n>N$, then because of monotone decreasing
+
+\begin{equation}
+a_N < a_n
+\end{equation}
+
+Combining 1 and 2 gives us $m + \epsilon > a_N > a_n$.
+Thus $a_n - m < \epsilon$ for all $n > N$.
+
+\qedsym{}
 
 \section*{3} Give a detailed proof of the MCT in the case of a monotone decreasing sequence which is bounded below. Follow the proof given in class.
 
@@ -43,7 +76,6 @@
 \section*{7} (Bonus) Let $0 < b_1 < a_1$ and let
 
 \[a_{n+1} = \frac{a_n + b_n}{2} \quad \text{and} \quad b_{n+1} = \sqrt{a_n b_n}\]
-
 
 \subsection*{a} Show that $0 < b_n < a_n$
 
