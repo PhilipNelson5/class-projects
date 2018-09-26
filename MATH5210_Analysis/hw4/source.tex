@@ -34,39 +34,61 @@
 \textbf{Proof:} Let us review the definition of a monotone increasing series. Let $b_m$ be a series, $b_m$ is monotone increasing iff $b_m \leq b_{m+1}$ for all $m > 0$. Let $b_m$ be the partial sums of $\ds \sum_{n=1}^{\infty } a_n$ such that $b_1 = a_1$, $b_2 = b_1 + a_2$, and $b_{m+1} = b_m + a_n$. From the definition of the problem, $\{a_n\}$ is a sequence of non-negative real numbers so $a_n \geq 0 \Rightarrow b_m + a_n \geq b_m \Rightarrow b_{m+1} \geq b_m$. Therefore $b_m$ is a monotone series. \qedsym{}
 \section*{2} What is the approximation property for the infimum of a set $\A$? If $m = \inf(\A)$, prove that there is a sequence $a_n \in \A$ with $\lim a_n = m$.
 
-\bigskip
+\medskip
 
-The approximation property for the infimum of a set $\A$ states
+\textbf{Property:} The approximation property for the infimum of a set $\A$.
 
-Suppose that $m = \inf(\A)$
+Let $\A$ be a set such that $m = \inf(\A)$.
 
-Then for any $\epsilon > 0, \exists x \in \A \text{ s.t. }  m \leq x \leq m + \epsilon$
+Then for any $\epsilon > 0, \exists x \in \A \text{ s.t. }  m \leq x < m + \epsilon$
 
-\bigskip
+\medskip
 
-Since $m = \inf(\A)$, $\{a_n\}$ is bounded below and has a greatest upper bound (gub) s.t. $\text{gub}(\{a_n\}) = m$.
-We will prove will prove that $\lim\limits_{n \to \infty} a_n = m$.
+\textbf{Claim:} If $m = \inf(\A)$, there is a sequence $a_n \in \A$ with $\lim a_n = m$.
 
-Let $\epsilon > 0$ be given. We have to find $N$ s.t. $| a_n - m | < \epsilon$ and $a_n - m$ is always positive because $a_n > m$. So $a_n - m < \epsilon$ for all $n > N$.
+\medskip
 
-Then by the approximation property of the infimum of $\A$, there exists an $x \in \{a_n\}$ s.t. $m \leq x < m + \epsilon$ where $x = a_N$. So
+\textbf{Proof:} Let $\epsilon_1 = 1$ and $\epsilon_2 = \frac{1}{2}$. By the approximation property, there exist $x_1$ and $x_2$ such that $m \leq x_1 < m + 1$ and $m \leq x_2 < m + \frac{1}{2}$. Then for any $n\ \exists x_n \in \A$ s.t. $m \leq x_n < m + \frac{1}{n}$. Let $a_n = x_n$. Therefore there is a sequence $a_n$ that we can prove has a limit which converges to $m$. We will make the proof by the squeeze theorem that $\lim a_n = m$.
 
-\begin{equation}
-a_N \leq m + \epsilon
-\end{equation}
-
-Finally if $n>N$, then because of monotone decreasing
-
-\begin{equation}
-a_N < a_n
-\end{equation}
-
-Combining 1 and 2 gives us $m + \epsilon > a_N > a_n$.
-Thus $a_n - m < \epsilon$ for all $n > N$.
-
-\qedsym{}
+We know that $m \leq a_n < m + \frac{1}{n}$ so we will take the limit of each part of the inequality so $\ds\lim_{n\to\infty}m \leq \ds\lim_{n\to\infty}x_n < \ds\lim_{n\to\infty}m + \frac{1}{n}$. We will look at the limits and see that $\ds\lim_{n\to\infty}m = m$ because $m$ is a constant sequence and $\ds\lim_{n\to\infty}m+\frac{1}{n} = m$ because we know that $\ds\lim_{n\to\infty}\frac{1}{n} = 0$ from previous $\epsilon - N$ proofs and therefore by the summation property of limits $\ds\lim_{n\to\infty}m + \ds\lim_{n\to\infty}\frac{1}{n} = 0 + m = m$. So we can see that $m \leq \ds\lim_{n\to\infty}a_n \leq m$ so by the squeeze theorem of limits $\ds\lim_{n\to\infty} a_n = m$ \qedsym{}
 
 \section*{3} Give a detailed proof of the MCT in the case of a monotone decreasing sequence which is bounded below. Follow the proof given in class.
+
+\medskip
+
+\textbf{Completeness Axiom:} Let $\{a_n\}$ be a set that is bounded below. Then $\{a_n\}$ has an infimum s.t. $\inf(a_n) = A$.
+
+\medskip
+
+\textbf{Claim:} $\ds\lim_{n\to\infty}a_n = A$
+
+\medskip
+
+\textbf{Proof:} Let $\epsilon > 0$ be given, find $N$ s.t.
+
+\begin{equation}
+  |a_n - A| < \epsilon
+\end{equation}
+
+The set is bounded below so the quantity $a_n - A$ is positive. We can express equation 1 as
+
+\begin{equation}
+  a_n - A < \epsilon
+\end{equation}
+
+By the approximation property of the infimum, there is an $x$ in $\{a_n\}$ s.t. $A \leq x < A + \epsilon$. Let $x = a_N$ then
+
+\begin{equation}
+  a_N < A + \epsilon
+\end{equation}
+
+If $n > N$, and since $\{a_n\}$ is monotonically decreasing
+
+\begin{equation}
+  a_n > a_N
+\end{equation}
+
+Combining equations 3 and 4 we get \[a_n < a_N < A + \epsilon\] this implies \[a_n - A < \epsilon\] as in equation 2. \qedsym{}
 
 \section*{4} If $0 < r < 1$, show that $\ds \lim_{n \to \infty} r^n= 0$. Note that with $a_n = r^n$, $a_{n+1} = r a_n$. What happens if $0 \leq r \leq 1$?
 
@@ -203,25 +225,25 @@ If $a_1 = 2$ then $a_2 = 2+\sqrt{2-2}=2$, therefore $a_1 = a_2$. If $a_n = a_{n+
 
 From lemmas 6.3, 6.6, 6.7 and 6.8 we know that for $a_1 \geq 2$, $\ds\lim_{n\to\infty}a_n$ can only converge to $2$ or $3$. It depends on $a_1$ which value $\ds\lim_{n\to\infty}a_n$ converges to. When $a_1 = 2$, then $\ds\lim_{n\to\infty}a_n = 2$, lemma 6.8. When $a_1 > 2$, then $\ds\lim_{n\to\infty}a_n = 3$. \qedsym{}
 
-\section*{7} (Bonus) Let $0 < b_1 < a_1$ and let
-
-\[a_{n+1} = \frac{a_n + b_n}{2} \quad \text{and} \quad b_{n+1} = \sqrt{a_n b_n}\]
-
-\subsection*{a} Show that $0 < b_n < a_n$
-
-
-\subsection*{b} Show that $b_n$ is increasing and bounded above.
-
-
-\subsection*{c} Show that $a_n$ is decreasing and bounded below.
-
-
-\subsection*{d} Show that $ 0 < a_{n+1} - b_{n+1} < (a_1 - b_1)/2^n$
-
-
-\subsection*{e} Conclude that the sequences $a_n$ and $b_n$ converge to a common limit.
-
-
+% \section*{7} (Bonus) Let $0 < b_1 < a_1$ and let
+%
+% \[a_{n+1} = \frac{a_n + b_n}{2} \quad \text{and} \quad b_{n+1} = \sqrt{a_n b_n}\]
+%
+% \subsection*{a} Show that $0 < b_n < a_n$
+%
+%
+% \subsection*{b} Show that $b_n$ is increasing and bounded above.
+%
+%
+% \subsection*{c} Show that $a_n$ is decreasing and bounded below.
+%
+%
+% \subsection*{d} Show that $ 0 < a_{n+1} - b_{n+1} < (a_1 - b_1)/2^n$
+%
+%
+% \subsection*{e} Conclude that the sequences $a_n$ and $b_n$ converge to a common limit.
+%
+%
 \end{document}
 
 
