@@ -16,6 +16,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
   let du = 1 / curveSegments;
   let BEZ = [[[]]];
   let C = [];
+  let U = [[]];
 
   function fallingFactorial(n, k) {
     let ffact = n;
@@ -207,7 +208,6 @@ MySample.graphics = (function (pixelsX, pixelsY) {
    *   s0: {x: , y: } The slope at the initial point
    *   s1: {x: , y: } The slope at the final point
    * }
-   * @param segments    Number of segments in the final curve
    * @param showPoints  Boolean flag to show the intersection of line segments
    * @param showLine    Boolean flag to show the drawn curve
    * @param showControl Boolean flag to show the control points
@@ -238,17 +238,13 @@ MySample.graphics = (function (pixelsX, pixelsY) {
       );
     }
 
-    for (let u = du; u <= 1.000000001; u += du) {
-      const u_squ = u * u;
-      const u_cub = u_squ * u;
-      const u_2_squ = u_squ + u_squ;
-      const u_3_squ = u_2_squ + u_squ;
-      const u_2_cub = u_cub + u_cub;
+    let u = du;
+    for (let i = 0; i <= curveSegments; ++i, u += du) {
 
-      const a = (u_2_cub - u_3_squ + 1);
-      const b = (-u_2_cub + u_3_squ);
-      const c = (u_cub - u_2_squ + u);
-      const d = (u_cub - u);
+      const a = (2 * U[i][3] - 3 * U[i][2] + 1);
+      const b = (- 2 * U[i][3] + 3 * U[i][2]);
+      const c = (U[i][3] - 2 * U[i][2] + U[i][1]);
+      const d = (U[i][3] - U[i][1]);
 
       px = controls.p0.x * a
         + controls.p1.x * b
@@ -282,7 +278,6 @@ MySample.graphics = (function (pixelsX, pixelsY) {
    *   s3: {x: , y: } The slope at the final point
    *   t :            The tension parameter
    * }
-   * @param segments    Number of segments in the final curve
    * @param showPoints  Boolean flag to show the intersection of line segments
    * @param showLine    Boolean flag to show the drawn curve
    * @param showControl Boolean flag to show the control points
@@ -314,19 +309,13 @@ MySample.graphics = (function (pixelsX, pixelsY) {
       );
     }
 
+    let u = du;
+    for (let i = 0; i <= curveSegments; ++i, u += du) {
 
-    for (let u = du; u <= 1.000000001; u += du) {
-      const u_s = u * s;
-      const u_squ = u * u;
-      const u_cub = u_squ * u;
-      const u_squ_s = u_s * u;
-      const u_cub_s = u_squ_s * u;
-      const u_cub_2_s = (2 - s) * u_cub;
-
-      const a = (-u_cub_s + 2 * u_squ_s - u_s);
-      const b = (u_cub_2_s + (s - 3) * u_squ + 1);
-      const c = (-u_cub_2_s + (3 - 2 * s) * u_squ + u_s);
-      const d = (u_cub_s - u_squ_s);
+      const a = (- s * U[i][3] + 2 * s * U[i][2] - s * U[i][1]);
+      const b = ((2 - s) * U[i][3] + (s - 3) * U[i][2] + 1);
+      const c = ((s - 2) * U[i][3] + (3 - 2 * s) * U[i][2] + s * U[i][1]);
+      const d = (s * U[i][3] - s * U[i][2]);
 
       px = controls.p0.x * a
         + controls.p1.x * b
@@ -354,6 +343,18 @@ MySample.graphics = (function (pixelsX, pixelsY) {
   // Renders a Bezier curve based on the input parameters.
   //
   //------------------------------------------------------------------
+  /**
+   * @param controls {
+   *   p0: {x: , y: } The first control point
+   *   p1: {x: , y: } The second control point
+   *   s2: {x: , y: } The third control point
+   *   s3: {x: , y: } The fourth control point
+   * }
+   * @param showPoints  Boolean flag to show the intersection of line segments
+   * @param showLine    Boolean flag to show the drawn curve
+   * @param showControl Boolean flag to show the control points
+   * @param color       Color of the line
+   */
   function drawCurveBezier(controls, showPoints, showLine, showControl, color) {
     let px, py;
     let px0 = controls.p0.x;
@@ -366,12 +367,12 @@ MySample.graphics = (function (pixelsX, pixelsY) {
       drawPoint(controls.p1.x, controls.p1.y, 'rgb(255, 0, 0)');
       drawPoint(controls.p2.x, controls.p2.y, 'rgb(255, 0, 0)');
       drawPoint(controls.p3.x, controls.p3.y, 'rgb(255, 0, 0)');
-      drawLine(controls.p0.x, controls.p0.y, controls.p1.x, controls.p1.y, 'rgb(255, 0, 0)');
-      drawLine(controls.p1.x, controls.p1.y, controls.p2.x, controls.p2.y, 'rgb(255, 0, 0)');
-      drawLine(controls.p2.x, controls.p2.y, controls.p3.x, controls.p3.y, 'rgb(255, 0, 0)');
+      // drawLine(controls.p0.x, controls.p0.y, controls.p1.x, controls.p1.y, 'rgb(255, 0, 0)');
+      // drawLine(controls.p1.x, controls.p1.y, controls.p2.x, controls.p2.y, 'rgb(255, 0, 0)');
+      // drawLine(controls.p2.x, controls.p2.y, controls.p3.x, controls.p3.y, 'rgb(255, 0, 0)');
     }
-
-    for (let u = 0; u < 1.0001; u += du) {
+    let u = 0;
+    for (let i = 0; i <= curveSegments; ++i, u += du) {
       px = controls.p0.x * BEZ[0][u]
         + controls.p1.x * BEZ[1][u]
         + controls.p2.x * BEZ[2][u]
@@ -397,6 +398,18 @@ MySample.graphics = (function (pixelsX, pixelsY) {
   // This follows the Mathematics for Game Programmers form.
   //
   //------------------------------------------------------------------
+  /**
+   * @param controls {
+   *   p0: {x: , y: } The first control point
+   *   p1: {x: , y: } The second control point
+   *   s2: {x: , y: } The third control point
+   *   s3: {x: , y: } The fourth control point
+   * }
+   * @param showPoints  Boolean flag to show the intersection of line segments
+   * @param showLine    Boolean flag to show the drawn curve
+   * @param showControl Boolean flag to show the control points
+   * @param color       Color of the line
+   */
   function drawCurveBezierMatrix(controls, showPoints, showLine, showControl, color) {
     let px, py;
     let px0 = controls.p3.x;
@@ -414,17 +427,12 @@ MySample.graphics = (function (pixelsX, pixelsY) {
       drawLine(controls.p2.x, controls.p2.y, controls.p3.x, controls.p3.y, 'rgb(255, 0, 0)');
     }
 
-    for (let u = du; u <= 1.000000001; u += du) {
-      const u_3 = u * 3;
-      const u_squ = u * u;
-      const u_3_squ = u_squ * 3;
-      const u_cub = u_squ * u;
-      const u_3_cub = u_cub * 3;
+    for (let i = 1; i <= curveSegments; ++i) {
 
-      const a = u_cub;
-      const b = - u_3_cub + u_3_squ;
-      const c = u_3_cub - u_3_squ - u_3_squ + u_3;
-      const d = - u_cub + u_3_squ - u_3 + 1;
+      const a = U[i][3];
+      const b = - 3 * U[i][3] + 3 * U[i][2];
+      const c = 3 * U[i][3] - 6 * U[i][2] + 3 * U[i][1];
+      const d = - U[i][3] + 3 * U[i][2] - 3 * U[i][1] + 1;
 
       px = controls.p0.x * a
         + controls.p1.x * b
@@ -440,11 +448,9 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
       if (showLine) drawLine(px0, py0, px, py, color);
 
-      console.log({ px0, py0 });
       px0 = px;
       py0 = py;
     }
-    console.log({ px0, py0 });
   }
 
   //------------------------------------------------------------------
@@ -478,16 +484,20 @@ MySample.graphics = (function (pixelsX, pixelsY) {
   function setCurveSegments(segments) {
     curveSegments = segments;
     du = 1 / curveSegments;
-    // for (let k = 0; k < 4; ++k) {
-    // }
     for (let k = 0; k <= 3; ++k) {
+      let u = 0;
       BEZ[k] = [];
       // C[k] = fallingFactorial(3, k) / factorial(3 - k);
       C[k] = factorial(3) / factorial(k) / factorial(3 - k);
-      for (let u = 0; u <= 1.000001; u += du) {
+      for (let i = 0; i <= curveSegments; ++i, u += du) {
         BEZ[k][u] = C[k] * Math.pow(u, k) * Math.pow((1 - u), (3 - k));
+        U[i] = [1];
+        for (let p = 1; p <= 3; ++p) {
+          U[i][p] = U[i][p - 1] * u;
+        }
       }
     }
+    // console.log(U);
     // console.log(C);
     // console.log(BEZ);
   }
