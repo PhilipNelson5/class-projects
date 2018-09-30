@@ -535,6 +535,103 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     }
   }
 
+  /**
+   * Translate a point by a distance
+   * 
+   * @param {Point} point - The point to translate
+   * @param {Point} distance - A vector representing the distance to translate the point by
+   * @return {Object} New point translated by distance
+   */
+  function translatePoint(point, distance) {
+    return { x: point.x + distance.x, y: point.y + distance.y };
+  }
+
+  /**
+   * translate a primitive by a distance
+   * 
+   * @param {Object} primitive {
+   *   @member {Point} center - Center of the polygon
+   *   @member {Point[]} verts - Array of verticies (must have 2+)
+   * }
+   * @param {Point} distance - A vector representing the distance to translate the point by
+   * @return {Object} New primitive translated by distance
+   */
+  function translatePrimitive(primitive, distance) {
+    let newPrim = { verts: [] };
+
+    newPrim.center = translatePoint(primitive.center, distance);
+
+    for (let i = 0; i < primitive.verts.length; ++i) {
+      newPrim.verts[i] = translatePoint(primitive.verts[i], distance);
+    }
+
+    return newPrim;
+  }
+
+  /**
+   * Scales a primitive by an ammount in the x and y
+   * 
+   * @param {Object} primitive {
+   *   @member {Point} center - Center of the polygon
+   *   @member {Point[]} verts - Array of verticies (must have 2+)
+   * }
+   * @param {Point} scale - Scale in the x and y directions
+   */
+  function scalePrimitive(primitive, scale) {
+    let newPrim;
+    if (primitive.center.x !== 0 && primitive.center.y !== 0) {
+      newPrim = translatePrimitive(primitive, { x: -primitive.center.x, y: -primitive.center.y });
+      console.log('nonzero center [scale]');
+    } else {
+      newPrim = JSON.parse(JSON.stringify(primitive));
+    }
+
+    for (let i = 0; i < newPrim.verts.length; ++i) {
+      newPrim.verts[i].x *= scale.x;
+      newPrim.verts[i].y *= scale.y;
+    }
+
+    if (primitive.center.x !== 0 && primitive.center.y !== 0) {
+      return newPrim;
+    } else {
+      return translatePrimitive(newPrim, { x: primitive.center.x, y: primitive.center.y });
+    }
+  }
+
+  /**
+   * Rotates a primitive by a number of radians
+   * 
+   * @param {Object} primitive {
+   *   @member {Point} center - Center of the polygon
+   *   @member {Point[]} verts - Array of verticies (must have 2+)
+   * }
+   * @param {Number} angle - The angle in Radians to rotate the primitive
+   */
+  function rotatePrimitive(primitive, angle) {
+    let newPrim;
+    if (primitive.center.x !== 0 && primitive.center.y !== 0) {
+      newPrim = translatePrimitive(primitive, { x: -primitive.center.x, y: -primitive.center.y });
+      console.log('nonzero center [rotate]');
+    } else {
+      newPrim = JSON.parse(JSON.stringify(primitive));
+    }
+
+    const sina = Math.sin(angle);
+    const cosa = Math.cos(angle);
+    for (let i = 0; i < newPrim.verts.length; ++i) {
+      let newx = newPrim.verts[i].x * cosa - newPrim.verts[i].y * sina;
+      let newy = newPrim.verts[i].x * sina + newPrim.verts[i].y * cosa;
+      newPrim.verts[i].x = newx;
+      newPrim.verts[i].y = newy;
+    }
+
+    if (primitive.center.x !== 0 && primitive.center.y !== 0) {
+      return newPrim;
+    } else {
+      return translatePrimitive(newPrim, { x: primitive.center.x, y: primitive.center.y });
+    }
+  }
+
   //
   // This is what we'll export as the rendering API
   const api = {
@@ -543,6 +640,9 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     drawLine,
     drawCurve,
     drawPrimitive,
+    translatePrimitive,
+    scalePrimitive,
+    rotatePrimitive,
   };
 
   Object.defineProperty(api, 'pixelsX', {

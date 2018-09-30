@@ -12,7 +12,7 @@ MySample.main = (function (graphics) {
     let verts = [];
     let dth = 2 * Math.PI / n;
 
-    for (let i = 1; i <= n; ++i) {
+    for (let i = 0; i < n; ++i) {
       verts.push({ x: .1 * Math.cos(i * dth), y: .1 * Math.sin(i * dth) });
     }
 
@@ -184,27 +184,59 @@ MySample.main = (function (graphics) {
     }
   };
 
-  let triangle = makePrimitive({ x: .5, y: .5 },
-    [{ x: .4, y: .6 }, { x: .5, y: .3 }, { x: .6, y: .6 }]
-  );
+  let shapes = [];
+  for (let i = 3; i < 11; ++i) {
+    shapes.push(makeRegularPrimitive(i));
+  }
 
-  let square = makePrimitive({ x: .5, y: .5 },
-    [{ x: .4, y: .4 }, { x: .6, y: .4 }, { x: .6, y: .6 }, { x: .4, y: .6 }]
-  );
-
-  let octagon = makeRegularPrimitive(8);
-  console.log(octagon);
+  let heptagon = makeRegularPrimitive(3);
 
   //------------------------------------------------------------------
   //
   // Scene updates go here.
   //
   //------------------------------------------------------------------
+  let theta = 0;
+  let tx = .8;
+  let ty = .25;
+  let dtx = 1.05;
+  let dty = 1.3;
+  let r = 0, g = 0, b = 0, dr = 1, dg = 1, db = 1;
   function update(dt) {
-    cHermite.update(dt);
-    cCardinal.update(dt);
-    cBezier.update(dt);
-    cBezier2.update(dt);
+    // cHermite.update(dt);
+    // cCardinal.update(dt);
+    // cBezier.update(dt);
+    // cBezier2.update(dt);
+    theta += Math.PI / 3500 * dt;
+
+    dt /= 1000;
+    tx += dt * .1 * dtx;
+    ty += dt * .1 * dty;
+    if (tx > .9 || tx < .75) {
+      dtx *= -1;
+      tx += dt * .1 * dtx;
+    }
+    if (ty > .4 || ty < .1) {
+      dty *= -1;
+      ty += dt * .1 * dty;
+    }
+
+    r += dt * 2 * dr;
+    g += dt * 10 * dg;
+    b += dt * 35 * db;
+    if (r > 255 || r < 0) {
+      dr *= -1;
+      r += dt * 2 * dr;
+    }
+    if (g > 100 || g < 0) {
+      dg *= -1;
+      g += dt * 10 * dg;
+    }
+    if (b > 255 || b < 0) {
+      db *= -1;
+      b += dt * 35 * db;
+    }
+
   }
 
   //------------------------------------------------------------------
@@ -212,19 +244,41 @@ MySample.main = (function (graphics) {
   // Rendering code goes here
   //
   //------------------------------------------------------------------
-  let points = false;
-  let line = true;
-  let controls = true;
+  // let points = false;
+  // let line = true;
+  // let controls = true;
   function render() {
     graphics.clear(false);
 
-    graphics.drawCurve(graphics.Curve.Hermite, cHermite, points, line, controls, 'rgb(0, 0, 0)');
-    graphics.drawCurve(graphics.Curve.Cardinal, cCardinal, points, line, controls, 'rgb(0, 0, 255)');
-    graphics.drawCurve(graphics.Curve.Bezier, cBezier, points, line, controls, 'rgb(0, 155, 44)');
-    graphics.drawCurve(graphics.Curve.BezierMatrix, cBezier2, points, line, controls, 'rgb(255, 0, 0)');
-    graphics.drawPrimitive(triangle, true, 'rgb(0, 0, 0');
-    graphics.drawPrimitive(square, true, 'rgb(0, 0, 0');
-    graphics.drawPrimitive(octagon, true, 'rgb(0, 0, 0');
+    // graphics.drawCurve(graphics.Curve.Hermite, cHermite, points, line, controls, 'rgb(0, 0, 0)');
+    // graphics.drawCurve(graphics.Curve.Cardinal, cCardinal, points, line, controls, 'rgb(0, 0, 255)');
+    // graphics.drawCurve(graphics.Curve.Bezier, cBezier, points, line, controls, 'rgb(0, 155, 44)');
+    // graphics.drawCurve(graphics.Curve.BezierMatrix, cBezier2, points, line, controls, 'rgb(255, 0, 0)');
+    // let i = .0275;
+    // let s = .1;
+    // shapes.forEach((shape) => {
+    //   graphics.drawPrimitive(
+    //     graphics.translatePrimitive(
+    //       graphics.scalePrimitive(
+    //         graphics.rotatePrimitive(shape, theta),
+    //         { x: s * 1.5, y: s * 1.5 }),
+    //       { x: i * 5, y: i }),
+    //     true, 'rgb(0, 0, 0');
+    //   i *= 1.3;
+    //   s *= 1.3;
+    // });
+
+    let s2 = .05;
+    for (let i = 0; i < 35; ++i) {
+      graphics.drawPrimitive(
+        graphics.translatePrimitive(
+          graphics.scalePrimitive(
+            graphics.rotatePrimitive(heptagon, theta / 20 * (i + 1)),
+            { x: s2, y: s2 }),
+          { x: tx, y: ty }),
+        true, 'rgb(' + r + ',' + g + ',' + b + ')');
+      s2 += .025;
+    }
   }
 
   //------------------------------------------------------------------
