@@ -632,6 +632,55 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     }
   }
 
+  /**
+   * Translate a curve by a distance
+   * 
+   * @param {Enum} type - The type of curve to draw (Cardinal, Bezier)
+   * @param {Object} controls - The controls for the specified curve
+   * @param {Point} distance - A vector representing the distance to translate the curve by
+   */
+  function translateCurve(type, controls, distance) {
+    let newControls = JSON.parse(JSON.stringify(controls));
+
+    switch (type) {
+      case api.Curve.Hermite:
+        newControls.p0 = translatePoint(controls.p0, distance);
+        newControls.p1 = translatePoint(controls.p1, distance);
+        newControls.s0 = translatePoint(controls.s0, distance);
+        newControls.s1 = translatePoint(controls.s1, distance);
+        break;
+      case api.Curve.Cardinal:
+      case api.Curve.Bezier:
+        newControls.p0 = translatePoint(controls.p0, distance);
+        newControls.p1 = translatePoint(controls.p1, distance);
+        newControls.p2 = translatePoint(controls.p2, distance);
+        newControls.p3 = translatePoint(controls.p3, distance);
+        break;
+    }
+
+    return newControls;
+  }
+
+  /**
+   * Scales a curve relative to its center.
+   * 
+   * @param {Enum} type - The type of curve to draw (Cardinal, Bezier)
+   * @param {Object} controls - The controls for the specified curve
+   * @param {Point} scale - Scale in the x and y directions
+   */
+  function scaleCurve(type, controls, scale) {
+  }
+
+  /**
+   * Rotates a curve about its center.
+   * 
+   * @param {Enum} type - The type of curve to draw (Cardinal, Bezier)
+   * @param {Object} controls - The controls for the specified curve
+   * @param {Number} angle - The angle in Radians to rotate the primitive
+   */
+  function rotateCurve(type, controls, angle) {
+  }
+
   //
   // This is what we'll export as the rendering API
   const api = {
@@ -643,6 +692,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     translatePrimitive,
     scalePrimitive,
     rotatePrimitive,
+    translateCurve,
   };
 
   Object.defineProperty(api, 'pixelsX', {

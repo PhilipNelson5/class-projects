@@ -53,11 +53,11 @@ MySample.main = (function (graphics) {
 
   let cHermite = {
     p0: {
-      x: 0.2,
+      x: 0.1,
       y: 0.125
     },
     p1: {
-      x: 0.8,
+      x: 0.9,
       y: 0.125
     },
     s0: {
@@ -203,10 +203,10 @@ MySample.main = (function (graphics) {
   let dty = 1.3;
   let r = 0, g = 0, b = 0, dr = 1, dg = 1, db = 1;
   function update(dt) {
-    // cHermite.update(dt);
-    // cCardinal.update(dt);
-    // cBezier.update(dt);
-    // cBezier2.update(dt);
+    cHermite.update(dt);
+    cCardinal.update(dt);
+    cBezier.update(dt);
+    cBezier2.update(dt);
     theta += Math.PI / 3500 * dt;
 
     dt /= 1000;
@@ -244,29 +244,33 @@ MySample.main = (function (graphics) {
   // Rendering code goes here
   //
   //------------------------------------------------------------------
-  // let points = false;
-  // let line = true;
-  // let controls = true;
+  let points = false;
+  let line = true;
+  let controls = false;
   function render() {
     graphics.clear(false);
 
-    // graphics.drawCurve(graphics.Curve.Hermite, cHermite, points, line, controls, 'rgb(0, 0, 0)');
+    for (let i = 0; i < .3; i += .05) {
+      graphics.drawCurve(graphics.Curve.Bezier,
+        graphics.translateCurve(graphics.Curve.Bezier, cBezier, { x: 0, y: i }),
+        points, line, controls, 'rgb(0, 0, 0)');
+    }
     // graphics.drawCurve(graphics.Curve.Cardinal, cCardinal, points, line, controls, 'rgb(0, 0, 255)');
     // graphics.drawCurve(graphics.Curve.Bezier, cBezier, points, line, controls, 'rgb(0, 155, 44)');
     // graphics.drawCurve(graphics.Curve.BezierMatrix, cBezier2, points, line, controls, 'rgb(255, 0, 0)');
-    // let i = .0275;
-    // let s = .1;
-    // shapes.forEach((shape) => {
-    //   graphics.drawPrimitive(
-    //     graphics.translatePrimitive(
-    //       graphics.scalePrimitive(
-    //         graphics.rotatePrimitive(shape, theta),
-    //         { x: s * 1.5, y: s * 1.5 }),
-    //       { x: i * 5, y: i }),
-    //     true, 'rgb(0, 0, 0');
-    //   i *= 1.3;
-    //   s *= 1.3;
-    // });
+    let i = .0275;
+    let s = .1;
+    shapes.forEach((shape) => {
+      graphics.drawPrimitive(
+        graphics.translatePrimitive(
+          graphics.scalePrimitive(
+            graphics.rotatePrimitive(shape, theta),
+            { x: s * 1.5, y: s * 1.5 }),
+          { x: i * 5, y: i }),
+        true, 'rgb(0, 0, 0');
+      i *= 1.3;
+      s *= 1.3;
+    });
 
     let s2 = .05;
     for (let i = 0; i < 35; ++i) {
