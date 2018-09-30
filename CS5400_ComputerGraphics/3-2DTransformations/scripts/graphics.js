@@ -26,6 +26,12 @@ MySample.graphics = (function (pixelsX, pixelsY) {
   //   return ffact;
   // }
 
+  /**
+   * A factorial function
+   * 
+   * @param {Integer} n - The n in n!
+   * @return {Integer} n!
+   */
   function factorial(n) {
     let fact = 1;
     for (let i = 1; i <= n; ++i) {
@@ -35,11 +41,11 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     return fact;
   }
 
-  //------------------------------------------------------------------
-  //
-  // Public function that allows the client code to clear the canvas.
-  //
-  //------------------------------------------------------------------
+  /**
+   * Public function that allows the client code to clear the canvas.
+   * 
+   * @param {Boolean} renderGrid - Turns on drawing the grid
+   */
   function clear(renderGrid) {
     context.save();
     context.setTransform(1, 0, 0, 1, 0, 0);
@@ -66,11 +72,13 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     }
   }
 
-  //------------------------------------------------------------------
-  //
-  // Public function that renders a "pixel" on the framebuffer.
-  //
-  //------------------------------------------------------------------
+  /**
+   * Public function that renders a "pixel" on the framebuffer.
+   * 
+   * @param {Number} x - x coordinate of the pixel
+   * @param {Number} y - y coordinate of the pixel
+   * @param {String} color - Color of the pixel
+   */
   function drawPixel(x, y, color) {
     x = Math.trunc(x);
     y = Math.trunc(y);
@@ -79,11 +87,13 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     context.fillRect(x * deltaX, y * deltaY, deltaX, deltaY);
   }
 
-  //------------------------------------------------------------------
-  //
-  // Helper function used to draw an X centered at a point.
-  //
-  //------------------------------------------------------------------
+  /**
+   * Helper function used to draw an X centered at a point.
+   * 
+   * @param {Number} x - x coordinate of the point
+   * @param {Number} y - y coordinate of the point
+   * @param {String} ptColor - Color of the point
+   */
   function drawPoint(x, y, ptColor) {
     drawPixel(x - 2, y - 2, ptColor);
     drawPixel(x - 1, y - 1, ptColor);
@@ -104,11 +114,12 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Draw a line one X pixel at a time
-   * @param x0 the starting x coordinate
-   * @param y0 the starting y coordinate
-   * @param x1 the ending x coordinate
-   * @param y1 the ending y coordinate
-   * @param color the line color
+   * 
+   * @param {Number} x0 - The starting x coordinate
+   * @param {Number} y0 - The starting y coordinate
+   * @param {Number} x1 - The ending x coordinate
+   * @param {Number} y1 - The ending y coordinate
+   * @param {String} color - The line color
    */
   function drawLineX(x0, y0, x1, y1, color) {
     let dx = x1 - x0;
@@ -135,11 +146,12 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Draw a line one Y pixel at a time
-   * @param x0 the starting x coordinate
-   * @param y0 the starting y coordinate
-   * @param x1 the ending x coordinate
-   * @param y1 the ending y coordinate
-   * @param color the line color
+   * 
+   * @param {Number} x0 - The starting x coordinate
+   * @param {Number} y0 - The starting y coordinate
+   * @param {Number} x1 - The ending x coordinate
+   * @param {Number} y1 - The ending y coordinate
+   * @param {String} color - The line color
    */
   function drawLineY(x0, y0, x1, y1, color) {
     let dx = x1 - x0;
@@ -166,11 +178,12 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Draw a line using the Bresenham Line Algorithm
-   * @param x0 the starting x coordinate
-   * @param y0 the starting y coordinate
-   * @param x1 the ending x coordinate
-   * @param y1 the ending y coordinate
-   * @param color the line color
+   * 
+   * @param {Number} x0 - The starting x coordinate
+   * @param {Number} y0 - The starting y coordinate
+   * @param {Number} x1 - The ending x coordinate
+   * @param {Number} y1 - The ending y coordinate
+   * @param {String} color - the line color
    */
   function drawLine(x0, y0, x1, y1, color) {
     x0 *= pixelsX;
@@ -199,23 +212,19 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     }
   }
 
-
-  //------------------------------------------------------------------
-  //
-  // Renders an Hermite curve based on the input parameters.
-  //
-  //------------------------------------------------------------------
   /**
-   * @param controls {
-   *   p0: {x: , y: } The initial point
-   *   p1: {x: , y: } The final point
-   *   s0: {x: , y: } The slope at the initial point
-   *   s1: {x: , y: } The slope at the final point
+   * Renders an Hermite curve based on the input parameters.
+   * 
+   * @param {Object} controls {
+   *   @member {Point} p0 - The initial point
+   *   @member {Point} p1 - The final point
+   *   @member {Point} s0 - The slope at the initial point
+   *   @member {Point} s1 - The slope at the final point
    * }
-   * @param showPoints  Boolean flag to show the intersection of line segments
-   * @param showLine    Boolean flag to show the drawn curve
-   * @param showControl Boolean flag to show the control points
-   * @param color       Color of the line
+   * @param {Boolean} showPoints  - Boolean flag to show the intersection of line segments
+   * @param {Boolean} showLine    - Boolean flag to show the drawn curve
+   * @param {Boolean} showControl - Boolean flag to show the control points
+   * @param {String}  color       - Color of the line
    */
   function drawCurveHermite(controls, showPoints, showLine, showControl, color) {
     let px, py;
@@ -269,23 +278,20 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     }
   }
 
-  //------------------------------------------------------------------
-  //
-  // Renders a Cardinal curve based on the input parameters.
-  //
-  //------------------------------------------------------------------
   /**
-   * @param controls {
-   *   p0: {x: , y: } The initial point
-   *   p1: {x: , y: } The final point
-   *   s2: {x: , y: } The slope at the initial point
-   *   s3: {x: , y: } The slope at the final point
-   *   t :            The tension parameter
+   * Renders a Cardinal curve based on the input parameters.
+   * 
+   * @param {Object} controls {
+   *   @member {Point} p0 - The initial point
+   *   @member {Point} p1 - The final point
+   *   @member {Point} s2 - The slope at the initial point
+   *   @member {Point} s3 - The slope at the final point
+   *   @member {Number} t - The tension parameter
    * }
-   * @param showPoints  Boolean flag to show the intersection of line segments
-   * @param showLine    Boolean flag to show the drawn curve
-   * @param showControl Boolean flag to show the control points
-   * @param color       Color of the line
+   * @param {Boolean} showPoints  - Boolean flag to show the intersection of line segments
+   * @param {Boolean} showLine    - Boolean flag to show the drawn curve
+   * @param {Boolean} showControl - Boolean flag to show the control points
+   * @param {String} color        - Color of the line
    */
   function drawCurveCardinal(controls, showPoints, showLine, showControl, color) {
     let px, py;
@@ -340,24 +346,19 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     }
   }
 
-
-
-  //------------------------------------------------------------------
-  //
-  // Renders a Bezier curve based on the input parameters.
-  //
-  //------------------------------------------------------------------
   /**
-   * @param controls {
-   *   p0: {x: , y: } The first control point
-   *   p1: {x: , y: } The second control point
-   *   s2: {x: , y: } The third control point
-   *   s3: {x: , y: } The fourth control point
+   * Renders a Bezier curve based on the input parameters.
+   * 
+   * @param {Object} controls {
+   *   @member {Point} p0 - The first control point
+   *   @member {Point} p1 - The second control point
+   *   @member {Point} s2 - The third control point
+   *   @member {Point} s3 - The fourth control point
    * }
-   * @param showPoints  Boolean flag to show the intersection of line segments
-   * @param showLine    Boolean flag to show the drawn curve
-   * @param showControl Boolean flag to show the control points
-   * @param color       Color of the line
+   * @param {Boolean} showPoints  - Boolean flag to show the intersection of line segments
+   * @param {Boolean} showLine    - Boolean flag to show the drawn curve
+   * @param {Boolean} showControl - Boolean flag to show the control points
+   * @param {String} color        - Color of the line
    */
   function drawCurveBezier(controls, showPoints, showLine, showControl, color) {
     let px, py;
@@ -396,23 +397,20 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     }
   }
 
-  //------------------------------------------------------------------
-  //
-  // Renders a Bezier curve based on the input parameters; using the matrix form.
-  // This follows the Mathematics for Game Programmers form.
-  //
-  //------------------------------------------------------------------
   /**
-   * @param controls {
-   *   p0: {x: , y: } The first control point
-   *   p1: {x: , y: } The second control point
-   *   s2: {x: , y: } The third control point
-   *   s3: {x: , y: } The fourth control point
+   * Renders a Bezier curve based on the input parameters; using the matrix form.
+   * This follows the Mathematics for Game Programmers form.
+   * 
+   * @param {Object} controls{
+   *   @member {Point} p0 - The first control point
+   *   @member {Point} p1 - The second control point
+   *   @member {Point} s2 - The third control point
+   *   @member {Point} s3 - The fourth control point
    * }
-   * @param showPoints  Boolean flag to show the intersection of line segments
-   * @param showLine    Boolean flag to show the drawn curve
-   * @param showControl Boolean flag to show the control points
-   * @param color       Color of the line
+   * @param {Boolean} showPoints  - Boolean flag to show the intersection of line segments
+   * @param {Boolean} showLine    - Boolean flag to show the drawn curve
+   * @param {Boolean} showControl - Boolean flag to show the control points
+   * @param {String}  color       - Color of the line
    */
   function drawCurveBezierMatrix(controls, showPoints, showLine, showControl, color) {
     let px, py;
@@ -457,11 +455,16 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     }
   }
 
-  //------------------------------------------------------------------
-  //
-  // Entry point for rendering the different types of curves.
-  //
-  //------------------------------------------------------------------
+  /**
+   * Entry point for rendering the different types of curves.
+   * 
+   * @param {Enum}    type        - The type of curve to draw
+   * @param {Object}  controls    - The controls for the specified curve
+   * @param {Boolean} showPoints  - Show the line segment points
+   * @param {Boolean} showLine    - Show the line
+   * @param {Boolean} showControl - Show the control points or lines
+   * @param {String}  lineColor   - The line color
+   */
   function drawCurve(type, controls, showPoints, showLine, showControl, lineColor) {
     switch (type) {
       case api.Curve.Hermite:
@@ -479,12 +482,12 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     }
   }
 
-  //------------------------------------------------------------------
-  //
-  // Specifies the number of line segments to use when rendering curves.
-  // Any pre-compute optimization can be initiated from this function.
-  //
-  //------------------------------------------------------------------
+  /**
+   * Specifies the number of line segments to use when rendering curves.
+   * Any pre-compute optimization can be initiated from this function.
+   * 
+   * @param {Number} segments - The number of line segments for curves
+   */
   function setCurveSegments(segments) {
     curveSegments = segments;
     du = 1 / curveSegments;
@@ -503,18 +506,16 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     }
   }
 
-  //------------------------------------------------------------------
-  //
-  // Renders a primitive of the form: {
-  //    verts: [ {x, y}, ...],    // Must have at least 2 verts
-  //    center: { x, y }
-  // }
-  // 
-  // connect: If true, the last vertex and first  vertex have a line drawn between them.
-  //
-  // color: The color to use when drawing the lines
-  //
-  //------------------------------------------------------------------
+  /**
+   * Renders a primitive polygon
+   * 
+   * @param {Object} primitive {
+   *   @member {Point} center - Center of the polygon
+   *   @member {Point[]} verts - Array of verticies (must have 2+)
+   * }
+   * @param {Boolean} connect - If true, draw a line from the last vertex to the first
+   * @param {String} color    - The color of the lines
+   */
   function drawPrimitive(primitive, connect, color) {
     for (let i = 1; i < primitive.verts.length; ++i) {
       drawLine(primitive.verts[i - 1].x,
@@ -556,6 +557,10 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     get: () => { return curveSegments; },
     set: value => setCurveSegments(value)
   });
+  /**
+   * Enum for curve types
+   * @enum {Number}
+   */
   Object.defineProperty(api, 'Curve', {
     value: Object.freeze({
       Hermite: 0,

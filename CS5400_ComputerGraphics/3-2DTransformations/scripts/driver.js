@@ -2,6 +2,55 @@
 MySample.main = (function (graphics) {
   'use strict';
 
+  /**
+   * Make a regular polygon centered around (0, 0) with verticies 
+   * distance one from the origin
+   * 
+   * @param {Integer} n The number of verticies of the regular polygon
+   */
+  function makeRegularPrimitive(n) {
+    let verts = [];
+    let dth = 2 * Math.PI / n;
+
+    for (let i = 1; i <= n; ++i) {
+      verts.push({ x: .1 * Math.cos(i * dth), y: .1 * Math.sin(i * dth) });
+    }
+
+    return {
+      center: { x: 0, y: 0 },
+      verts: verts
+    };
+  }
+
+  /**
+   * The representation of a point in 2D space
+   * @typedef {Object} Point
+   * @property {Number} x - x coordinate of the point
+   * @property {Number} y - y coordinate of the point
+   */
+
+  /**
+   * Make a primitive with the specified dimensions
+   * @constructor
+   * 
+   * @param {Point} center The center of the primitive
+   * @param {Point[]} verts List of verticies (must have 2+)
+   * @return The new primitive
+   */
+  function makePrimitive(center, verts) {
+    let primitive = {
+      center: { x: center.x, y: center.y },
+      verts: []
+    };
+
+    for (let i = 0; i < verts.length; ++i) {
+      primitive.verts[i] = { x: verts[i].x, y: verts[i].y };
+    }
+
+    return primitive;
+  }
+
+
   let cHermite = {
     p0: {
       x: 0.2,
@@ -135,28 +184,16 @@ MySample.main = (function (graphics) {
     }
   };
 
-  let triangle = makePrimitive({ x: .5, y: .5},
-    [{ x: .4, y: .6 }, { x: .5, y: .3}, { x: .6, y: .6}]);
+  let triangle = makePrimitive({ x: .5, y: .5 },
+    [{ x: .4, y: .6 }, { x: .5, y: .3 }, { x: .6, y: .6 }]
+  );
 
-  /**
-   * Returns a primitive with the specified dimensions
-   * 
-   * @param center {x: , y: } The center of the primitive
-   * @param verts [ {x:, y: }, ...] The list of verticies (must have 2+)
-   * @return The new primitive
-   */
-  function makePrimitive(center, verts) {
-    let primitive = {
-      center: { x: center.x, y: center.y },
-      verts: []
-    };
+  let square = makePrimitive({ x: .5, y: .5 },
+    [{ x: .4, y: .4 }, { x: .6, y: .4 }, { x: .6, y: .6 }, { x: .4, y: .6 }]
+  );
 
-    for (let i = 0; i < verts.length; ++i) {
-      primitive.verts[i] = { x: verts[i].x, y: verts[i].y };
-    }
-
-    return primitive;
-  }
+  let octagon = makeRegularPrimitive(8);
+  console.log(octagon);
 
   //------------------------------------------------------------------
   //
@@ -186,6 +223,8 @@ MySample.main = (function (graphics) {
     graphics.drawCurve(graphics.Curve.Bezier, cBezier, points, line, controls, 'rgb(0, 155, 44)');
     graphics.drawCurve(graphics.Curve.BezierMatrix, cBezier2, points, line, controls, 'rgb(255, 0, 0)');
     graphics.drawPrimitive(triangle, true, 'rgb(0, 0, 0');
+    graphics.drawPrimitive(square, true, 'rgb(0, 0, 0');
+    graphics.drawPrimitive(octagon, true, 'rgb(0, 0, 0');
   }
 
   //------------------------------------------------------------------
