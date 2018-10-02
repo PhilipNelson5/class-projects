@@ -669,6 +669,61 @@ MySample.graphics = (function (pixelsX, pixelsY) {
    * @param {Point} scale - Scale in the x and y directions
    */
   function scaleCurve(type, controls, scale) {
+    let center = {};
+    let newCurve = {};
+    switch (type) {
+      case api.Curve.Hermite:
+        center.x = (controls.p0.x + controls.p1.x) / 2;
+        center.y = (controls.p0.y + controls.p1.y) / 2;
+
+        newCurve = translateCurve(api.Curve.Hermite, controls, { x: -center.x, y: -center.y });
+
+        newCurve.p0.x *= scale.x;
+        newCurve.p0.y *= scale.y;
+        newCurve.p1.x *= scale.x;
+        newCurve.p1.y *= scale.y;
+        newCurve.s0.x *= scale.x;
+        newCurve.s0.y *= scale.y;
+        newCurve.s1.x *= scale.x;
+        newCurve.s1.y *= scale.y;
+
+        return translateCurve(api.Curve.Hermite, newCurve, { x: center.x, y: center.y });
+
+      case api.Curve.Cardinal:
+
+        center.x = (controls.p1.x + controls.p2.x) / 2;
+        center.y = (controls.p1.y + controls.p2.y) / 2;
+
+        newCurve = translateCurve(api.Curve.Cardinal, controls, { x: -center.x, y: -center.y });
+
+        newCurve.p0.x *= scale.x;
+        newCurve.p0.y *= scale.y;
+        newCurve.p1.x *= scale.x;
+        newCurve.p1.y *= scale.y;
+        newCurve.p2.x *= scale.x;
+        newCurve.p2.y *= scale.y;
+        newCurve.p3.x *= scale.x;
+        newCurve.p3.y *= scale.y;
+
+        return translateCurve(api.Curve.Cardinal, newCurve, { x: center.x, y: center.y });
+
+      case api.Curve.Bezier:
+        center.x = (controls.p0.x + controls.p3.x) / 2;
+        center.y = (controls.p0.y + controls.p3.y) / 2;
+
+        newCurve = translateCurve(api.Curve.Bezier, controls, { x: -center.x, y: -center.y });
+
+        newCurve.p0.x *= scale.x;
+        newCurve.p0.y *= scale.y;
+        newCurve.p1.x *= scale.x;
+        newCurve.p1.y *= scale.y;
+        newCurve.p2.x *= scale.x;
+        newCurve.p2.y *= scale.y;
+        newCurve.p3.x *= scale.x;
+        newCurve.p3.y *= scale.y;
+
+        return translateCurve(api.Curve.Bezier, newCurve, { x: center.x, y: center.y });
+    }
   }
 
   /**
@@ -679,6 +734,98 @@ MySample.graphics = (function (pixelsX, pixelsY) {
    * @param {Number} angle - The angle in Radians to rotate the primitive
    */
   function rotateCurve(type, controls, angle) {
+    let center = {};
+    let newCurve = {};
+    let newx, newy;
+    const sina = Math.sin(angle);
+    const cosa = Math.cos(angle);
+
+    switch (type) {
+      case api.Curve.Hermite:
+        center.x = (controls.p0.x + controls.p1.x) / 2;
+        center.y = (controls.p0.y + controls.p1.y) / 2;
+
+        newCurve = translateCurve(api.Curve.Hermite, controls, { x: -center.x, y: -center.y });
+
+        newx = newCurve.p0.x * cosa - newCurve.p0.y * sina;
+        newy = newCurve.p0.x * sina + newCurve.p0.y * cosa;
+        newCurve.p0.x = newx;
+        newCurve.p0.y = newy;
+
+        newx = newCurve.p1.x * cosa - newCurve.p1.y * sina;
+        newy = newCurve.p1.x * sina + newCurve.p1.y * cosa;
+        newCurve.p1.x = newx;
+        newCurve.p1.y = newy;
+
+        newx = newCurve.s0.x * cosa - newCurve.s0.y * sina;
+        newy = newCurve.s0.x * sina + newCurve.s0.y * cosa;
+        newCurve.s0.x = newx;
+        newCurve.s0.y = newy;
+
+        newx = newCurve.s1.x * cosa - newCurve.s1.y * sina;
+        newy = newCurve.s1.x * sina + newCurve.s1.y * cosa;
+        newCurve.s1.x = newx;
+        newCurve.s1.y = newy;
+
+        return translateCurve(api.Curve.Hermite, newCurve, { x: center.x, y: center.y });
+
+      case api.Curve.Cardinal:
+
+        center.x = (controls.p1.x + controls.p2.x) / 2;
+        center.y = (controls.p1.y + controls.p2.y) / 2;
+
+        newCurve = translateCurve(api.Curve.Cardinal, controls, { x: -center.x, y: -center.y });
+
+        newx = newCurve.p0.x * cosa - newCurve.p0.y * sina;
+        newy = newCurve.p0.x * sina + newCurve.p0.y * cosa;
+        newCurve.p0.x = newx;
+        newCurve.p0.y = newy;
+
+        newx = newCurve.p1.x * cosa - newCurve.p1.y * sina;
+        newy = newCurve.p1.x * sina + newCurve.p1.y * cosa;
+        newCurve.p1.x = newx;
+        newCurve.p1.y = newy;
+
+        newx = newCurve.p2.x * cosa - newCurve.p2.y * sina;
+        newy = newCurve.p2.x * sina + newCurve.p2.y * cosa;
+        newCurve.p2.x = newx;
+        newCurve.p2.y = newy;
+
+        newx = newCurve.p3.x * cosa - newCurve.p3.y * sina;
+        newy = newCurve.p3.x * sina + newCurve.p3.y * cosa;
+        newCurve.p3.x = newx;
+        newCurve.p3.y = newy;
+
+        return translateCurve(api.Curve.Cardinal, newCurve, { x: center.x, y: center.y });
+
+      case api.Curve.Bezier:
+        center.x = (controls.p0.x + controls.p3.x) / 2;
+        center.y = (controls.p0.y + controls.p3.y) / 2;
+
+        newCurve = translateCurve(api.Curve.Bezier, controls, { x: -center.x, y: -center.y });
+
+        newx = newCurve.p0.x * cosa - newCurve.p0.y * sina;
+        newy = newCurve.p0.x * sina + newCurve.p0.y * cosa;
+        newCurve.p0.x = newx;
+        newCurve.p0.y = newy;
+
+        newx = newCurve.p1.x * cosa - newCurve.p1.y * sina;
+        newy = newCurve.p1.x * sina + newCurve.p1.y * cosa;
+        newCurve.p1.x = newx;
+        newCurve.p1.y = newy;
+
+        newx = newCurve.p2.x * cosa - newCurve.p2.y * sina;
+        newy = newCurve.p2.x * sina + newCurve.p2.y * cosa;
+        newCurve.p2.x = newx;
+        newCurve.p2.y = newy;
+
+        newx = newCurve.p3.x * cosa - newCurve.p3.y * sina;
+        newy = newCurve.p3.x * sina + newCurve.p3.y * cosa;
+        newCurve.p3.x = newx;
+        newCurve.p3.y = newy;
+
+        return translateCurve(api.Curve.Bezier, newCurve, { x: center.x, y: center.y });
+    }
   }
 
   //
@@ -693,6 +840,8 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     scalePrimitive,
     rotatePrimitive,
     translateCurve,
+    scaleCurve,
+    rotateCurve,
   };
 
   Object.defineProperty(api, 'pixelsX', {

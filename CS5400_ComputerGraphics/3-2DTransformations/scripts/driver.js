@@ -250,10 +250,14 @@ MySample.main = (function (graphics) {
   function render() {
     graphics.clear(false);
 
-    for (let i = 0; i < .3; i += .05) {
+    for (let i = 0; i < .3; i += .01) {
       graphics.drawCurve(graphics.Curve.Bezier,
-        graphics.translateCurve(graphics.Curve.Bezier, cBezier, { x: 0, y: i }),
-        points, line, controls, 'rgb(0, 0, 0)');
+        graphics.translateCurve(graphics.Curve.Bezier,
+          graphics.scaleCurve(graphics.Curve.Bezier,
+            graphics.rotateCurve(graphics.Curve.Bezier, cBezier, theta/3),
+            { x: i*2, y: i*4 }),
+          { x: 0, y: i }),
+        points, line, controls, 'rgb(0, 200, 200)');
     }
     // graphics.drawCurve(graphics.Curve.Cardinal, cCardinal, points, line, controls, 'rgb(0, 0, 255)');
     // graphics.drawCurve(graphics.Curve.Bezier, cBezier, points, line, controls, 'rgb(0, 155, 44)');
