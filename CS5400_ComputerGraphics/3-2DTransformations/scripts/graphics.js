@@ -28,7 +28,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * A factorial function
-   * 
+   *
    * @param {Integer} n - The n in n!
    * @return {Integer} n!
    */
@@ -43,7 +43,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Public function that allows the client code to clear the canvas.
-   * 
+   *
    * @param {Boolean} renderGrid - Turns on drawing the grid
    */
   function clear(renderGrid) {
@@ -74,7 +74,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Public function that renders a "pixel" on the framebuffer.
-   * 
+   *
    * @param {Number} x - x coordinate of the pixel
    * @param {Number} y - y coordinate of the pixel
    * @param {String} color - Color of the pixel
@@ -89,7 +89,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Helper function used to draw an X centered at a point.
-   * 
+   *
    * @param {Number} x - x coordinate of the point
    * @param {Number} y - y coordinate of the point
    * @param {String} ptColor - Color of the point
@@ -114,7 +114,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Draw a line one X pixel at a time
-   * 
+   *
    * @param {Number} x0 - The starting x coordinate
    * @param {Number} y0 - The starting y coordinate
    * @param {Number} x1 - The ending x coordinate
@@ -146,7 +146,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Draw a line one Y pixel at a time
-   * 
+   *
    * @param {Number} x0 - The starting x coordinate
    * @param {Number} y0 - The starting y coordinate
    * @param {Number} x1 - The ending x coordinate
@@ -178,7 +178,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Draw a line using the Bresenham Line Algorithm
-   * 
+   *
    * @param {Number} x0 - The starting x coordinate
    * @param {Number} y0 - The starting y coordinate
    * @param {Number} x1 - The ending x coordinate
@@ -214,7 +214,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Renders an Hermite curve based on the input parameters.
-   * 
+   *
    * @param {Object} controls {
    *   @member {Point} p0 - The initial point
    *   @member {Point} p1 - The final point
@@ -280,7 +280,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Renders a Cardinal curve based on the input parameters.
-   * 
+   *
    * @param {Object} controls {
    *   @member {Point} p0 - The initial point
    *   @member {Point} p1 - The final point
@@ -348,7 +348,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Renders a Bezier curve based on the input parameters.
-   * 
+   *
    * @param {Object} controls {
    *   @member {Point} p0 - The first control point
    *   @member {Point} p1 - The second control point
@@ -372,9 +372,9 @@ MySample.graphics = (function (pixelsX, pixelsY) {
       drawPoint(controls.p1.x, controls.p1.y, 'rgb(255, 0, 0)');
       drawPoint(controls.p2.x, controls.p2.y, 'rgb(255, 0, 0)');
       drawPoint(controls.p3.x, controls.p3.y, 'rgb(255, 0, 0)');
-      // drawLine(controls.p0.x, controls.p0.y, controls.p1.x, controls.p1.y, 'rgb(255, 0, 0)');
-      // drawLine(controls.p1.x, controls.p1.y, controls.p2.x, controls.p2.y, 'rgb(255, 0, 0)');
-      // drawLine(controls.p2.x, controls.p2.y, controls.p3.x, controls.p3.y, 'rgb(255, 0, 0)');
+      drawLine(controls.p0.x, controls.p0.y, controls.p1.x, controls.p1.y, 'rgb(255, 0, 0, .25)');
+      drawLine(controls.p1.x, controls.p1.y, controls.p2.x, controls.p2.y, 'rgb(255, 0, 0, .25)');
+      drawLine(controls.p2.x, controls.p2.y, controls.p3.x, controls.p3.y, 'rgb(255, 0, 0, .25)');
     }
     let u = 0;
     for (let i = 0; i <= curveSegments; ++i, u += du) {
@@ -400,7 +400,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
   /**
    * Renders a Bezier curve based on the input parameters; using the matrix form.
    * This follows the Mathematics for Game Programmers form.
-   * 
+   *
    * @param {Object} controls{
    *   @member {Point} p0 - The first control point
    *   @member {Point} p1 - The second control point
@@ -457,7 +457,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Entry point for rendering the different types of curves.
-   * 
+   *
    * @param {Enum}    type        - The type of curve to draw
    * @param {Object}  controls    - The controls for the specified curve
    * @param {Boolean} showPoints  - Show the line segment points
@@ -485,7 +485,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
   /**
    * Specifies the number of line segments to use when rendering curves.
    * Any pre-compute optimization can be initiated from this function.
-   * 
+   *
    * @param {Number} segments - The number of line segments for curves
    */
   function setCurveSegments(segments) {
@@ -508,7 +508,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Renders a primitive polygon
-   * 
+   *
    * @param {Object} primitive {
    *   @member {Point} center - Center of the polygon
    *   @member {Point[]} verts - Array of verticies (must have 2+)
@@ -537,7 +537,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Translate a point by a distance
-   * 
+   *
    * @param {Point} point - The point to translate
    * @param {Point} distance - A vector representing the distance to translate the point by
    * @return {Object} New point translated by distance
@@ -548,7 +548,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * translate a primitive by a distance
-   * 
+   *
    * @param {Object} primitive {
    *   @member {Point} center - Center of the polygon
    *   @member {Point[]} verts - Array of verticies (must have 2+)
@@ -570,7 +570,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Scales a primitive by an ammount in the x and y
-   * 
+   *
    * @param {Object} primitive {
    *   @member {Point} center - Center of the polygon
    *   @member {Point[]} verts - Array of verticies (must have 2+)
@@ -579,11 +579,10 @@ MySample.graphics = (function (pixelsX, pixelsY) {
    */
   function scalePrimitive(primitive, scale) {
     let newPrim;
-    if (primitive.center.x !== 0 && primitive.center.y !== 0) {
-      newPrim = translatePrimitive(primitive, { x: -primitive.center.x, y: -primitive.center.y });
-      console.log('nonzero center [scale]');
-    } else {
+    if (primitive.center.x === 0 && primitive.center.y === 0) {
       newPrim = JSON.parse(JSON.stringify(primitive));
+    } else {
+      newPrim = translatePrimitive(primitive, { x: -primitive.center.x, y: -primitive.center.y });
     }
 
     for (let i = 0; i < newPrim.verts.length; ++i) {
@@ -591,7 +590,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
       newPrim.verts[i].y *= scale.y;
     }
 
-    if (primitive.center.x !== 0 && primitive.center.y !== 0) {
+    if (primitive.center.x === 0 && primitive.center.y === 0) {
       return newPrim;
     } else {
       return translatePrimitive(newPrim, { x: primitive.center.x, y: primitive.center.y });
@@ -600,7 +599,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Rotates a primitive by a number of radians
-   * 
+   *
    * @param {Object} primitive {
    *   @member {Point} center - Center of the polygon
    *   @member {Point[]} verts - Array of verticies (must have 2+)
@@ -609,11 +608,10 @@ MySample.graphics = (function (pixelsX, pixelsY) {
    */
   function rotatePrimitive(primitive, angle) {
     let newPrim;
-    if (primitive.center.x !== 0 && primitive.center.y !== 0) {
-      newPrim = translatePrimitive(primitive, { x: -primitive.center.x, y: -primitive.center.y });
-      console.log('nonzero center [rotate]');
-    } else {
+    if (primitive.center.x === 0 && primitive.center.y === 0) {
       newPrim = JSON.parse(JSON.stringify(primitive));
+    } else {
+      newPrim = translatePrimitive(primitive, { x: -primitive.center.x, y: -primitive.center.y });
     }
 
     const sina = Math.sin(angle);
@@ -625,7 +623,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
       newPrim.verts[i].y = newy;
     }
 
-    if (primitive.center.x !== 0 && primitive.center.y !== 0) {
+    if (primitive.center.x === 0 && primitive.center.y === 0) {
       return newPrim;
     } else {
       return translatePrimitive(newPrim, { x: primitive.center.x, y: primitive.center.y });
@@ -634,7 +632,7 @@ MySample.graphics = (function (pixelsX, pixelsY) {
 
   /**
    * Translate a curve by a distance
-   * 
+   *
    * @param {Enum} type - The type of curve to draw (Cardinal, Bezier)
    * @param {Object} controls - The controls for the specified curve
    * @param {Point} distance - A vector representing the distance to translate the curve by
@@ -662,80 +660,82 @@ MySample.graphics = (function (pixelsX, pixelsY) {
   }
 
   /**
-   * Scales a curve relative to its center.
-   * 
+   * Scales a curve relative to its center using the compound matrix
+   *
+   * |Px'|   |Sx * (Px + dx) - dx|
+   * |   | = |                   |
+   * |Py'|   |Sy * (Px + dy) - dy|
+   *
    * @param {Enum} type - The type of curve to draw (Cardinal, Bezier)
    * @param {Object} controls - The controls for the specified curve
    * @param {Point} scale - Scale in the x and y directions
    */
   function scaleCurve(type, controls, scale) {
     let center = {};
-    let newCurve = {};
+    let newCurve = JSON.parse(JSON.stringify(controls));
     switch (type) {
       case api.Curve.Hermite:
         center.x = (controls.p0.x + controls.p1.x) / 2;
         center.y = (controls.p0.y + controls.p1.y) / 2;
 
-        newCurve = translateCurve(api.Curve.Hermite, controls, { x: -center.x, y: -center.y });
+        newCurve.p0.x = scale.x * (newCurve.p0.x - center.x) + center.x;
+        newCurve.p0.y = scale.y * (newCurve.p0.y - center.y) + center.y;
+        newCurve.p1.x = scale.x * (newCurve.p1.x - center.x) + center.x;
+        newCurve.p1.y = scale.y * (newCurve.p1.y - center.y) + center.y;
+        newCurve.s0.x = scale.x * (newCurve.s0.x - center.x) + center.x;
+        newCurve.s0.y = scale.y * (newCurve.s0.y - center.y) + center.y;
+        newCurve.s1.x = scale.x * (newCurve.s1.x - center.x) + center.x;
+        newCurve.s1.y = scale.y * (newCurve.s1.y - center.y) + center.y;
 
-        newCurve.p0.x *= scale.x;
-        newCurve.p0.y *= scale.y;
-        newCurve.p1.x *= scale.x;
-        newCurve.p1.y *= scale.y;
-        newCurve.s0.x *= scale.x;
-        newCurve.s0.y *= scale.y;
-        newCurve.s1.x *= scale.x;
-        newCurve.s1.y *= scale.y;
-
-        return translateCurve(api.Curve.Hermite, newCurve, { x: center.x, y: center.y });
+        return newCurve;
 
       case api.Curve.Cardinal:
 
         center.x = (controls.p1.x + controls.p2.x) / 2;
         center.y = (controls.p1.y + controls.p2.y) / 2;
 
-        newCurve = translateCurve(api.Curve.Cardinal, controls, { x: -center.x, y: -center.y });
+        newCurve.p0.x = scale.x * (newCurve.p0.x - center.x) + center.x;
+        newCurve.p0.y = scale.y * (newCurve.p0.y - center.y) + center.y;
+        newCurve.p1.x = scale.x * (newCurve.p1.x - center.x) + center.x;
+        newCurve.p1.y = scale.y * (newCurve.p1.y - center.y) + center.y;
+        newCurve.p2.x = scale.x * (newCurve.p2.x - center.x) + center.x;
+        newCurve.p2.y = scale.y * (newCurve.p2.y - center.y) + center.y;
+        newCurve.p3.x = scale.x * (newCurve.p3.x - center.x) + center.x;
+        newCurve.p3.y = scale.y * (newCurve.p3.y - center.y) + center.y;
 
-        newCurve.p0.x *= scale.x;
-        newCurve.p0.y *= scale.y;
-        newCurve.p1.x *= scale.x;
-        newCurve.p1.y *= scale.y;
-        newCurve.p2.x *= scale.x;
-        newCurve.p2.y *= scale.y;
-        newCurve.p3.x *= scale.x;
-        newCurve.p3.y *= scale.y;
-
-        return translateCurve(api.Curve.Cardinal, newCurve, { x: center.x, y: center.y });
+        return newCurve;
 
       case api.Curve.Bezier:
         center.x = (controls.p0.x + controls.p3.x) / 2;
         center.y = (controls.p0.y + controls.p3.y) / 2;
 
-        newCurve = translateCurve(api.Curve.Bezier, controls, { x: -center.x, y: -center.y });
+        newCurve.p0.x = scale.x * (newCurve.p0.x - center.x) + center.x;
+        newCurve.p0.y = scale.y * (newCurve.p0.y - center.y) + center.y;
+        newCurve.p1.x = scale.x * (newCurve.p1.x - center.x) + center.x;
+        newCurve.p1.y = scale.y * (newCurve.p1.y - center.y) + center.y;
+        newCurve.p2.x = scale.x * (newCurve.p2.x - center.x) + center.x;
+        newCurve.p2.y = scale.y * (newCurve.p2.y - center.y) + center.y;
+        newCurve.p3.x = scale.x * (newCurve.p3.x - center.x) + center.x;
+        newCurve.p3.y = scale.y * (newCurve.p3.y - center.y) + center.y;
 
-        newCurve.p0.x *= scale.x;
-        newCurve.p0.y *= scale.y;
-        newCurve.p1.x *= scale.x;
-        newCurve.p1.y *= scale.y;
-        newCurve.p2.x *= scale.x;
-        newCurve.p2.y *= scale.y;
-        newCurve.p3.x *= scale.x;
-        newCurve.p3.y *= scale.y;
-
-        return translateCurve(api.Curve.Bezier, newCurve, { x: center.x, y: center.y });
+        return newCurve;
     }
   }
 
   /**
-   * Rotates a curve about its center.
-   * 
+   * Rotates a curve about its center using the compound matrix
+   *
+   * |Px'|   |cosa * (Px + dx) + sina * (Py + dy) - dx|
+   * |   | = |                                        |
+   * |Py'|   |sina * (Px + dx) + cosa * (Py + dy) - dy|
+   *
    * @param {Enum} type - The type of curve to draw (Cardinal, Bezier)
    * @param {Object} controls - The controls for the specified curve
    * @param {Number} angle - The angle in Radians to rotate the primitive
    */
   function rotateCurve(type, controls, angle) {
     let center = {};
-    let newCurve = {};
+    let newCurve = JSON.parse(JSON.stringify(controls));
     let newx, newy;
     const sina = Math.sin(angle);
     const cosa = Math.cos(angle);
@@ -745,86 +745,80 @@ MySample.graphics = (function (pixelsX, pixelsY) {
         center.x = (controls.p0.x + controls.p1.x) / 2;
         center.y = (controls.p0.y + controls.p1.y) / 2;
 
-        newCurve = translateCurve(api.Curve.Hermite, controls, { x: -center.x, y: -center.y });
-
-        newx = newCurve.p0.x * cosa - newCurve.p0.y * sina;
-        newy = newCurve.p0.x * sina + newCurve.p0.y * cosa;
+        newx = cosa * (newCurve.p0.x - center.x) - sina * (newCurve.p0.y - center.y) + center.x;
+        newy = sina * (newCurve.p0.x - center.x) + cosa * (newCurve.p0.y - center.y) + center.y;
         newCurve.p0.x = newx;
         newCurve.p0.y = newy;
 
-        newx = newCurve.p1.x * cosa - newCurve.p1.y * sina;
-        newy = newCurve.p1.x * sina + newCurve.p1.y * cosa;
+        newx = cosa * (newCurve.p1.x - center.x) - sina * (newCurve.p1.y - center.y) + center.x;
+        newy = sina * (newCurve.p1.x - center.x) + cosa * (newCurve.p1.y - center.y) + center.y;
         newCurve.p1.x = newx;
         newCurve.p1.y = newy;
 
-        newx = newCurve.s0.x * cosa - newCurve.s0.y * sina;
-        newy = newCurve.s0.x * sina + newCurve.s0.y * cosa;
+        newx = cosa * (newCurve.s0.x - center.x) - sina * (newCurve.s0.y - center.y) + center.x;
+        newy = sina * (newCurve.s0.x - center.x) + cosa * (newCurve.s0.y - center.y) + center.y;
         newCurve.s0.x = newx;
         newCurve.s0.y = newy;
 
-        newx = newCurve.s1.x * cosa - newCurve.s1.y * sina;
-        newy = newCurve.s1.x * sina + newCurve.s1.y * cosa;
+        newx = cosa * (newCurve.s1.x - center.x) - sina * (newCurve.s1.y - center.y) + center.x;
+        newy = sina * (newCurve.s1.x - center.x) + cosa * (newCurve.s1.y - center.y) + center.y;
         newCurve.s1.x = newx;
         newCurve.s1.y = newy;
 
-        return translateCurve(api.Curve.Hermite, newCurve, { x: center.x, y: center.y });
+        return newCurve;
 
       case api.Curve.Cardinal:
 
         center.x = (controls.p1.x + controls.p2.x) / 2;
         center.y = (controls.p1.y + controls.p2.y) / 2;
 
-        newCurve = translateCurve(api.Curve.Cardinal, controls, { x: -center.x, y: -center.y });
-
-        newx = newCurve.p0.x * cosa - newCurve.p0.y * sina;
-        newy = newCurve.p0.x * sina + newCurve.p0.y * cosa;
+        newx = cosa * (newCurve.p0.x - center.x) - sina * (newCurve.p0.y - center.y) + center.x;
+        newy = sina * (newCurve.p0.x - center.x) + cosa * (newCurve.p0.y - center.y) + center.y;
         newCurve.p0.x = newx;
         newCurve.p0.y = newy;
 
-        newx = newCurve.p1.x * cosa - newCurve.p1.y * sina;
-        newy = newCurve.p1.x * sina + newCurve.p1.y * cosa;
+        newx = cosa * (newCurve.p1.x - center.x) - sina * (newCurve.p1.y - center.y) + center.x;
+        newy = sina * (newCurve.p1.x - center.x) + cosa * (newCurve.p1.y - center.y) + center.y;
         newCurve.p1.x = newx;
         newCurve.p1.y = newy;
 
-        newx = newCurve.p2.x * cosa - newCurve.p2.y * sina;
-        newy = newCurve.p2.x * sina + newCurve.p2.y * cosa;
+        newx = cosa * (newCurve.p2.x - center.x) - sina * (newCurve.p2.y - center.y) + center.x;
+        newy = sina * (newCurve.p2.x - center.x) + cosa * (newCurve.p2.y - center.y) + center.y;
         newCurve.p2.x = newx;
         newCurve.p2.y = newy;
 
-        newx = newCurve.p3.x * cosa - newCurve.p3.y * sina;
-        newy = newCurve.p3.x * sina + newCurve.p3.y * cosa;
+        newx = cosa * (newCurve.p3.x - center.x) - sina * (newCurve.p3.y - center.y) + center.x;
+        newy = sina * (newCurve.p3.x - center.x) + cosa * (newCurve.p3.y - center.y) + center.y;
         newCurve.p3.x = newx;
         newCurve.p3.y = newy;
 
-        return translateCurve(api.Curve.Cardinal, newCurve, { x: center.x, y: center.y });
+        return newCurve;
 
       case api.Curve.Bezier:
         center.x = (controls.p0.x + controls.p3.x) / 2;
         center.y = (controls.p0.y + controls.p3.y) / 2;
 
-        newCurve = translateCurve(api.Curve.Bezier, controls, { x: -center.x, y: -center.y });
-
-        newx = newCurve.p0.x * cosa - newCurve.p0.y * sina;
-        newy = newCurve.p0.x * sina + newCurve.p0.y * cosa;
+        newx = cosa * (newCurve.p0.x - center.x) - sina * (newCurve.p0.y - center.y) + center.x;
+        newy = sina * (newCurve.p0.x - center.x) + cosa * (newCurve.p0.y - center.y) + center.y;
         newCurve.p0.x = newx;
         newCurve.p0.y = newy;
 
-        newx = newCurve.p1.x * cosa - newCurve.p1.y * sina;
-        newy = newCurve.p1.x * sina + newCurve.p1.y * cosa;
+        newx = cosa * (newCurve.p1.x - center.x) - sina * (newCurve.p1.y - center.y) + center.x;
+        newy = sina * (newCurve.p1.x - center.x) + cosa * (newCurve.p1.y - center.y) + center.y;
         newCurve.p1.x = newx;
         newCurve.p1.y = newy;
 
-        newx = newCurve.p2.x * cosa - newCurve.p2.y * sina;
-        newy = newCurve.p2.x * sina + newCurve.p2.y * cosa;
+        newx = cosa * (newCurve.p2.x - center.x) - sina * (newCurve.p2.y - center.y) + center.x;
+        newy = sina * (newCurve.p2.x - center.x) + cosa * (newCurve.p2.y - center.y) + center.y;
         newCurve.p2.x = newx;
         newCurve.p2.y = newy;
 
-        newx = newCurve.p3.x * cosa - newCurve.p3.y * sina;
-        newy = newCurve.p3.x * sina + newCurve.p3.y * cosa;
+        newx = cosa * (newCurve.p3.x - center.x) - sina * (newCurve.p3.y - center.y) + center.x;
+        newy = sina * (newCurve.p3.x - center.x) + cosa * (newCurve.p3.y - center.y) + center.y;
         newCurve.p3.x = newx;
         newCurve.p3.y = newy;
 
-        return translateCurve(api.Curve.Bezier, newCurve, { x: center.x, y: center.y });
+        return newCurve;
     }
   }
 
@@ -871,4 +865,4 @@ MySample.graphics = (function (pixelsX, pixelsY) {
   });
 
   return api;
-}(1000, 1000));
+}(2000, 2000));

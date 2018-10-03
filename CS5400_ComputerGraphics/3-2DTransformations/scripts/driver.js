@@ -144,11 +144,11 @@ MySample.main = (function (graphics) {
     t: 0,
     update: dt => {
       dt /= 1000;
-      cBezier.t += dt * 5;
+      cBezier.t += dt * 7;
       cBezier.p1.x = cBezier.p1.x0 + 1 / 5 * Math.cos(cBezier.t / 2);
-      cBezier.p1.y = cBezier.p1.y0 + 1 / 5 * Math.sin(cBezier.t / 2.5);
-      cBezier.p2.x = cBezier.p2.x0 + 1 / 7 * Math.cos(cBezier.t / 3);
-      cBezier.p2.y = cBezier.p2.y0 + 1 / 7 * Math.sin(cBezier.t / 7);
+      cBezier.p1.y = cBezier.p1.y0 + 1 / 5 * Math.sin(cBezier.t / 3);
+      cBezier.p2.x = cBezier.p2.x0 + 1 / 7 * Math.cos(cBezier.t / 4);
+      cBezier.p2.y = cBezier.p2.y0 + 1 / 7 * Math.sin(cBezier.t / 5);
     }
   };
 
@@ -184,6 +184,26 @@ MySample.main = (function (graphics) {
     }
   };
 
+  let circle = {
+    primitive: makeRegularPrimitive(3),
+    nextVert: .075,
+    verts: 3,
+    curTime: 0,
+    vertDir: -1,
+    update: dt => {
+      dt /= 1000;
+      circle.curTime += dt;
+      if (circle.curTime > circle.nextVert) {
+        circle.primitive = makeRegularPrimitive(circle.verts += circle.vertDir);
+        circle.curTime = 0;
+      }
+      if (circle.verts > 20 || circle.verts <= 3) {
+        circle.vertDir *= -1;
+        circle.verts += circle.vertDir;
+      }
+    }
+  };
+
   let shapes = [];
   for (let i = 3; i < 11; ++i) {
     shapes.push(makeRegularPrimitive(i));
@@ -208,6 +228,8 @@ MySample.main = (function (graphics) {
     cBezier.update(dt);
     cBezier2.update(dt);
     theta += Math.PI / 3500 * dt;
+
+    circle.update(dt);
 
     dt /= 1000;
     tx += dt * .1 * dtx;
@@ -250,30 +272,32 @@ MySample.main = (function (graphics) {
   function render() {
     graphics.clear(false);
 
-    for (let i = 0; i < .3; i += .01) {
+    for (let i = 0, s = .05; i < .25; i += .01, s += .03) {
       graphics.drawCurve(graphics.Curve.Bezier,
         graphics.translateCurve(graphics.Curve.Bezier,
           graphics.scaleCurve(graphics.Curve.Bezier,
-            graphics.rotateCurve(graphics.Curve.Bezier, cBezier, theta/3),
-            { x: i*2, y: i*4 }),
-          { x: 0, y: i }),
-        points, line, controls, 'rgb(0, 200, 200)');
+            graphics.rotateCurve(graphics.Curve.Bezier, cBezier, theta / 3),
+            { x: s, y: s }),
+          { x: 0, y: i - .35 }),
+        points, line, controls, `rgb(${g}, ${r}, ${b})`);
     }
     // graphics.drawCurve(graphics.Curve.Cardinal, cCardinal, points, line, controls, 'rgb(0, 0, 255)');
     // graphics.drawCurve(graphics.Curve.Bezier, cBezier, points, line, controls, 'rgb(0, 155, 44)');
     // graphics.drawCurve(graphics.Curve.BezierMatrix, cBezier2, points, line, controls, 'rgb(255, 0, 0)');
     let i = .0275;
     let s = .1;
+    let dir = 1;
     shapes.forEach((shape) => {
       graphics.drawPrimitive(
         graphics.translatePrimitive(
           graphics.scalePrimitive(
-            graphics.rotatePrimitive(shape, theta),
+            graphics.rotatePrimitive(shape, theta*dir),
             { x: s * 1.5, y: s * 1.5 }),
-          { x: i * 5, y: i }),
-        true, 'rgb(0, 0, 0');
+          { x: .1, y: i * 5 - .1 }),
+        true, `rgb(0, ${255*s}, ${255*s}`);
       i *= 1.3;
       s *= 1.3;
+      dir*=-1;
     });
 
     let s2 = .05;
@@ -284,9 +308,16 @@ MySample.main = (function (graphics) {
             graphics.rotatePrimitive(heptagon, theta / 20 * (i + 1)),
             { x: s2, y: s2 }),
           { x: tx, y: ty }),
-        true, 'rgb(' + r + ',' + g + ',' + b + ')');
+        true, `rgb(${r}, ${g}, ${b})`);
       s2 += .025;
     }
+
+    graphics.drawPrimitive(
+      graphics.translatePrimitive(
+        graphics.rotatePrimitive(circle.primitive,
+          theta * 2),
+        { x: .85, y: .85 }),
+      true, 'rgb(204, 63, 63)');
   }
 
   //------------------------------------------------------------------
