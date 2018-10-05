@@ -1,0 +1,65 @@
+\documentclass[12pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{array}
+
+\newcommand\A{\mathbf{A}}
+\newcommand\C{\mathbf{C}}
+\newcommand\N{\mathbf{N}}
+\newcommand\Q{\mathbf{Q}}
+\newcommand\R{\mathbf{R}}
+\newcommand\Z{\mathbf{Z}}
+\newcommand\ds{\displaystyle}
+
+\newcommand{\imp}{\Rightarrow}
+\newcommand\qedsym{\hfill \rule{2mm}{2mm}}
+
+\parindent=0pt
+\begin{document}
+
+\title{MATH5210 \textsc{Analysis}
+  \\ Exam Rework
+  \\ Philip Nelson
+}
+
+\date{}
+
+\maketitle
+
+\section*{3} Use the definition of convergence to prove: If $a_n$ is a bounded sequence and $\ds\lim_{n\to\infty} b_n = 0$, then $\ds\lim_{n\to\infty}a_n b_n = 0$.
+
+\bigskip
+
+\textbf{Proof:} Assume $a_n$ is a bounded sequence, let $M$ be the upper bound of $a_n$  s.t. $M > a_n$, and let $b_n$ be a sequence s.t. $\ds\lim_{n\to\infty}b_n = 0$.
+
+Then for all $\epsilon > 0$ there exists $N \in \N$ s.t. $n \geq N$ and $|b_n - 0| = |b_n| < \frac{\epsilon}{M}$
+
+Using the definition of convergence
+
+\[|a_n - A| < \epsilon\]
+\[\Rightarrow |a_n b_n - 0| < \epsilon\]
+\[\Rightarrow |a_n b_n| < \epsilon\]
+\[\Rightarrow |M b_n| < \epsilon\]
+\[< |M \frac{\epsilon}{M}| = \epsilon\]
+
+Therefore if $a_n$ is a bounded sequence and $\ds\lim_{n\to\infty} b_n = 0$, then $\ds\lim_{n\to\infty}a_n b_n = 0$.
+
+\qedsym
+
+\section*{6} Prove that the sequence defined recursively by $a_1 = 2, a_{n+1} = \sqrt{6+a_n}$ converges to 3.
+
+\bigskip
+
+\textbf{Proof:}
+
+\end{document}
+
+
+
+
+
+
+
