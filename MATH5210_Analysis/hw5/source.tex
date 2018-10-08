@@ -100,45 +100,6 @@ Therefore, if $\ds\lim_{x\to x_0} f(x) = L$ and $L>0$, then $\exists\ \alpha, \d
 
 \qedsym
 
-\section*{3}
-
-\textbf{Claim:} Let $f, g, h:(a, b)\rightarrow\R$ s.t. $f(x) \leq g(x) \leq h(x)$ for all $x_0\in(a, b)$. If $\ds\lim_{x\to x_0} f(x) = L$ and $\ds\lim_{x\to x_0} h(x) = M$ and $L=M$, then $\ds\lim_{x\to x_0} h(x)$ exists and equals $L$.
-
-\medskip
-
-\textbf{Proof:} Let $\epsilon > 0$ be given. I will show that $\exists\ \delta > 0$ s.t. $|g(x) - L| < \epsilon$ for $0 < |x-x_0| < \delta$.
-
-We know $\exists\ \delta_1$ s.t.
-
-\[|f(x)-L|<\epsilon\]
-
-\[\Rightarrow -\epsilon<f(x)-L<\epsilon\]
-
-\[\Rightarrow L-\epsilon<f(x)<L+\epsilon\text{, for } 0<|x-x_0|<\delta_1\]
-
-\medskip
-We also know $\exists\ \delta_2$ s.t.
-
-\[|h(x)-M|<\epsilon\]
-
-\[\Rightarrow -\epsilon<h(x)-M<\epsilon\]
-
-\[\Rightarrow M-\epsilon<h(x)<M+\epsilon\text{, for } 0<|x-x_0|<\delta_2\]
-
-\medskip
-Let $\delta = \min\{\delta_1, \delta_2\}$, then for any $x$ s.t. $0 < |x-x_0| < \delta$
-
-\[L-\epsilon < f(x) \leq g(x) \leq h(x) < M+\epsilon\] 
-
-and since $L=M$
-
-\[\Rightarrow L-\epsilon < g(x) < L+\epsilon\] 
-
-\[\Rightarrow |g(x) - L| < \epsilon\text{, for }0<|x-x_0|<\delta\]
-Therefore, if $\ds\lim_{x\to x_0} f(x) = L$ and $\ds\lim_{x\to x_0} h(x) = M$ and $L=M$, then $\ds\lim_{x\to x_0} h(x)$ exists and equals $L$.
-
-\qedsym
-
 \section*{4}
 
 \textbf{Claim:} Let $f:(a, b)\rightarrow\R$ and let $x_0\in(a, b)$. If $f(x) \geq 0$ for all $x\in(a,b)$ and $\ds\lim_{x\to x_0} f(x) = L$ exists, then $\ds\lim_{x\to x_0} \sqrt{f(x)} = \sqrt{L}$.
@@ -163,38 +124,98 @@ Therefore, if $f(x) \geq 0$ for all $x\in(a,b)$ and $\ds\lim_{x\to x_0} f(x) = L
 
 \qedsym
 
-\section*{5}
+\section*{7}
 
-\textbf{Claim:} Let $f,g:(a, b)\rightarrow\R$ and let $x_0\in(a, b)$. If $\ds\lim_{x\to x_0} f(x) = L$ and $\ds\lim_{x\to x_0} g(x) = M$, then $\ds\lim_{x\to x_0} f(x)g(x) = LM$.
+\textbf{Preliminary Work:}
+
+If $|x-2| < 1$
+
+$\Rightarrow -1 < x-2 < 1$
+
+$\Rightarrow 1 < x < 3$
+
+$\Rightarrow 4 < x+3 < 6$
 
 \medskip
 
-\textbf{Proof:} I will use sequential characterization of limits to prove the claim. For \textbf{all} sequences $a_n$ s.t.
+\textbf{Claim:} $\ds\lim_{x\to 2} x^2 + x - 5 = 1$
 
-\[\ds\lim_{n\to\infty} a_n = x_0\]
+\medskip
 
-then 
+\textbf{Proof:} Let $\epsilon > 0$ be given. Choose $\delta = \min\{\frac{1}{6}\epsilon,1\}$ then if $|x-2| < \delta$
 
-\[\ds\lim_{n\to\infty}f(a_n) = L\]
+\[\Rightarrow |x-2| < 1\]
 
-and
+Then \[|f(x) - L| < \epsilon\]
 
-\[\ds\lim_{n\to\infty}g(a_n) = M\]
+\[\Rightarrow |x^2 + x - 5 - 1| < \epsilon\]
 
-Let $b_n = f(a_b)$ and $c_n = g(a_n)$ then
+\[\Rightarrow |x-2| \cdot |x+3| < \epsilon\]
 
-\[\ds\lim_{n\to\infty}b_n = \ds\lim_{n\to\infty}f(a_n) = L\]
+and by the preliminary work we know that for $|x-2|<1 \Rightarrow 4 < x+3 < 6$ so
 
-and
+\[\delta \cdot 6 < \epsilon\]
 
-\[\ds\lim_{n\to\infty}b_n = \ds\lim_{n\to\infty}f(a_n) = L\]
-
-Observe $\ds\lim_{n\to\infty}b_nc_n$. We know $\ds\lim_{n\to\infty}b_n$ exists and $\ds\lim_{n\to\infty}c_n$ exists, so by the product property of sequences
-
-\[\ds\lim_{n\to\infty}b_nc_n = \ds\lim_{n\to\infty}b_n \cdot \ds\lim_{n\to\infty}c_n = LM\]
-
-Therefore if $\ds\lim_{x\to x_0} f(x) = L$ and $\ds\lim_{x\to x_0} g(x) = M$, then $\ds\lim_{x\to x_0} f(x)g(x) = LM$.
+Therefore $\ds\lim_{x\to 2} x^2 + x - 5 = 1$
 
 \qedsym
 
+\section*{8}
+
+\textbf{Preliminary Work:}
+
+If $|x-1| < 1$
+
+$\Rightarrow -1 < x-1 < 1$
+
+$\Rightarrow 0 < x < 2$
+
+$\Rightarrow 0 < x^2 < 4$
+
+$\Rightarrow 4 < x^2+4 < 8$
+
+$\Rightarrow 20 < 5(x^2+4) < 40$
+
+and
+
+If $|x-1| < 1$
+
+$\Rightarrow -1 < x-1 < 1$
+
+$\Rightarrow 0 < x < 2$
+
+$\Rightarrow -4 < x-4 < -2$
+
+$\Rightarrow |x-4| < 4$
+
+\medskip
+
+\textbf{Claim:} $\ds\lim_{x\to 1}\frac{x}{x^2+4} = \frac{1}{5}$
+
+\medskip
+
+\textbf{Proof:} Let $\epsilon > 0$ be given. Choose $\delta = \min\{5\epsilon, 1\}$ then if $|x-1| < \delta$
+
+\[\Rightarrow |x-1| < 1\]
+
+Then \[|f(x) - L| < \epsilon\]
+
+\[\Rightarrow \left|\frac{x}{x^2+4} - \frac{1}{5}\right| < \epsilon\]
+
+\[\Rightarrow \left|\frac{5x - x^2 - 4}{5x^2+20}\right| < \epsilon\]
+
+\[\Rightarrow  \left|\frac{-(x-1)\cdot(x-4)}{5(x^2+4)}\right| < \epsilon\]
+
+\[\Rightarrow  \frac{|x-1|\cdot|x-4|}{|5(x^2+4)|} < \epsilon\]
+
+and by the preliminary work we know that for $|x-1| < 1\Rightarrow 20 < 5(x^2+4) < 40$ and $\Rightarrow |x-4| < 4$ so
+
+\[\frac{|x-1|\cdot(4)}{20}<\epsilon\]
+
+\[\Rightarrow \frac{\delta}{5}<\epsilon\]
+
+Therefore $\ds\lim_{x\to 1}\frac{x}{x^2+4} = \frac{1}{5}$
+
+\qedsym
+ 
 \end{document}
