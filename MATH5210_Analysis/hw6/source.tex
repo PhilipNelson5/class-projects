@@ -1,0 +1,201 @@
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{array}
+
+\newcommand\Q{\mathbf{Q}}
+\newcommand\Z{\mathbf{Z}}
+\newcommand\R{\mathbf{R}}
+\newcommand\C{\mathbf{C}}
+\newcommand\A{\mathbf{A}}
+\newcommand\ds{\displaystyle}
+
+\newcommand{\imp}{\Rightarrow}
+\newcommand\qedsym{\hfill \rule{2mm}{2mm}}
+
+\parindent=0pt
+\begin{document}
+
+\title{MATH5210 \textsc{Analysis}
+  \\ Assignment 6
+  \\ Limits of Functions pt. 2
+  \\ Philip Nelson
+}
+
+\date{}
+
+\maketitle
+
+\section*{3}
+
+\textbf{Claim:} Let $f, g, h:(a, b)\rightarrow\R$ s.t. $f(x) \leq g(x) \leq h(x)$ for all $x_0\in(a, b)$. If $\ds\lim_{x\to x_0} f(x) = L$ and $\ds\lim_{x\to x_0} h(x) = M$ and $L=M$, then $\ds\lim_{x\to x_0} h(x)$ exists and equals $L$.
+
+\medskip
+
+\textbf{Proof:} Let $\epsilon > 0$ be given. I will show that $\exists\ \delta > 0$ s.t. $|g(x) - L| < \epsilon$ for $0 < |x-x_0| < \delta$.
+
+We know $\exists\ \delta_1$ s.t.
+
+\[|f(x)-L|<\epsilon\]
+
+\[\Rightarrow -\epsilon<f(x)-L<\epsilon\]
+
+\[\Rightarrow L-\epsilon<f(x)<L+\epsilon\text{, for } 0<|x-x_0|<\delta_1\]
+
+\medskip
+We also know $\exists\ \delta_2$ s.t.
+
+\[|h(x)-M|<\epsilon\]
+
+\[\Rightarrow -\epsilon<h(x)-M<\epsilon\]
+
+\[\Rightarrow M-\epsilon<h(x)<M+\epsilon\text{, for } 0<|x-x_0|<\delta_2\]
+
+\medskip
+Let $\delta = \min\{\delta_1, \delta_2\}$, then for any $x$ s.t. $0 < |x-x_0| < \delta$
+
+\[L-\epsilon < f(x) \leq g(x) \leq h(x) < M+\epsilon\] 
+
+and since $L=M$
+
+\[\Rightarrow L-\epsilon < g(x) < L+\epsilon\] 
+
+\[\Rightarrow |g(x) - L| < \epsilon\text{, for }0<|x-x_0|<\delta\]
+Therefore, if $\ds\lim_{x\to x_0} f(x) = L$ and $\ds\lim_{x\to x_0} h(x) = M$ and $L=M$, then $\ds\lim_{x\to x_0} h(x)$ exists and equals $L$.
+
+\qedsym
+
+\section*{5}
+
+\textbf{Claim:} Let $f,g:(a, b)\rightarrow\R$ and let $x_0\in(a, b)$. If $\ds\lim_{x\to x_0} f(x) = L$ and $\ds\lim_{x\to x_0} g(x) = M$, then $\ds\lim_{x\to x_0} f(x)g(x) = LM$.
+
+\medskip
+
+\textbf{Proof:} I will use sequential characterization of limits to prove the claim. For \textbf{all} sequences $a_n$ s.t.
+
+\[\ds\lim_{n\to\infty} a_n = x_0\]
+
+then 
+
+\[\ds\lim_{n\to\infty}f(a_n) = L\]
+
+and
+
+\[\ds\lim_{n\to\infty}g(a_n) = M\]
+
+Let $b_n = f(a_b)$ and $c_n = g(a_n)$ then
+
+\[\ds\lim_{n\to\infty}b_n = \ds\lim_{n\to\infty}f(a_n) = L\]
+
+and
+
+\[\ds\lim_{n\to\infty}b_n = \ds\lim_{n\to\infty}f(a_n) = L\]
+
+Observe $\ds\lim_{n\to\infty}b_nc_n$. We know $\ds\lim_{n\to\infty}b_n$ exists and $\ds\lim_{n\to\infty}c_n$ exists, so by the product property of sequences
+
+\[\ds\lim_{n\to\infty}b_nc_n = \ds\lim_{n\to\infty}b_n \cdot \ds\lim_{n\to\infty}c_n = LM\]
+
+Therefore if $\ds\lim_{x\to x_0} f(x) = L$ and $\ds\lim_{x\to x_0} g(x) = M$, then $\ds\lim_{x\to x_0} f(x)g(x) = LM$.
+
+\qedsym
+
+\section*{6}
+
+
+\textbf{Claim:} If $\ds\lim_{x\to x_0} f(x) = L$ and $\ds\lim_{y\to L} g(y) = M$, then $\ds\lim_{x\to x_0} g \circ f(x) = M$
+
+\medskip
+
+\textbf{Proof:}
+
+\textit{Remark}: For all sequences $a_n$ s.t. $\ds\lim_{n\to\infty} a_n = x_0$ then 
+\[\lim_{n\to\infty} f(a_n) = L\]
+Let $b_n = f(a_n)$
+
+\textit{Remark}: For all sequences $c_n$ s.t. $\ds\lim_{n\to\infty} c_n = L$ then 
+\[\lim_{n\to\infty} g(c_n) = M\]
+Let $b_n = f(a_n)$
+
+Note that $b_n$ is a sequence s.t. $\ds\lim_{n\to\infty}b_n=L$. $b_n$ satisfies the sequential characterization of $g(x)$ therefore
+\[\lim_{n\to\infty} g(b_n) = M\]
+
+Since we defined $b_n = f(a_n)$ then
+\[\lim_{n\to\infty} g(b_n) = \lim_{n\to\infty} g(f(a_n))\]
+\[= \lim_{n\to\infty} g(L) = M\]
+
+So, since $\lim_{n\to\infty} g(f(a_n)) = M$ then
+\[\lim_{n\to\infty} g(f(a_n)) = \lim_{n\to\infty} g\circ f(x) = M\]
+
+Therefore if $\ds\lim_{x\to x_0} f(x) = L$ and $\ds\lim_{y\to L} g(y) = M$, then $\ds\lim_{x\to x_0} g \circ f(x) = M$
+
+\qedsym
+
+\section*{9 $\epsilon - \delta$}
+
+\textbf{Claim:} $\ds\lim_{x\to 1}\frac{x^2+4}{x^2-4} = -\frac{5}{3}$
+
+\medskip
+
+\textbf{Proof:} For all $\epsilon > 0$ there exists $\delta = \min\{1, \frac{\epsilon}{2}\}$ s.t. for all $x$, where $|x-1|<\delta$, $|f(x) - L| < \epsilon$. Then
+
+\[|f(x) - L| = \left|\frac{x^2+4}{x^2-4}+\frac{5}{3}\right|\]
+
+\[=\left|\frac{8x^2-8}{3(x^2-4)}\right|\]
+
+\[=\frac{8}{3}\left|\frac{(x+1)(x-1)}{(x+2)(x-2)}\right|\]
+
+\[<\frac{8}{3}\delta\left|\frac{(x+1)}{(x+2)(x-2)}\right|\]
+
+
+\section*{10 $\epsilon - \delta$}
+
+\textbf{Claim:} $\ds\lim_{x\to 0} \sqrt{x^2 + 1} = 1$
+
+\medskip
+
+\textbf{Proof:}
+
+\section*{11 $\epsilon - \delta$}
+
+\textbf{Claim:} $\ds\lim_{x\to -1} x^3 + x + 2 = 0$
+
+\medskip
+
+\textbf{Proof:}
+
+\section*{12 - 7 limit properties}
+
+\textbf{Claim:} $\ds\lim_{x\to 2} x^2 + x - 5 = 1$
+
+\medskip
+
+\textbf{Proof:}
+
+\section*{12 - 8 limit properties}
+
+\textbf{Claim:} $\ds\lim_{x\to 1} \frac{x}{x^2 + 4} = \frac{1}{5}$
+
+\medskip
+
+\textbf{Proof:}
+
+\section*{13 - 9 limit properties}
+
+\textbf{Claim:} $\ds\lim_{x\to 1}\frac{x^2+4}{x^2-4} = -\frac{5}{3}$
+
+\medskip
+
+\textbf{Proof:}
+
+\section*{13 - 10 limit properties}
+
+\textbf{Claim:} $\ds\lim_{x\to 0} \sqrt{x^2 + 1} = 1$
+
+\medskip
+
+\textbf{Proof:}
+
+\end{document}
