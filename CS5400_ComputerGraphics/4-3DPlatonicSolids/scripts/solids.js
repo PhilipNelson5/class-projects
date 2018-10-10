@@ -4,6 +4,16 @@
 // It provides all the platonic solids
 //
 // ------------------------------------------------------------------
+function dcopy(src) {
+  let copy = {};
+  for (let prop in src) {
+    if (src.hasOwnProperty(prop)) {
+      copy[prop] = src[prop];
+    }
+  }
+  return copy;
+}
+
 Engine.objects = (function() {
   'use strict';
 
@@ -28,7 +38,7 @@ Engine.objects = (function() {
     .5,  0,  .5,             // 12
     -.5, 0, -.5,             // 13
     .5,  0, -.5,             // 14
-    // 5                     
+    // 5
     .5,  0,  .5,             // 15
     -.5, 0, -.5,             // 16
     -.5, 0,  .5,             // 17
@@ -185,34 +195,17 @@ Engine.objects = (function() {
     1.0, 0.0, 1.0,
   ]);
 
-  function make_solid(opts, type){
-    swtich(type){
-      solid = {};
-
-      case api.Solids.TETRAHEDRON:
-      return;
-      case api.Solids.OCTAHEDRON:
-      return;
-      case api.Solids.HEXAHEDRON:
-      return;
-    }
-  }
-
-  function make_tetrahedron(){
-    return{
-      indices : new Uint16Array([
+  function indices_tetrahedron(){
+      return new Uint16Array([
         0, 1, 2,
         3, 4, 5,
         6, 7, 8,
         9, 10, 11,
-      ]),
-      center:{x:0, y:0, z:0},
-    }
+      ]);
   }
 
-  function make_octahedron(){
-    return{
-      indices : new Uint16Array([
+  function indices_octahedron(){
+    return new Uint16Array([
         // - center
         12, 13, 14,
         15, 16, 17,
@@ -226,14 +219,11 @@ Engine.objects = (function() {
         33, 34, 35,
         36, 37, 38,
         39, 40, 41,
-      ]),
-      center:{x:0, y:0, z:0},
+      ]);
     }
-  }
 
-  function make_hexahedron(){
-    return{
-      indices : new Uint16Array([
+  function indices_hexahedron(){
+    return new Uint16Array([
         // - top
         42, 43, 44,
         42, 44, 45,
@@ -252,17 +242,29 @@ Engine.objects = (function() {
         // - bottom
         62, 63, 64,
         62, 64, 65,
-      ]),
-      center:{x:0, y:0, z:0},
+      ]);
+  }
+
+  function make_solid(opts, type){
+    let solid = dcopy(opts);
+    switch (type) {
+      case api.Solids.TETRAHEDRON:
+        solid.indices = indices_tetrahedron();
+        break;
+      case api.Solids.OCTAHEDRON:
+        solid.indices = indices_octahedron();
+        break;
+      case api.Solids.HEXAHEDRON:
+        solid.indices = indices_hexahedron();
+        break;
     }
+    return solid;
   }
 
   const api = {
     vertices,
     vertexColors,
-    make_tetrahedron,
-    make_octahedron,
-    make_hexahedron,
+    make_solid,
   };
 
   Object.defineProperty(api, 'Solids', {

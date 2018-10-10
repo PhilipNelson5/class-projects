@@ -5,19 +5,33 @@ Engine.main = (function(graphics, objs, glUtils) {
   let gl = canvas.getContext('webgl');
 
   let solids = [];
-  solids.push(objs.make_tetrahedron());
-  solids[0].center = {x:-.5, y:-.5, z:-.5};
-  solids.push(objs.make_octahedron());
-  solids.push(objs.make_hexahedron());
-  solids[2].center = {x:.5, y:.5, z:.5};
-
+  solids.push(objs.make_solid({
+    center:{x:.5, y:.5, z:.5},
+    scale:{x:.75, y:.75, z:.75},
+  }, objs.Solids.TETRAHEDRON));
+  solids.push(objs.make_solid({
+    center:{x:0, y:0, z:0},
+    scale:{x:.25, y:.25, z:.25},
+  }, objs.Solids.OCTAHEDRON));
+  solids.push(objs.make_solid({
+    center:{x:-.5, y:-.5, z:-.5},
+    scale:{x:.5, y:.5, z:.5},
+  }, objs.Solids.HEXAHEDRON));
 
   let buffers = {};
+  buffers.vertexBuffer = glUtils.createBuffer(gl,
+    objs.vertices,
+    gl.ARRAY_BUFFER,
+    gl.STATIC_DRAW);
   buffers.vertexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffers.vertexBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, objs.vertices, gl.STATIC_DRAW);
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
+  buffers.vertexColorBuffer = glUtils.createBuffer(gl,
+    objs.vertexColors,
+    gl.ARRAY_BUFFER,
+    gl.STATIC_DRAW);
   buffers.vertexColorBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffers.vertexColorBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, objs.vertexColors, gl.STATIC_DRAW);
@@ -42,7 +56,7 @@ Engine.main = (function(graphics, objs, glUtils) {
   varying vec4 vColor;
   void main()
   {
-    gl_Position = 
+    gl_Position =
       matProject
       * matTranslate
       * matRotateX
@@ -55,10 +69,6 @@ Engine.main = (function(graphics, objs, glUtils) {
   }`;
 
   let vertexShader = glUtils.createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-  //let vertexShader = gl.createShader(gl.VERTEX_SHADER);
-  //gl.shaderSource(vertexShader, vertexShaderSource);
-  //gl.compileShader(vertexShader);
-  //console.log(gl.getShaderInfoLog(vertexShader));// for debugging
 
   let fragmentShaderSource = `
   precision lowp float;
@@ -69,18 +79,13 @@ Engine.main = (function(graphics, objs, glUtils) {
   }`;
 
   let fragmentShader = glUtils.createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
-  //let fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-  //gl.shaderSource(fragmentShader, fragmentShaderSource);
-  //gl.compileShader(fragmentShader);
 
   let shaderProgram = glUtils.createProgram(gl, vertexShader, fragmentShader);
-  //let shaderProgram = gl.createProgram();
-  //gl.attachShader(shaderProgram, vertexShader);
-  //gl.attachShader(shaderProgram, fragmentShader);
-  //gl.linkProgram(shaderProgram);
+
   gl.useProgram(shaderProgram);
 
   gl.bindBuffer(gl.ARRAY_BUFFER, buffers.vertexBuffer);
+
   let position = gl.getAttribLocation(shaderProgram, 'aPosition');
   gl.vertexAttribPointer(position, 3, gl.FLOAT, false, objs.vertices.BYTES_PER_ELEMENT * 3, 0);
   gl.enableVertexAttribArray(position);
@@ -139,7 +144,10 @@ Engine.main = (function(graphics, objs, glUtils) {
         transposeMatrix4x4(graphics.z_axis_rotate(0)));
 
       gl.uniformMatrix4fv(matScaleLoc, false,
-        transposeMatrix4x4(graphics.scale(.5, .5, .5)));
+        transposeMatrix4x4(graphics.scale(
+          solids[i].scale.x,
+          solids[i].scale.y,
+          solids[i].scale.z)));
 
       gl.uniformMatrix4fv(matTranslateLoc, false,
         transposeMatrix4x4(graphics.translate(

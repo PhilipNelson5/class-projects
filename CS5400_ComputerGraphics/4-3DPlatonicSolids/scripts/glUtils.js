@@ -34,9 +34,17 @@ Engine.glUtils = (function() {
     gl.deleteProgram(program);
   }
 
+  function createBuffer(gl, data, type, usage){
+    let buffer = gl.createBuffer();
+    gl.bindBuffer(type, buffer);
+    gl.bufferData(type, data, usage);
+    gl.bindBuffer(type, null);
+  }
+
   const api = {
     createShader,
     createProgram,
+    createBuffer,
   };
 
   console.log('utils...');
