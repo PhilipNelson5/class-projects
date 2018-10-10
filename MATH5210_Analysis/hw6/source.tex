@@ -201,7 +201,7 @@ Therefore $\ds\lim_{x\to 0} \sqrt{x^2 + 1} = 1$.
 
 \medskip
 
-\textbf{Proof:} For all $\epsilon > 0$ there exists $\delta = \min\{1, \frac{\epsilon}{4}\}$ s.t. for all $x$, where $|x-x_0|<\delta$, $|f(x)-L|<\epsilon$. Then
+\textbf{Proof:} For all $\epsilon > 0$ there exists $\delta = \min\{1, \frac{\epsilon}{8}\}$ s.t. for all $x$, where $|x-x_0|<\delta$, $|f(x)-L|<\epsilon$. Then
 
 \[|f(x)-L| = |x^3 + x + 2 - 0|\]
 
@@ -211,7 +211,7 @@ Therefore $\ds\lim_{x\to 0} \sqrt{x^2 + 1} = 1$.
 
 \[=\delta (|x|^2 - |x| + 2)\]
 
-From our choice of delta, we know that $|x+1|<\delta=\min\{1, \frac{\epsilon}{4}\}$ so \[|x+1|<\delta < \frac{\epsilon}{4} < 1\]
+From our choice of delta, we know that $|x+1|<\delta=\min\{1, \frac{\epsilon}{8}\}$ so \[|x+1|<\delta < \frac{\epsilon}{8} < 1\]
 
 \[\Rightarrow -1 < x+1 < 1\]
 
@@ -219,11 +219,11 @@ From our choice of delta, we know that $|x+1|<\delta=\min\{1, \frac{\epsilon}{4}
 
 \[\Rightarrow 0 < |x| < 2\]
 
-This implies 
+This implies by the triangle inequality that
 
-\[=\delta (|x|^2 - |x| + 2) < \delta (4 - 2 + 2)\]
+\[=\delta (|x|^2 + |x| + 2) < \delta (4 + 2 + 2)\]
 
-\[= 4\delta = \epsilon\]
+\[= 8\delta = \epsilon\]
 
 Therefore $\ds\lim_{x\to -1} x^3 + x + 2 = 0$.
 
