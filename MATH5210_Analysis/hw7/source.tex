@@ -38,9 +38,7 @@ For Problems 1 to 6, give $\epsilon - \delta$ proofs of uniform continuity.
 
 \textbf{Proof:} Let $\epsilon > 0$ be given. There exists $\delta > 0$ s.t.\ for any $x, y \in [2,4]$ \[|x-y| < \delta \Rightarrow |f(x) - f(y)| < \epsilon\]
 
-Choose $\delta = \frac{\epsilon}{10}$
-
-Then
+Choose $\delta = \frac{\epsilon}{10}$. Then
 
 \[|f(x)-f(y)| = |x^2 + 2x - 3 - y^2 - 2y + 3|\]
 
@@ -54,7 +52,7 @@ Then
 
 \[= \delta|x + y + 2|\]
 
-$f(x)$ is an increasing function so we need to bound $x$ and $y$ above and we can easily do this by examining the domain of $f(x)$ which is $[2,4]$. So $x,y < 4$ therefore
+$x + y + 2$ is an increasing function so we need to bound $x$ and $y$ above and we can easily do this by examining the domain. An increasing function achieves it's maximum at the upperboudn of it's domain so $x,y < 4$ therefore
 
 \[<\delta|4+4+2|\]
 
