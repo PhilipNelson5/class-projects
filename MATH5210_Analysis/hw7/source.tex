@@ -1,0 +1,236 @@
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{array}
+
+\newcommand\Q{\mathbf{Q}}
+\newcommand\Z{\mathbf{Z}}
+\newcommand\R{\mathbf{R}}
+\newcommand\C{\mathbf{C}}
+\newcommand\A{\mathbf{A}}
+\newcommand\ds{\displaystyle}
+
+\newcommand{\imp}{\Rightarrow}
+\newcommand\qedsym{\hfill \rule{2mm}{2mm}}
+
+\parindent=0pt
+\begin{document}
+
+\title{MATH5210 \textsc{Analysis}
+  \\ Assignment 7
+  \\ Uniform Continuity
+  \\ Philip Nelson
+}
+
+\date{}
+
+\maketitle
+For Problems 1 to 6, give $\epsilon - \delta$ proofs of uniform continuity.
+\section*{1}
+
+\textbf{Claim:} $f(x) = x^2 + 2x -3$ is uniformly continuous on the interval $[2,4]$
+
+\medskip
+
+\textbf{Proof:} Let $\epsilon > 0$ be given. There exists $\delta > 0$ s.t. for any $x, y \in [2,4]$ \[|x-y| < \delta \Rightarrow |f(x) - f(y)| < \epsilon\]
+
+Choose $\delta = \frac{\epsilon}{10}$
+
+Then
+
+\[|f(x)-f(y)| = |x^2 + 2x - 3 - y^2 - 2y + 3|\]
+
+\[= |x^2 + 2x - y^2 - 2y|\]
+
+\[= |x^2 - y^2 + 2x - 2y|\]
+
+\[= |(x-y)(x+y) + 2(x-y)|\]
+
+\[= |\delta(x+y) + 2\delta|\]
+
+\[= \delta|x + y + 2|\]
+
+$f(x)$ is an increasing function so we need to bound $x$ and $y$ above and we can easily do this by examining the domain of $f(x)$ which is $[2,4]$. So $x,y < 4$ therefore 
+
+\[<\delta|4+4+2|\]
+
+\[=10\delta = \epsilon\]
+
+Therefore $f(x) = x^2 + 2x -3$ is uniformly continuous on the interval $[2,4]$.
+
+\qedsym
+
+\section*{2}
+
+\textbf{Claim:} $f(x) = x^2 + 2x -3$ is uniformly continuous on the interval $[0,10]$
+
+\medskip
+
+\textbf{Proof:}
+
+\section*{3}
+
+\textbf{Claim:} $g(x) = \frac{1}{x+1}$ is uniformly continuous on the interval $[0,5]$
+
+\medskip
+
+\textbf{Proof:} Let $\epsilon > 0$ be given. There exists $\delta > 0$ s.t. for any $x, y \in [0,5]$ \[|x-y| < \delta \Rightarrow |f(x) - f(y)| < \epsilon\]
+
+Choose $\delta = \epsilon$ then
+
+\[|f(x) - f(y)| = \left|\frac{1}{x+1} - \frac{1}{y+1}\right|\]
+
+\[ = \left|\frac{y+1-x-1}{(x+1)(y+1)}\right|\]
+
+\[ = \left|\frac{x-y}{(x+1)(y+1)}\right|\]
+
+\[ = \delta\left|\frac{1}{(x+1)(y+1)}\right|\]
+
+$g(x)$ is a decreasing function so we need to bound $x$ and $y$ below and we can easily do this by examining the domain of $g(x)$ which is $[0,5]$. So $x,y > 0$ therefore 
+
+\[ < \delta\left|\frac{1}{(0+1)(0+1)}\right|\]
+
+\[ = \delta\left|\frac{1}{1}\right| = \epsilon\]
+
+Therefore $g(x) = \frac{1}{x+1}$ is uniformly continuous on the interval $[0,5]$.
+
+\qedsym
+
+\section*{4}
+
+\textbf{Claim:} $g(x) = \frac{1}{x+1}$ is uniformly continuous on the interval $[0,\infty)$
+
+\medskip
+
+\textbf{Proof:} 
+
+\section*{5}
+
+\textbf{Claim:} $h(x) = \frac{x}{x+1}$ is uniformly continuous on the interval $[0, \infty)$
+
+\medskip
+
+\textbf{Proof:} Let $\epsilon > 0$ be given. Then there exists $\delta > 0$. s.t. for all $x,y\in[0,\infty]$ with $|x-y|<\delta$ then $|f(x)-f(y)| < \epsilon$. Choose $\delta = \epsilon$ then
+
+\[f(x)-f(y)| = \left|\frac{x}{x+1}-\frac{y}{y+1}\right|\]
+
+\[= \left|\frac{x-y+xy-xy}{(x+1)(y+1)}\right|\]
+
+\[< \delta\left|\frac{1}{(x+1)(y+1)}\right|\]
+
+Now we will bound $x$ and $y$ from our knowledge of the domain. We know that $\frac{1}{(x+1)(y+1)}$ is a decreasing function so it achieves a maximum at it's smallest value, $0$. So 
+
+\[<\delta\left|\frac{1}{(0+1)(0+1)}\right|\]
+
+\[=\delta\left|\frac{1}{1}\right| = \delta = \epsilon\]
+
+Therefore $h(x) = \frac{x}{x+1}$ is uniformly continuous on the interval $[0, \infty)$.
+
+\qedsym
+
+\section*{6}
+
+\textbf{Claim:} $h(x) = \frac{x}{x^2+1}$ is uniformly continuous on the interval $(-\infty, \infty)$
+
+\medskip
+
+\textbf{Proof:} Let $\epsilon > 0$ be given. Then there exists $\delta > 0$. s.t. for all $x,y\in\R$ with $|x-y|<\delta$ then $|f(x)-f(y)| < \epsilon$. Choose $\delta = \min\{1, \epsilon\}$ then
+
+\[|f(x) - f(y)| = \left|\frac{1}{x^2+1}-\frac{1}{y^2 + 1}\right|\]
+
+\[= \left|\frac{(x-y)(x+y)+1-1}{(x^2+1)(y^2+1)}\right|\]
+
+\[= \delta\left|\frac{(x+y)}{(x^2+1)(y^2+1)}\right|\]
+
+then we can leverage the triangle inequality
+
+\[< \delta\left(\frac{|x|}{|x^2+1||y^2+1|}+\frac{|y|}{|x^2+1||y^2+1|}\right)\]
+
+\textit{Aside:}
+
+Let $\ds f(x) = \frac{x}{x^2+1} \Rightarrow f'(x) = \frac{1-x^2}{(x^2+1)^2}\Rightarrow$ critical points $x=1,-1$
+
+Let $\ds g(y) = \frac{1}{y^2+1} \Rightarrow g'(y) = \frac{-2y}{(y^2+1)^2}\Rightarrow$ critical points $y=0$
+
+Let $\ds i(x) = \frac{y}{y^2+1} \Rightarrow i'(y) = \frac{1-y^2}{(y^2+1)^2}\Rightarrow$ critical points $y=1,-1$
+
+Let $\ds j(x) = \frac{1}{x^2+1} \Rightarrow j'(x) = \frac{-2x}{(x^2+1)^2}\Rightarrow$ critical points $x=0$
+
+We see from the aside that $f$ is maximized when $x=1, y=0$ so
+\[|x-y| = |1-0| = 1 = \delta\]
+and $g$ is maximized when $x=0,y=1$ so
+\[|x-y| = |0-1| = 1 = \delta\]
+the same is true for $i$ and $j$ respectively. So
+
+\[\delta\left(\frac{|x|}{|x^2+1||y^2+1|}+\frac{|y|}{|x^2+1||y^2+1|}\right) < \delta\left(\frac{|1|}{|2||1|}+\frac{|1|}{|1||2|}\right)\]
+
+\[=\delta\left(\frac{1}{2} + \frac{1}{2}\right) = \delta = \epsilon\]
+
+Therefore $h(x) = \frac{x}{x^2+1}$ is uniformly continuous on the interval $(-\infty, \infty)$
+
+\qedsym
+
+\bigskip
+
+For problems 7 and 8 use the sequential characterization of uniform continuity to show that the function is not uniformly continuous.
+
+\section*{7}
+
+\textbf{Claim:} $f(x) = x^2+2x-3$ is not uniformly continuous on the interval $[0, \infty)$
+
+\medskip
+
+\textbf{Proof:} 
+
+\section*{8}
+
+\textbf{Claim:} $g(x) = \frac{1}{x+1}$ is not uniformly continuous on the interval $(-1, 1)$
+
+\medskip
+
+\textbf{Proof:} If $g(x)$ is uniformly continuous, then given any two sequences $a_n, b_n$ s.t. \[\ds\lim_{n\to\infty}a_n-b_n = 0\] then \[\ds\lim_{n\to\infty}g(a_n)-g(b_n) = 0\]
+
+Observe the following two sequences 
+\[a_n = \frac{-n+1}{n} \text{ and } b_n = \frac{-n+3}{n}\]
+
+We can see that for any constant $c$,
+\[\lim_{n\to\infty}\frac{-n+c}{n} = \lim_{n\to\infty}-\frac{n}{n} + \frac{c}{n}=\lim_{n\to\infty}-1 + \frac{c}{n}\]
+
+By previous proofs we know that $\ds\lim_{n\to\infty}\frac{c}{n} = 0$ and the limit of a constant function is the constant, so we can use the sum property of limits to say
+
+\[\lim_{n\to\infty}-1 + \frac{c}{n} = \lim_{n\to\infty}-1 + \lim_{n\to\infty}\frac{c}{n}=-1+0=-1\]
+
+So $\lim_{n\to\infty}a_n = -1$ and $\lim_{n\to\infty}b_n=-1$ so we can use the sum property of limits to show that $a_n$ and $b_n$ satisfy the first condition
+
+\[\ds\lim_{n\to\infty}a_n-b_n = \lim_{n\to\infty}a_n - \lim_{n\to\infty}b_n = -1-(-1) = 0\]
+
+Perfect! Now let us consider the second condition.
+
+\[\ds\lim_{n\to\infty}g(a_n)-g(b_n)\]
+
+\[=\ds\lim_{n\to\infty}\frac{1}{a_n+1}-\frac{1}{b_n+1}\]
+
+\[=\ds\lim_{n\to\infty}\frac{1}{\frac{-n+1}{n}+1}-\frac{1}{\frac{-n+3}{n}+1}\]
+
+\[=\ds\lim_{n\to\infty}\frac{1}{-1+\frac{1}{n}+1}-\frac{1}{-1 + \frac{3}{n}+1}\]
+
+\[=\ds\lim_{n\to\infty}\frac{1}{\frac{1}{n}}-\frac{1}{\frac{3}{n}}\]
+
+\[=\lim_{n\to\infty}n-\frac{n}{3}\]
+
+\[=\lim_{n\to\infty}\frac{2}{3}n\]
+
+\textit{Aside:}
+
+A set $s$ is bounded if there exists $M$ s.t. for all $x\in s$, $x\leq M$
+
+For $\ds n>\frac{3M}{2} \Rightarrow \frac{2}{3}n > M$ therefore $\frac{2}{3}n$ is not bounded.
+
+From the aside we know that $\ds\lim_{n\to\infty}\frac{2}{3}n$ does not exist, therefore \[\ds\lim_{n\to\infty}g(a_n)-g(b_n) \neq 0\] so $g(x)$ is not uniformly continuous.
+
+\qedsym
+
+\end{document}
