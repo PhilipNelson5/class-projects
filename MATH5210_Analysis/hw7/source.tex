@@ -37,9 +37,9 @@ For Problems 1 to 6, give $\E - \delta$ proofs of uniform continuity.
 
 \medskip
 
-\textbf{Proof:} Let $\E > 0$ be given. Then there exists $\delta > 0$ s.t.\ for any $x, y \in [2,4]$ \[|x-y| < \delta \Rightarrow |f(x) - f(y)| < \E\]
+\textbf{Proof:} Let $\E > 0$ be given. Choose $\delta = \frac{\E}{10}$, then for any $x, y \in [2,4]$ \[|x-y| < \delta \Rightarrow |f(x) - f(y)| < \E\]
 
-Choose $\delta = \frac{\E}{10}$. Then
+Then,
 
 \[|f(x)-f(y)| = |x^2 + 2x - 3 - y^2 - 2y + 3|\]
 
@@ -53,9 +53,15 @@ Since $|x-y| < \delta$
 
 \[= \delta|x + y + 2|\]
 
-We need to bound $x + y + 2$ above and since it is an increasing function, it will achieve its maximum at the upper bound of it's domain when $x,y = 4$. Therefore
+By the triangle inequality,
 
-\[<\delta|4+4+2|\]
+\[< \delta\left(|x| + |y| + 2\right)\]
+
+We need to bound $x + y + 2$ above. Since it is an increasing function, it will achieve its maximum when $x$ and $y$ are maximized. This occurs at the upper bound of the domain when $x,y = 4$. Therefore
+
+\[\delta\left(|x| + |y| + 2\right)<\delta(4+4+2)\]
+
+Which is $10\delta$, and because we chose $\delta=\frac{\E}{10}$
 
 \[=10\delta = \E\]
 
@@ -69,7 +75,37 @@ Therefore $f(x) = x^2 + 2x -3$ is uniformly continuous on the interval $[2,4]$.
 
 \medskip
 
-\textbf{Proof:}
+\textbf{Proof:} Let $\E > 0$ be given. Choose $\delta = \frac{\E}{24}$, then for any $x, y \in [0,10]$ \[|x-y| < \delta \Rightarrow |f(x) - f(y)| < \E\]
+
+Then,
+
+\[|f(x)-f(y)| = |x^2 + 2x - 3 - y^2 - 2y + 3|\]
+
+\[= |x^2 - y^2 + 2x - 2y|\]
+
+\[= |(x-y)(x+y) + 2(x-y)|\]
+
+Since $|x-y| < \delta$
+
+\[< |\delta(x+y) + 2\delta|\]
+
+\[= \delta|x + y + 2|\]
+
+By the triangle inequality,
+
+\[< \delta\left(|x| + |y| + 2\right)\]
+
+We need to bound $x + y + 2$ above. Since it is an increasing function, it will achieve its maximum when $x$ and $y$ are maximized. This occurs at the upper bound of the domain when $x,y = 10$. Therefore
+
+\[\delta\left(|x| + |y| + 2\right)<\delta(10+10+2)\]
+
+Which is $24\delta$, and because we chose $\delta=\frac{\E}{24}$
+
+\[=24\delta = \E\]
+
+Therefore $f(x) = x^2 + 2x -3$ is uniformly continuous on the interval $[0,10]$.
+
+\qedsym
 
 \section*{3}
 
@@ -77,9 +113,9 @@ Therefore $f(x) = x^2 + 2x -3$ is uniformly continuous on the interval $[2,4]$.
 
 \medskip
 
-\textbf{Proof:} Let $\E > 0$ be given. There exists $\delta > 0$ s.t.\ for any $x, y \in [0,5]$ \[|x-y| < \delta \Rightarrow |f(x) - f(y)| < \E\]
+\textbf{Proof:} Let $\E > 0$ be given. Choose $\delta = \E$ then for any $x, y \in [0,5]$ \[|x-y| < \delta \Rightarrow |f(x) - f(y)| < \E\]
 
-Choose $\delta = \E$ then
+Then,
 
 \[|f(x) - f(y)| = \left|\frac{1}{x+1} - \frac{1}{y+1}\right|\]
 
@@ -95,9 +131,7 @@ We need to bound $\frac{1}{(x+1)(y+1)}$ above and since it is a decreasing funct
 
 \[ < \delta\left|\frac{1}{(0+1)(0+1)}\right|\]
 
-\[ = \delta\left|\frac{1}{1}\right| = \E\]
-
-Therefore $g(x) = \frac{1}{x+1}$ is uniformly continuous on the interval $[0,5]$.
+Which is equal to $\delta$, and because we chose $\delta=\E$, therefore $\left|f(x)-f(y)\right|<\E$ so $g(x) = \frac{1}{x+1}$ is uniformly continuous on the interval $[0,5]$.
 
 \qedsym
 
@@ -107,7 +141,27 @@ Therefore $g(x) = \frac{1}{x+1}$ is uniformly continuous on the interval $[0,5]$
 
 \medskip
 
-\textbf{Proof:}
+\textbf{Proof:} Let $\E > 0$ be given. Choose $\delta = \E$ then for any $x, y \in [0,\infty)$ \[|x-y| < \delta \Rightarrow |f(x) - f(y)| < \E\]
+
+Then,
+
+\[|f(x) - f(y)| = \left|\frac{1}{x+1} - \frac{1}{y+1}\right|\]
+
+\[ = \left|\frac{y+1-x-1}{(x+1)(y+1)}\right|\]
+
+\[ = \left|\frac{x-y}{(x+1)(y+1)}\right|\]
+
+Since $|x-y| < \delta$
+
+\[< \delta\left|\frac{1}{(x+1)(y+1)}\right|\]
+
+We need to bound $\frac{1}{(x+1)(y+1)}$ above and since it is a decreasing function, it will achieve it's maximum at the lower bound of it's domain when $x,y = 0$. Therefore
+
+\[ < \delta\left|\frac{1}{(0+1)(0+1)}\right|\]
+
+Which is equal to $\delta$, and because we chose $\delta=\E$, therefore $\left|f(x)-f(y)\right|<\E$ so $g(x) = \frac{1}{x+1}$ is uniformly continuous on the interval $[0,\infty)$.
+
+\qedsym
 
 \section*{5}
 
@@ -115,9 +169,9 @@ Therefore $g(x) = \frac{1}{x+1}$ is uniformly continuous on the interval $[0,5]$
 
 \medskip
 
-\textbf{Proof:} Let $\E > 0$ be given. Then there exists $\delta > 0$ s.t.\ for all $x,y\in[0,\infty]$ with $|x-y|<\delta$ then $|f(x)-f(y)| < \E$. Choose $\delta = \E$ then
+\textbf{Proof:} Let $\E > 0$ be given. Choose $\delta = \E$, then for all $x,y\in[0,\infty)$ with $|x-y|<\delta$ then $|f(x)-f(y)| < \E$. Then
 
-\[f(x)-f(y)| = \left|\frac{x}{x+1}-\frac{y}{y+1}\right|\]
+\[\left|f(x)-f(y)\right| = \left|\frac{x}{x+1}-\frac{y}{y+1}\right|\]
 
 \[= \left|\frac{x-y+xy-xy}{(x+1)(y+1)}\right|\]
 
@@ -129,9 +183,8 @@ We need to bound $\frac{1}{(x+1)(y+1)}$ above and since it is a decreasing funct
 
 \[<\delta\left|\frac{1}{(0+1)(0+1)}\right|\]
 
-\[=\delta\left|\frac{1}{1}\right| = \delta = \E\]
 
-Therefore $h(x) = \frac{x}{x+1}$ is uniformly continuous on the interval $[0, \infty)$.
+Which is equal to $\delta$, and because we chose $\delta=\E$, therefore $\left|f(x)-f(y)\right|<\E$ so $h(x) = \frac{x}{x+1}$ is uniformly continuous on the interval $[0, \infty)$.
 
 \qedsym
 
@@ -141,7 +194,7 @@ Therefore $h(x) = \frac{x}{x+1}$ is uniformly continuous on the interval $[0, \i
 
 \medskip
 
-\textbf{Proof:} Let $\E > 0$ be given. Then there exists $\delta > 0$ s.t.\ for all $x,y\in\R$ with $|x-y|<\delta$ then $|f(x)-f(y)| < \E$. Choose $\delta = \min\{1, \E\}$ then
+\textbf{Proof:} Let $\E > 0$ be given. Choose $\delta = \min\{1, \E\}$, then for all $x,y\in\R$ with $|x-y|<\delta$ then $|f(x)-f(y)| < \E$. Then
 
 \[|f(x) - f(y)| = \left|\frac{1}{x^2+1}-\frac{1}{y^2 + 1}\right|\]
 
@@ -151,7 +204,7 @@ Since $|x-y|<\delta$
 
 \[< \delta\left|\frac{(x+y)}{(x^2+1)(y^2+1)}\right|\]
 
-then we can leverage the triangle inequality
+By the triangle inequality
 
 \[< \delta\left(\frac{|x|}{|x^2+1||y^2+1|}+\frac{|y|}{|x^2+1||y^2+1|}\right)\]
 
@@ -219,7 +272,7 @@ By previous proofs we know $\ds\lim_{n\to\infty}\frac{1}{n^2} = 0$ and $\ds\lim_
 
 \[=0+0+2=2\]
 
-Since $\ds\lim_{n\to\infty}f(a_n)-f(b_n)$ clearly does not equal $0$ then $f(x)$ is not uniformly continuous on $[0, \infty]$.
+Since $\ds\lim_{n\to\infty}f(a_n)-f(b_n)$ clearly does not equal $0$ then $f(x)$ is not uniformly continuous on $[0, \infty)$.
 
 \qedsym
 
