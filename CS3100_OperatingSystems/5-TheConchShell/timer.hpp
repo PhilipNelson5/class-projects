@@ -5,7 +5,9 @@
 #include <chrono>
 #include <cmath>
 #include <iostream>
+#include <numeric>
 #include <sstream>
+#include <vector>
 
 class Timer
 {
@@ -25,7 +27,8 @@ public:
     f();
     auto end = std::chrono::high_resolution_clock::now();
 
-    auto result = std::chrono::duration<double, std::milli>(end - start).count();
+    auto result =
+      std::chrono::duration<double, std::milli>(end - start).count();
 
     times.push_back(result); // save()
 
@@ -57,7 +60,8 @@ public:
   //return time segment
   double calcTime()
   {
-          return std::chrono::duration <double, std::milli>(_end - _start).count();
+          return std::chrono::duration <double, std::milli>(_end -
+  _start).count();
   }
   */
 
@@ -65,7 +69,7 @@ public:
   std::string ptime()
   {
     double total = 0.0;
-    for (auto &&t : times)
+    for (auto&& t : times)
       total += t;
 
     int s = total / 1000000;
@@ -76,8 +80,8 @@ public:
 
     std::ostringstream oss;
 
-    oss << "Time spent executing child processes: " << s << " seconds " << millis
-        << " milliseconds and " << micros << " microseconds";
+    oss << "Time spent executing child processes: " << s << " seconds "
+        << millis << " milliseconds and " << micros << " microseconds";
 
     return oss.str();
   }
@@ -97,7 +101,7 @@ public:
   {
     double avg = getAverage();
     double dev = 0;
-    for (auto &&e : times)
+    for (auto&& e : times)
       dev += pow((e - avg), 2);
     return sqrt(dev / times.size());
   }
