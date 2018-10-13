@@ -1,0 +1,96 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{courier}
+
+\graphicspath{{images/}}
+
+\title{HW 7 \\ Global Sum}
+\author{Philip Nelson}
+\date{2018 October 12}
+
+\lstset{basicstyle=\footnotesize\ttfamily\normalsize,
+        breaklines=true,
+        stepnumber=1,
+       }
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+
+The purpose of this assignment is to write an MPI program that performs a global sum. I have implemented several different variants. The first takes advantage of the cube network communication. Second uses ring communication. Third is a naive master slave method. Fourth uses the building MPI\_Allgather function. I made each iteration sleep for one tenth of a second in order to simulate some kind of work being executed.
+
+\section*{Code}
+
+\lstinputlisting[showstringspaces=false, language=c++, numbers=left]{../main.cpp}
+\newpage
+
+\section*{Output}
+
+\begin{lstlisting}[showstringspaces=false]
+
+# mpic++ -O3 main.cpp -o release.out
+
+# mpiexec -n 8 --oversubscribe release.out
+
+original data                                               
+    0    5
+    1    3
+    2    0
+    3    8
+    4    4
+    5    8
+    6    3
+    7    9
+
+cube sum
+    0   40
+    1   40
+    2   40
+    3   40
+    4   40
+    5   40
+    6   40
+    7   40
+
+ring sum
+    0   40
+    1   40
+    2   40
+    3   40
+    4   40
+    5   40
+    6   40
+    7   40
+
+master slave sum
+    0   40
+
+all reduce
+    0   40
+    1   40
+    2   40
+    3   40
+    4   40
+    5   40
+    6   40
+    7   40
+
+cube: 0.305294
+ring: 0.708875
+master slave: 0.701991
+all reduce: 0.101125
+
+\end{lstlisting}
+
+\section*{Findings}
+
+The cube sum was the best performing of my own sorting functions which is unsurprising since it only needs to compute $\log_2n$ sums where $n$ is the world size. Therefore it is about $43\%$ faster. The ring sum was as performant as the master slave sum however only the master process is left with the sum. If you want all processes to have the global sum, the ring sum would be a better option. Getting a good time estimate for the reduce / all reduce isn't possible using this setup but I image it is the best option for performing global sums.
+
+\end{document}
