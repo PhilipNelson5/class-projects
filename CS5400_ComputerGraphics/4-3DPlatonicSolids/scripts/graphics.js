@@ -7,8 +7,14 @@
 Engine.graphics = (function() {
   'use strict';
 
-  function matrixMultiplication(...matricies){
-    return matricies.reduce((a, b) =>{
+  /**
+   * multiplies an arbitrary number of matrices together
+   *
+   * @param {array} matrices - 2 or more matrices
+   * @return {array} a composite matrix
+   */
+  function mat4Multiply(...matricies){
+    return matricies.reduce((a, b) => {
       return [
         b[0]  * a[0] + b[1]  * a[4] + b[2]  * a[8]  + b[3]  * a[12],
         b[0]  * a[1] + b[1]  * a[5] + b[2]  * a[9]  + b[3]  * a[13],
@@ -30,6 +36,12 @@ Engine.graphics = (function() {
     });
   }
 
+  /**
+   * create a matrix to rotate about the x axis
+   *
+   * @param {number} theta - the angle in radials to rotate
+   * @return {array} The x axis rotation matrix
+   */
   function x_axis_rotate(theta){
     let cos = Math.cos(theta);
     let sin = Math.sin(theta);
@@ -41,6 +53,12 @@ Engine.graphics = (function() {
     ];
   }
 
+  /**
+   * create a matrix to rotate about the y axis
+   *
+   * @param {number} theta - the angle in radials to rotate
+   * @return {array} The y axis rotation matrix
+   */
   function y_axis_rotate(theta){
     let cos = Math.cos(theta);
     let sin = Math.sin(theta);
@@ -52,6 +70,12 @@ Engine.graphics = (function() {
     ];
   }
 
+  /**
+   * create a matrix to rotate about the z axis
+   *
+   * @param {number} theta - the angle in radials to rotate
+   * @return {array} The z axis rotation matrix
+   */
   function z_axis_rotate(theta){
     let cos = Math.cos(theta);
     let sin = Math.sin(theta);
@@ -63,6 +87,14 @@ Engine.graphics = (function() {
     ];
   }
 
+  /**
+   * create a matrix to scale an object about the origin
+   *
+   * @param {number} sx - scale in x direction
+   * @param {number} sy - scale in y direction
+   * @param {number} sz - scale in z direction
+   * @return {array} The scaling matrix
+   */
   function scale(sx, sy, sz){
     return [
       sx, 0,  0,  0,
@@ -72,6 +104,14 @@ Engine.graphics = (function() {
     ];
   }
 
+  /**
+   * create a matrix to translate an object
+   *
+   * @param {number} dx - translation in the x direction
+   * @param {number} dy - translation in the y direction
+   * @param {number} dz - translation in the z direction
+   * @return {array} The translation matrix
+   */
   function translate(dx, dy, dz){
     return [
       1,  0,  0,  dx,
@@ -81,6 +121,11 @@ Engine.graphics = (function() {
     ];
   }
 
+  /**
+   * create a matrix to perform parallel projection
+   *
+   * @return {array} The parallel projection matrix
+   */
   function project_parallel(r, l, t, b, n, f){
     return [
       2/(r-l),    0,        0,    -(l+r)/(r-l),
@@ -90,41 +135,23 @@ Engine.graphics = (function() {
     ];
   }
 
-  function project_perspective(r, l, t, b, n, f){
+  /**
+   * create a matrix to perform perspective projection
+   *
+   * @param {number} r - the offset to the right
+   * @param {number} t - the offset to the top
+   * @param {number} n - distance to the near clipping plane
+   * @param {number} f - distance to the far clipping plane
+   * @return {array} The perspective projection matrix
+   */
+  function project_perspective(r, t, n, f){
     return [
-      2*n/(r-l),    0,           0,     -n*(r+l)/(r-l),
-      0,        2*n/(t-b),       0,     -n*(t+b)/(t-b),
-      0,            0,     -(f+n)/(f-n), (2*f*n)/(n-f),
+      n/r,    0,           0,           0,
+      0,        n/t,       0,           0,
+      0,            0,     -(f+n)/(f-n), -2*f*n/(f-n),
       0,            0,          -1,           0
     ];
   }
-
-  // function project_perspective(r, l, t, b, n, f){
-  //   return [
-  //     2*n/(r-l),    0,      (r+l)/(r-l),      0,
-  //     0,        2*n/(t-b),  (t+b)/(t-b),      0,
-  //     0,            0,     -(f+n)/(f-n), -(2*f*n)/(f-n),
-  //     0,            0,          -1,           0
-  //   ];
-  // }
-  //
-  //function project_perspective(r, t, n, f){
-  //return [
-  //n/r,       0,          0,            0,
-  //0,        n/t,         0,            0,
-  //0,         0,    -(f+n)/(f-n), -2*f*n/(f-n),
-  //0,         0,         -1,            0
-  //];
-  //}
-
-  //function project_perspective(r, t, n, f){
-  //return [
-  //1/r,       0,          0,            0,
-  //0,        1/t,         0,            0,
-  //0,         0,       -2/(f-n), -(f+n)/(f-n),
-  //0,         0,          0,            0
-  //];
-  //}
 
   const api = {
     x_axis_rotate,
@@ -134,7 +161,7 @@ Engine.graphics = (function() {
     translate,
     project_parallel,
     project_perspective,
-    matrixMultiplication,
+    mat4Multiply,
   };
 
   console.log('graphics...');

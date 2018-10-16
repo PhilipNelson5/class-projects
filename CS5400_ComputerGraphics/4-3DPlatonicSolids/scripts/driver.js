@@ -119,11 +119,11 @@ Engine.main = (function(graphics, objs, glUtils) {
   function render() {
     gl.uniformMatrix4fv(matProjectLoc, false,
       // transposeMatrix4x4(graphics.project_parallel(1, -1, 1, -1, 1, 5)));
-    transposeMatrix4x4(graphics.project_perspective(1, -1, 1, -1, 1, 10)));
+    transposeMatrix4x4(graphics.project_perspective(1, 1, 1, 10)));
     //transposeMatrix4x4(graphics.project_perspective(2, 1, 0, 10)));
 
     for(let i = 0; i < solids.length; ++i){
-      let rotationMatComp = graphics.matrixMultiplication(
+      let rotationMatComp = graphics.mat4Multiply(
         graphics.x_axis_rotate(th),
         graphics.y_axis_rotate(th),
         graphics.z_axis_rotate(th)
