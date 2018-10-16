@@ -8,15 +8,49 @@ Engine.main = (function(graphics, objs, glUtils) {
   solids.push(objs.make_solid({
     center:{x:.5, y:.5, z:-4},
     scale:{x:.75, y:.75, z:.75},
+    xRotDir:-1,
+    yRotDir:1,
+    zRotDir:1,
+    update:function(th){
+      this.center.x+=.05;
+      if (this.center.x > 5)
+        this.center.x = -5;
+    },
   }, objs.Solids.TETRAHEDRON));
   solids.push(objs.make_solid({
     center:{x:0, y:0, z:-3},
     scale:{x:.25, y:.25, z:.25},
+    xRotDir:1,
+    yRotDir:-1,
+    zRotDir:1,
+    update:function(th){
+      this.center.y+=.075;
+      if (this.center.y > 4){
+        this.center.y = -4;
+        this.center.x = Math.random()*6-3;
+      }
+    },
   }, objs.Solids.OCTAHEDRON));
+  for(let i = 0; i < 100; ++i){
   solids.push(objs.make_solid({
     center:{x:-.5, y:-.5, z:-2},
     scale:{x:.5, y:.5, z:.5},
+    xRotDir:1,
+    yRotDir:1,
+    zRotDir:-1,
+    update:function(th){
+      this.center.z-=.05;
+      if(this.center.z < -11){
+        this.center.z = Math.random()*3-3;
+        this.center.x = Math.random()*6-3;
+        this.center.y = Math.random()*6-3;
+        this.center.xRotDir = Math.random()*2-1;
+        this.center.yRotDir = Math.random()*2-1;
+        this.center.zRotDir = Math.random()*12-6;
+      }
+    },
   }, objs.Solids.HEXAHEDRON));
+  }
 
   let buffers = {};
 
@@ -95,11 +129,17 @@ Engine.main = (function(graphics, objs, glUtils) {
   let matTranslateLoc = gl.getUniformLocation(shaderProgram, 'matTranslate');
   let matProjectLoc = gl.getUniformLocation(shaderProgram, 'matProject');
 
-  //let project = graphics.project_parallel(1, -1, 1, -1, 0, 10);
-  //setTimeout(() => project = {graphics.project_parallel(1, -1, 1, -1, 0, 10); console.log("switch");}, 3000);
+  let project = graphics.project_parallel(1, 1, 1, 10);
+  setTimeout(() => {
+    project = graphics.project_perspective(1, 1, 1, 10);
+    console.log("switch");
+  }, 3000);
   function update(dt) {
     dt/=1000;
     th += .5 * dt;
+    for(let i = 0; i < solids.length; ++i){
+      solids[i].update(dt);
+    }
     gl.clearColor(
       0.3921568627450980392156862745098,
       0.58431372549019607843137254901961,
@@ -118,15 +158,15 @@ Engine.main = (function(graphics, objs, glUtils) {
   //------------------------------------------------------------------
   function render() {
     gl.uniformMatrix4fv(matProjectLoc, false,
-      // transposeMatrix4x4(graphics.project_parallel(1, -1, 1, -1, 1, 5)));
-    transposeMatrix4x4(graphics.project_perspective(1, 1, 1, 10)));
-    //transposeMatrix4x4(graphics.project_perspective(2, 1, 0, 10)));
+      // transposeMatrix4x4(graphics.project_parallel(1, 1, 1, 5)));
+      // transposeMatrix4x4(graphics.project_perspective(1, 1, 1, 10)));
+      transposeMatrix4x4(project));
 
     for(let i = 0; i < solids.length; ++i){
       let rotationMatComp = graphics.mat4Multiply(
-        graphics.x_axis_rotate(th),
-        graphics.y_axis_rotate(th),
-        graphics.z_axis_rotate(th)
+        graphics.x_axis_rotate(solids[i].xRotDir * th),
+        graphics.y_axis_rotate(solids[i].yRotDir * th),
+        graphics.z_axis_rotate(solids[i].zRotDir * th)
       );
 
       gl.uniformMatrix4fv(matRotateLoc, false,

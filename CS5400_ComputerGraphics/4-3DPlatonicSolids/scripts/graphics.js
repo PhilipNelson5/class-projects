@@ -126,10 +126,10 @@ Engine.graphics = (function() {
    *
    * @return {array} The parallel projection matrix
    */
-  function project_parallel(r, l, t, b, n, f){
+  function project_parallel(r, t, n, f){
     return [
-      2/(r-l),    0,        0,    -(l+r)/(r-l),
-      0,       2/(t-b),     0,    -(t+b)/(t-b),
+      1/r,    0,        0,    0,
+      0,       1/t,     0,    0,
       0,          0,    -2/(f-n), -(f+n)/(f-n),
       0,          0,        0,          1
     ];
