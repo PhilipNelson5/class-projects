@@ -92,13 +92,22 @@ Engine.graphics = (function() {
 
   function project_perspective(r, l, t, b, n, f){
     return [
-      2*n/(r-l),    0,      (r+l)/(r-l),      0,
-      0,        2*n/(t-b),  (t+b)/(t-b),      0,
-      0,            0,     -(f+n)/(f-n), -(2*f*n)/(f-n),
+      2*n/(r-l),    0,           0,     -n*(r+l)/(r-l),
+      0,        2*n/(t-b),       0,     -n*(t+b)/(t-b),
+      0,            0,     -(f+n)/(f-n), (2*f*n)/(n-f),
       0,            0,          -1,           0
     ];
   }
 
+  // function project_perspective(r, l, t, b, n, f){
+  //   return [
+  //     2*n/(r-l),    0,      (r+l)/(r-l),      0,
+  //     0,        2*n/(t-b),  (t+b)/(t-b),      0,
+  //     0,            0,     -(f+n)/(f-n), -(2*f*n)/(f-n),
+  //     0,            0,          -1,           0
+  //   ];
+  // }
+  //
   //function project_perspective(r, t, n, f){
   //return [
   //n/r,       0,          0,            0,

@@ -6,15 +6,15 @@ Engine.main = (function(graphics, objs, glUtils) {
 
   let solids = [];
   solids.push(objs.make_solid({
-    center:{x:.5, y:.5, z:-7},
+    center:{x:.5, y:.5, z:-4},
     scale:{x:.75, y:.75, z:.75},
   }, objs.Solids.TETRAHEDRON));
   solids.push(objs.make_solid({
-    center:{x:0, y:0, z:-3.5},
+    center:{x:0, y:0, z:-3},
     scale:{x:.25, y:.25, z:.25},
   }, objs.Solids.OCTAHEDRON));
   solids.push(objs.make_solid({
-    center:{x:-.5, y:-.5, z:-1},
+    center:{x:-.5, y:-.5, z:-2},
     scale:{x:.5, y:.5, z:.5},
   }, objs.Solids.HEXAHEDRON));
 
@@ -118,15 +118,15 @@ Engine.main = (function(graphics, objs, glUtils) {
   //------------------------------------------------------------------
   function render() {
     gl.uniformMatrix4fv(matProjectLoc, false,
-      transposeMatrix4x4(graphics.project_parallel(1, -1, 1, -1, 0, 10)));
-    //transposeMatrix4x4(graphics.project_perspective(1, -1, 1, -1, 0, -10)));
+      // transposeMatrix4x4(graphics.project_parallel(1, -1, 1, -1, 1, 5)));
+    transposeMatrix4x4(graphics.project_perspective(1, -1, 1, -1, 1, 10)));
     //transposeMatrix4x4(graphics.project_perspective(2, 1, 0, 10)));
 
     for(let i = 0; i < solids.length; ++i){
       let rotationMatComp = graphics.matrixMultiplication(
-        graphics.x_axis_rotate(0),
+        graphics.x_axis_rotate(th),
         graphics.y_axis_rotate(th),
-        graphics.z_axis_rotate(0)
+        graphics.z_axis_rotate(th)
       );
 
       gl.uniformMatrix4fv(matRotateLoc, false,
