@@ -6,48 +6,39 @@ Engine.main = (function(graphics, objs, glUtils) {
 
   let solids = [];
   solids.push(objs.make_solid({
-    center:{x:.5, y:.5, z:.5},
+    center:{x:.5, y:.5, z:-7},
     scale:{x:.75, y:.75, z:.75},
   }, objs.Solids.TETRAHEDRON));
   solids.push(objs.make_solid({
-    center:{x:0, y:0, z:0},
+    center:{x:0, y:0, z:-3.5},
     scale:{x:.25, y:.25, z:.25},
   }, objs.Solids.OCTAHEDRON));
   solids.push(objs.make_solid({
-    center:{x:-.5, y:-.5, z:-.5},
+    center:{x:-.5, y:-.5, z:-1},
     scale:{x:.5, y:.5, z:.5},
   }, objs.Solids.HEXAHEDRON));
 
   let buffers = {};
+
   buffers.vertexBuffer = glUtils.createBuffer(gl,
     objs.vertices,
     gl.ARRAY_BUFFER,
     gl.STATIC_DRAW);
-  buffers.vertexBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.vertexBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, objs.vertices, gl.STATIC_DRAW);
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
   buffers.vertexColorBuffer = glUtils.createBuffer(gl,
     objs.vertexColors,
     gl.ARRAY_BUFFER,
     gl.STATIC_DRAW);
-  buffers.vertexColorBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.vertexColorBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, objs.vertexColors, gl.STATIC_DRAW);
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
   for(let i = 0; i < solids.length; ++i){
-    solids[i].indexBuffer= gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, solids[i].indexBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, solids[i].indices, gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+    solids[i].indexBuffer = glUtils.createBuffer(gl,
+      solids[i].indices,
+      gl.ELEMENT_ARRAY_BUFFER,
+      gl.STATIC_DRAW);
   }
 
   let vertexShaderSource = `
-  uniform mat4 matRotateX;
-  uniform mat4 matRotateY;
-  uniform mat4 matRotateZ;
+  uniform mat4 matRotate;
   uniform mat4 matScale;
   uniform mat4 matTranslate;
   uniform mat4 matProject;
@@ -59,9 +50,7 @@ Engine.main = (function(graphics, objs, glUtils) {
     gl_Position =
       matProject
       * matTranslate
-      * matRotateX
-      * matRotateY
-      * matRotateZ
+      * matRotate
       * matScale
       * aPosition;
 
@@ -101,15 +90,16 @@ Engine.main = (function(graphics, objs, glUtils) {
   //
   //------------------------------------------------------------------
   let th = 0;
-  let matRotateXLoc = gl.getUniformLocation(shaderProgram, 'matRotateX');
-  let matRotateYLoc = gl.getUniformLocation(shaderProgram, 'matRotateY');
-  let matRotateZLoc = gl.getUniformLocation(shaderProgram, 'matRotateZ');
+  let matRotateLoc = gl.getUniformLocation(shaderProgram, 'matRotate');
   let matScaleLoc = gl.getUniformLocation(shaderProgram, 'matScale');
   let matTranslateLoc = gl.getUniformLocation(shaderProgram, 'matTranslate');
   let matProjectLoc = gl.getUniformLocation(shaderProgram, 'matProject');
+
+  //let project = graphics.project_parallel(1, -1, 1, -1, 0, 10);
+  //setTimeout(() => project = {graphics.project_parallel(1, -1, 1, -1, 0, 10); console.log("switch");}, 3000);
   function update(dt) {
     dt/=1000;
-    th += .5*dt;
+    th += .5 * dt;
     gl.clearColor(
       0.3921568627450980392156862745098,
       0.58431372549019607843137254901961,
@@ -128,20 +118,19 @@ Engine.main = (function(graphics, objs, glUtils) {
   //------------------------------------------------------------------
   function render() {
     gl.uniformMatrix4fv(matProjectLoc, false,
-      ///transposeMatrix4x4(graphics.project_parallel(2, 2, 2)));
-      transposeMatrix4x4(graphics.project_parallel(1, -1, 1, -1, 1, -1)));
-    //transposeMatrix4x4(graphics.project_perspective(1, -1, 1, -1, 1, -1)));
-    //transposeMatrix4x4(graphics.project_perspective(1, 1, 1, 1)));
+      transposeMatrix4x4(graphics.project_parallel(1, -1, 1, -1, 0, 10)));
+    //transposeMatrix4x4(graphics.project_perspective(1, -1, 1, -1, 0, -10)));
+    //transposeMatrix4x4(graphics.project_perspective(2, 1, 0, 10)));
 
     for(let i = 0; i < solids.length; ++i){
-      gl.uniformMatrix4fv(matRotateXLoc, false,
-        transposeMatrix4x4(graphics.x_axis_rotate(th)));
+      let rotationMatComp = graphics.matrixMultiplication(
+        graphics.x_axis_rotate(0),
+        graphics.y_axis_rotate(th),
+        graphics.z_axis_rotate(0)
+      );
 
-      gl.uniformMatrix4fv(matRotateYLoc, false,
-        transposeMatrix4x4(graphics.y_axis_rotate(th)));
-
-      gl.uniformMatrix4fv(matRotateZLoc, false,
-        transposeMatrix4x4(graphics.z_axis_rotate(0)));
+      gl.uniformMatrix4fv(matRotateLoc, false,
+        transposeMatrix4x4(rotationMatComp));
 
       gl.uniformMatrix4fv(matScaleLoc, false,
         transposeMatrix4x4(graphics.scale(
@@ -156,6 +145,7 @@ Engine.main = (function(graphics, objs, glUtils) {
           solids[i].center.z)));
 
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, solids[i].indexBuffer);
+
       gl.drawElements(gl.TRIANGLES, solids[i].indices.length, gl.UNSIGNED_SHORT, 0);
     }
   }

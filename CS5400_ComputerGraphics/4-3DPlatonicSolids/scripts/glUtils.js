@@ -39,6 +39,7 @@ Engine.glUtils = (function() {
     gl.bindBuffer(type, buffer);
     gl.bufferData(type, data, usage);
     gl.bindBuffer(type, null);
+    return buffer;
   }
 
   const api = {
