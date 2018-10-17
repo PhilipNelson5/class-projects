@@ -58,12 +58,12 @@ Engine.main = (function(graphics, objs, glUtils) {
             if(solids.length < 1000){
               addHexa();
               addHexa();
-              addHexa();
             }
           }
         },
       }, objs.Solids.HEXAHEDRON)
     );
+    document.getElementById("numSolids").innerText=solids.length;
   })();
 
   let buffers = {};
