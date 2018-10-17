@@ -6,17 +6,18 @@ Engine.main = (function(graphics, objs, glUtils) {
 
   let solids = [];
   solids.push(objs.make_solid({
-    center:{x:.5, y:.5, z:-4},
+    center:{x:-1, y:.55, z:-4},
     scale:{x:.75, y:.75, z:.75},
     xRotDir:-1,
     yRotDir:1,
     zRotDir:1,
     update:function(th){
       this.center.x+=.05;
-      if (this.center.x > 5)
-        this.center.x = -5;
+      if (this.center.x > 9)
+        this.center.x = -9;
     },
   }, objs.Solids.TETRAHEDRON));
+
   solids.push(objs.make_solid({
     center:{x:0, y:0, z:-3},
     scale:{x:.25, y:.25, z:.25},
@@ -25,32 +26,45 @@ Engine.main = (function(graphics, objs, glUtils) {
     zRotDir:1,
     update:function(th){
       this.center.y+=.075;
-      if (this.center.y > 4){
-        this.center.y = -4;
+      if (this.center.y > 7){
+        this.center.y = -7;
         this.center.x = Math.random()*6-3;
       }
     },
   }, objs.Solids.OCTAHEDRON));
-  for(let i = 0; i < 100; ++i){
-  solids.push(objs.make_solid({
-    center:{x:-.5, y:-.5, z:-2},
-    scale:{x:.5, y:.5, z:.5},
-    xRotDir:1,
-    yRotDir:1,
-    zRotDir:-1,
-    update:function(th){
-      this.center.z-=.05;
-      if(this.center.z < -11){
-        this.center.z = Math.random()*3-3;
-        this.center.x = Math.random()*6-3;
-        this.center.y = Math.random()*6-3;
-        this.center.xRotDir = Math.random()*2-1;
-        this.center.yRotDir = Math.random()*2-1;
-        this.center.zRotDir = Math.random()*12-6;
-      }
-    },
-  }, objs.Solids.HEXAHEDRON));
-  }
+
+  let a = .03;
+  (function addHexa(){
+    solids.push(
+      objs.make_solid({
+        center:{x:0, y:0, z:-1.5},
+        scale:{x:.5, y:.5, z:.5},
+        xRotDir:1,
+        yRotDir:1,
+        zRotDir:-1,
+        v:0,
+        update:function(dt){
+          this.v += a * dt;
+          this.center.z -= this.v;
+          if(this.center.z < -15){
+            this.center.z = Math.random()*5;
+            this.center.x = (Math.random()*2+8) * Math.cos(Math.random()*2*Math.PI);
+            this.center.y = (Math.random()*2+8) * Math.sin(Math.random()*2*Math.PI)
+            this.center.xRotDir = (Math.random()*2)-1;
+            this.center.yRotDir = (Math.random()*2)-1;
+            this.center.zRotDir = (Math.random()*2)-1;
+            this.v = 0;
+            this.scale.x = this.scale.y = this.scale.z = Math.random();
+            if(solids.length < 1000){
+              addHexa();
+              addHexa();
+              addHexa();
+            }
+          }
+        },
+      }, objs.Solids.HEXAHEDRON)
+    );
+  })();
 
   let buffers = {};
 
@@ -64,12 +78,19 @@ Engine.main = (function(graphics, objs, glUtils) {
     gl.ARRAY_BUFFER,
     gl.STATIC_DRAW);
 
-  for(let i = 0; i < solids.length; ++i){
-    solids[i].indexBuffer = glUtils.createBuffer(gl,
-      solids[i].indices,
-      gl.ELEMENT_ARRAY_BUFFER,
-      gl.STATIC_DRAW);
-  }
+  let solidIndexBuffers = [];
+  solidIndexBuffers[objs.Solids.TETRAHEDRON] = glUtils.createBuffer(gl,
+    objs.indices_tetrahedron(),
+    gl.ELEMENT_ARRAY_BUFFER,
+    gl.STATIC_DRAW);
+  solidIndexBuffers[objs.Solids.OCTAHEDRON] = glUtils.createBuffer(gl,
+    objs.indices_octahedron(),
+    gl.ELEMENT_ARRAY_BUFFER,
+    gl.STATIC_DRAW);
+  solidIndexBuffers[objs.Solids.HEXAHEDRON] = glUtils.createBuffer(gl,
+    objs.indices_hexahedron(),
+    gl.ELEMENT_ARRAY_BUFFER,
+    gl.STATIC_DRAW);
 
   let vertexShaderSource = `
   uniform mat4 matRotate;
@@ -129,11 +150,13 @@ Engine.main = (function(graphics, objs, glUtils) {
   let matTranslateLoc = gl.getUniformLocation(shaderProgram, 'matTranslate');
   let matProjectLoc = gl.getUniformLocation(shaderProgram, 'matProject');
 
-  let project = graphics.project_parallel(1, 1, 1, 10);
   setTimeout(() => {
-    project = graphics.project_perspective(1, 1, 1, 10);
+    gl.uniformMatrix4fv(matProjectLoc, false,
+      graphics.project_perspective(1, 1, 1, 14)
+    );
     console.log("switch");
-  }, 3000);
+  }, 7000);
+
   function update(dt) {
     dt/=1000;
     th += .5 * dt;
@@ -156,11 +179,10 @@ Engine.main = (function(graphics, objs, glUtils) {
   // Rendering code goes here
   //
   //------------------------------------------------------------------
+  gl.uniformMatrix4fv(matProjectLoc, false,
+    transposeMatrix4x4(graphics.project_parallel(2, 2, 1, 20)));
+  // transposeMatrix4x4(graphics.project_perspective(1, 1, 1, 10)));
   function render() {
-    gl.uniformMatrix4fv(matProjectLoc, false,
-      // transposeMatrix4x4(graphics.project_parallel(1, 1, 1, 5)));
-      // transposeMatrix4x4(graphics.project_perspective(1, 1, 1, 10)));
-      transposeMatrix4x4(project));
 
     for(let i = 0; i < solids.length; ++i){
       let rotationMatComp = graphics.mat4Multiply(
@@ -184,9 +206,22 @@ Engine.main = (function(graphics, objs, glUtils) {
           solids[i].center.y,
           solids[i].center.z)));
 
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, solids[i].indexBuffer);
-
-      gl.drawElements(gl.TRIANGLES, solids[i].indices.length, gl.UNSIGNED_SHORT, 0);
+      switch(solids[i].type){
+        case objs.Solids.TETRAHEDRON:
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, solidIndexBuffers[objs.Solids.TETRAHEDRON]);
+          gl.drawElements(gl.TRIANGLES, 12, gl.UNSIGNED_SHORT, 0);
+          break;
+        case objs.Solids.OCTAHEDRON:
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, solidIndexBuffers[objs.Solids.OCTAHEDRON]);
+          gl.drawElements(gl.TRIANGLES, 30, gl.UNSIGNED_SHORT, 0);
+          break;
+        case objs.Solids.HEXAHEDRON:
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, solidIndexBuffers[objs.Solids.HEXAHEDRON]);
+          gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
+          break;
+      }
+      //gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, solids[i].indexBuffer);
+      //gl.drawElements(gl.TRIANGLES, solids[i].indices.length, gl.UNSIGNED_SHORT, 0);
     }
   }
 

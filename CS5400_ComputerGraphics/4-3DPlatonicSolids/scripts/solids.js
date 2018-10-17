@@ -249,13 +249,16 @@ Engine.objects = (function() {
     let solid = dcopy(opts);
     switch (type) {
       case api.Solids.TETRAHEDRON:
-        solid.indices = indices_tetrahedron();
+        //solid.indices = indices_tetrahedron();
+        solid.type = api.Solids.TETRAHEDRON;
         break;
       case api.Solids.OCTAHEDRON:
-        solid.indices = indices_octahedron();
+        //solid.indices = indices_octahedron();
+        solid.type = api.Solids.OCTAHEDRON;
         break;
       case api.Solids.HEXAHEDRON:
-        solid.indices = indices_hexahedron();
+        //solid.indices = indices_hexahedron();
+        solid.type = api.Solids.HEXAHEDRON;
         break;
     }
     return solid;
@@ -265,6 +268,9 @@ Engine.objects = (function() {
     vertices,
     vertexColors,
     make_solid,
+    indices_tetrahedron,
+    indices_octahedron,
+    indices_hexahedron,
   };
 
   Object.defineProperty(api, 'Solids', {
