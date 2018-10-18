@@ -1,19 +1,91 @@
 <!DOCTYPE HTML>
 <html lang = "en-US">
-<head>
-	<meta charset = "UTF-8">
-	<title>Assignment 4 - Rendering Platonic Solids</title>
-</head>
-<body>
-	<canvas id = "canvas-main" width = "800" height = "800"></canvas>
-  <p style="display:inline">Solids: </p><p id="numSolids" style="display:inline">3</p>
-	
-	<script>
-		let Engine = {};
-	</script>
-	<script src = "scripts/glUtils.js"></script>
-	<script src = "scripts/solids.js"></script>
-	<script src = "scripts/graphics.js"></script>
-	<script src = "scripts/driver.js"></script>
-</body>
+  <head>
+    <meta charset = "UTF-8">
+    <title>Assignment 4 - Rendering Platonic Solids</title>
+    <style type="text/css">
+th {
+  text-align: center;
+}
+    </style>
+  </head>
+  <body>
+    <canvas id = "canvas-main" width = "800" height = "800" style="display:block"></canvas>
+    <p style="display:inline">Solids: </p><p id="numSolids" style="display:inline">3</p>
+
+    <table>
+      <tr>
+        <th>Plane</th>
+        <th></th>
+        <th>Value</th>
+        <th>Projection</th>
+        <th colspan="2">Maximum Number of Solids</th>
+      </tr>
+      <tr>
+        <td>
+          <label for="nearPlane">Near Clipping Plane</label>
+        </td>
+        <td>
+          <input type="range" min="1" max="15" value="1" class="slider" step="0.1" id="nearPlane">
+        </td>
+        <td>
+          <label id="nearPlaneVal">0</label>
+        </td>
+        <td>
+          <input type="radio" id="perspectiveBtn" name="projection" checked>
+          <label for"perspectiveBtn">Perspective</label>
+        </td>
+        <td>
+          <input type="range" min="3" max="5000" value="1000" id="maxElements">
+        </td>
+        <td>
+          <label id="maxElementsVal">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="farPlane">Far Clipping Plane</label>
+        </td>
+        <td>
+          <input type="range" min="1" max="15" value="15" step=".1" class="slider" step="0.1" id="farPlane">
+        </td>
+        <td>
+          <label id="farPlaneVal">0</label>
+        </td>
+        <td>
+          <input type="radio" id="parallelBtn" name="projection">
+          <label for"perspectiveBtn">Parallel</label>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="right">Right</label>
+        </td>
+        <td>
+          <input type="range" min="-15" max="15" value="5" class="slider" step="0.1" id="right">
+        </td>
+        <td>
+          <label id="rightVal">0</label>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="top">Top</label>
+        </td>
+        <td>
+          <input type="range" min="-15" max="15" value="5" class="slider" step="0.1" id="top">
+        </td>
+        <td>
+          <label id="topVal">0</label>
+        </td>
+      </tr>
+    </table>
+    <script>
+      let Engine = {};
+    </script>
+    <script src = "scripts/glUtils.js"></script>
+    <script src = "scripts/solids.js"></script>
+    <script src = "scripts/graphics.js"></script>
+    <script src = "scripts/driver.js"></script>
+  </body>
 </html>

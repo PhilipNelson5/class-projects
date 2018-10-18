@@ -1,43 +1,86 @@
 Engine.main = (function(graphics, objs, glUtils) {
   'use strict';
 
+  let right = parseFloat(document.getElementById("right").value, 10);
+  let top = parseFloat(document.getElementById("top").value, 10);
+  let near = parseFloat(document.getElementById("nearPlane").value, 10);
+  let far = parseFloat(document.getElementById("farPlane").value, 10);
+	let maxElements = parseInt(document.getElementById("maxElements").value, 10);
+
   let canvas = document.getElementById('canvas-main');
   let gl = canvas.getContext('webgl');
 
   let solids = [];
-  solids.push(objs.make_solid({
-    center:{x:-1, y:.55, z:-4},
-    scale:{x:.75, y:.75, z:.75},
-    xRotDir:-1,
-    yRotDir:1,
-    zRotDir:1,
-    update:function(th){
-      this.center.x+=.05;
-      if (this.center.x > 9)
-        this.center.x = -9;
-    },
-  }, objs.Solids.TETRAHEDRON));
+  //solids.push(objs.make_solid({
+    //center:{x:0, y:0, z:-3},
+    //scale:{x:.75, y:.75, z:.75},
+    //xRotDir:-1,
+    //yRotDir:1,
+    //zRotDir:1,
+    //update:function(th){
+    //},
+  //}, objs.Solids.TETRAHEDRON));
 
   solids.push(objs.make_solid({
-    center:{x:0, y:0, z:-3},
-    scale:{x:.25, y:.25, z:.25},
+    center:{x:0, y:0, z:-1.5},
+    scale:{x:.5, y:.5, z:.5},
     xRotDir:1,
     yRotDir:-1,
     zRotDir:1,
     update:function(th){
-      this.center.y+=.075;
-      if (this.center.y > 7){
-        this.center.y = -7;
-        this.center.x = Math.random()*6-3;
-      }
     },
   }, objs.Solids.OCTAHEDRON));
 
   let a = .03;
-  (function addHexa(){
+
+  (function addTetra(){
+    let r = randDouble(right, 10);
+    let theta = randDouble(0, 2*Math.PI);
     solids.push(
       objs.make_solid({
-        center:{x:0, y:0, z:-1.5},
+        center:{
+          x:r * Math.cos(theta),
+          y:r * Math.sin(theta),
+          z:-far-1},
+        scale:{x:.5, y:.5, z:.5},
+        xRotDir:1,
+        yRotDir:-1,
+        zRotDir:1,
+        v:0,
+        update:function(dt){
+          this.v += a * dt;
+          this.center.z += this.v;
+          if(this.center.z > 1){
+            let r = randDouble(right, 15);
+            let theta = randDouble(0, 2*Math.PI);
+            let theta2 = randDouble(-2*Math.PI, 2*Math.PI);
+            this.center.x = r * Math.cos(theta);
+            this.center.y = r * Math.sin(theta);
+            this.center.z = randDouble(-far, -far-5);
+            this.center.xRotDir = getRandomInt(-1, 1);
+            this.center.yRotDir = getRandomInt(-1, 1);
+            this.center.zRotDir = getRandomInt(-1, 1);
+            this.v = 0;
+            this.scale.x = this.scale.y = this.scale.z = Math.random()*.5;
+            if(solids.length < maxElements){
+              addTetra();
+              addTetra();
+            }
+          }
+        },
+      }, objs.Solids.TETRAHEDRON)
+    );
+  })();
+
+  (function addHexa(){
+    let r = randDouble(right, 10);
+    let theta = randDouble(0, 2*Math.PI);
+    solids.push(
+      objs.make_solid({
+        center:{
+          x:r * Math.cos(theta),
+          y:r * Math.sin(theta),
+          z:0},
         scale:{x:.5, y:.5, z:.5},
         xRotDir:1,
         yRotDir:1,
@@ -47,15 +90,18 @@ Engine.main = (function(graphics, objs, glUtils) {
           this.v += a * dt;
           this.center.z -= this.v;
           if(this.center.z < -15){
-            this.center.z = Math.random()*5;
-            this.center.x = (Math.random()*2+8) * Math.cos(Math.random()*2*Math.PI);
-            this.center.y = (Math.random()*2+8) * Math.sin(Math.random()*2*Math.PI)
-            this.center.xRotDir = (Math.random()*2)-1;
-            this.center.yRotDir = (Math.random()*2)-1;
-            this.center.zRotDir = (Math.random()*2)-1;
+            let r = randDouble(right, 15);
+            let theta = randDouble(0, 2*Math.PI);
+            let theta2 = randDouble(-2*Math.PI, 2*Math.PI);
+            this.center.x = r * Math.cos(theta);
+            this.center.y = r * Math.sin(theta);
+            this.center.z = randDouble(2, 7);
+            this.center.xRotDir = getRandomInt(-1, 1);
+            this.center.yRotDir = getRandomInt(-1, 1);
+            this.center.zRotDir = getRandomInt(-1, 1);
             this.v = 0;
-            this.scale.x = this.scale.y = this.scale.z = Math.random();
-            if(solids.length < 1000){
+            this.scale.x = this.scale.y = this.scale.z = Math.random()*.5;
+            if(solids.length < maxElements){
               addHexa();
               addHexa();
             }
@@ -63,7 +109,6 @@ Engine.main = (function(graphics, objs, glUtils) {
         },
       }, objs.Solids.HEXAHEDRON)
     );
-    document.getElementById("numSolids").innerText=solids.length;
   })();
 
   let buffers = {};
@@ -150,15 +195,10 @@ Engine.main = (function(graphics, objs, glUtils) {
   let matTranslateLoc = gl.getUniformLocation(shaderProgram, 'matTranslate');
   let matProjectLoc = gl.getUniformLocation(shaderProgram, 'matProject');
 
-  setTimeout(() => {
-    gl.uniformMatrix4fv(matProjectLoc, false,
-      graphics.project_perspective(1, 1, 1, 14)
-    );
-    console.log("switch");
-  }, 7000);
-
+  let time = 0;
   function update(dt) {
     dt/=1000;
+    time += dt;
     th += .5 * dt;
     for(let i = 0; i < solids.length; ++i){
       solids[i].update(dt);
@@ -172,6 +212,24 @@ Engine.main = (function(graphics, objs, glUtils) {
     gl.depthFunc(gl.LEQUAL);
     gl.enable(gl.DEPTH_TEST);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    right = parseFloat(document.getElementById("right").value, 10);
+    top = parseFloat(document.getElementById("top").value, 10);
+    near = parseFloat(document.getElementById("nearPlane").value, 10);
+    far = parseFloat(document.getElementById("farPlane").value, 10);
+	  maxElements = parseInt(document.getElementById("maxElements").value, 10);
+
+    document.getElementById("rightVal").textContent = right;
+    document.getElementById("topVal").textContent = top;
+    document.getElementById("nearPlaneVal").textContent = near;
+    document.getElementById("farPlaneVal").textContent = far;
+    document.getElementById("maxElementsVal").textContent = maxElements;
+    document.getElementById("numSolids").innerText=solids.length;
+
+    if(solids.length > maxElements){
+      solids = solids.slice(0, maxElements);
+    }
+
   }
 
   //------------------------------------------------------------------
@@ -179,10 +237,15 @@ Engine.main = (function(graphics, objs, glUtils) {
   // Rendering code goes here
   //
   //------------------------------------------------------------------
-  gl.uniformMatrix4fv(matProjectLoc, false,
-    transposeMatrix4x4(graphics.project_parallel(2, 2, 1, 20)));
-  // transposeMatrix4x4(graphics.project_perspective(1, 1, 1, 10)));
   function render() {
+    if (document.getElementById("parallelBtn").checked){
+      gl.uniformMatrix4fv(matProjectLoc, false,
+        transposeMatrix4x4(graphics.project_parallel(right, top, near, far)));
+    }
+    else{
+      gl.uniformMatrix4fv(matProjectLoc, false,
+        transposeMatrix4x4(graphics.project_perspective(right, top, near, far)));
+    }
 
     for(let i = 0; i < solids.length; ++i){
       let rotationMatComp = graphics.mat4Multiply(
@@ -256,6 +319,21 @@ Engine.main = (function(graphics, objs, glUtils) {
       m[3], m[7], m[11], m[15]
     ];
   }
+
+  function dataBind(domElement, obj) {    
+    domElement.onchange(domElement =>{
+      obj = parseInt(domElement.value);
+    });
+  }
+
+  function randDouble(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
 
   console.log('initializing...');
   requestAnimationFrame(animationLoop);

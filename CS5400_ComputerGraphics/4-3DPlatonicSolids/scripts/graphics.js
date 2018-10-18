@@ -128,10 +128,10 @@ Engine.graphics = (function() {
    */
   function project_parallel(r, t, n, f){
     return [
-      1/r,    0,        0,    0,
-      0,       1/t,     0,    0,
-      0,          0,    -2/(f-n), -(f+n)/(f-n),
-      0,          0,        0,          1
+      1/r,     0,       0,          0,
+      0,      1/t,      0,          0,
+      0,       0,    -2/(f-n), -(f+n)/(f-n),
+      0,       0,       0,          1
     ];
   }
 
@@ -146,10 +146,10 @@ Engine.graphics = (function() {
    */
   function project_perspective(r, t, n, f){
     return [
-      n/r,    0,           0,           0,
-      0,        n/t,       0,           0,
-      0,            0,     -(f+n)/(f-n), -2*f*n/(f-n),
-      0,            0,          -1,           0
+      n/r,       0,           0,           0,
+      0,        n/t,          0,           0,
+      0,         0,     -(f+n)/(f-n), -2*f*n/(f-n),
+      0,         0,          -1,           0
     ];
   }
 
