@@ -1,0 +1,94 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{courier}
+\usepackage{hyperref}
+\usepackage{animate}
+\usepackage{amsmath}
+
+
+%\graphicspath{{../images/}}
+
+\title{HW 8 \\ Load Balancing}
+\author{Philip Nelson}
+\date{2018 November 2}
+
+\lstset{basicstyle=\footnotesize\ttfamily\normalsize,
+        breaklines=true,
+        stepnumber=1,
+       }
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+
+The purpose of this assignment is to implement sender-initiated distributed random dynamic load balancing with white/black ring termination. I started each process with one task, the tasks were doubles between $[1, 3)$ and processing a task mean sleeping for as many milliseconds as the value of the task times 1000. Each task was assignment a maximum number of tasks to produce between $[1024, 2048]$. If a process ever had more than 16 tasks to process, it would send the next two tasks to a random process. If it ever sent tasks to a process less than it's rank, it would turn it's token black. When process 0 finished it's tasks, it would send a white token to the next process. When other processes finished, they would receive the token and send it on to the next process turning it black if their own token was black. They would then wait to receive an action from process zero. Process zero would tell each process to continue or finalize depending on what color token it received. When a white token returned to process zero, all processes would finalize and report their work.
+
+\section*{Code}
+The code is broken up into two files, main.cpp and random.hpp. The files are included below.
+
+\bigskip
+
+\subsection{main.cpp}
+\lstinputlisting[showstringspaces=false, language=c++, numbers=left]{../main.cpp}
+
+\subsection{random.hpp}
+\lstinputlisting[showstringspaces=false, language=c++, numbers=left]{../random.hpp}
+
+\newpage
+
+\section*{Output}
+
+\begin{lstlisting}[showstringspaces=false]
+
+# mpic++ -O3 main.cpp -o release.out
+
+# mpiexec -n 4 release.out
+
+0 -- send token -> WHITE
+1 <- recv token -- WHITE
+1 -- send token -> BLACK
+2 <- recv token -- BLACK
+2 -- send token -> BLACK
+3 <- recv token -- BLACK
+3 -- send token -> BLACK
+0 <- recv token -- BLACK
+0 -- send token -> WHITE
+1 <- recv token -- WHITE
+1 -- send token -> WHITE
+2 <- recv token -- WHITE
+2 -- send token -> WHITE
+3 <- recv token -- WHITE
+3 -- send token -> WHITE
+0 <- recv token -- WHITE
+
+0 -- FINALIZE -- 
+0 -- work done -- 900
+
+1 -- FINALIZE -- 
+1 -- work done -- 839
+
+2 -- FINALIZE -- 
+2 -- work done -- 974
+
+3 -- FINALIZE -- 
+3 -- work done -- 1202
+
+Total Work Done 3915
+0-- percent done -- 22.9885
+1-- percent done -- 21.4304
+2-- percent done -- 24.8787
+3-- percent done -- 30.7024
+
+\end{lstlisting}
+
+\section*{Findings} 
+From the report at the end of the program execution, each process processed between 20\% and 30\% of the total tasks. This means that despite producing a different amount of tasks, they were able to divide the tasks between themselves fairly well. 
+
+\end{document}

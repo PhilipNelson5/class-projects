@@ -1,0 +1,35 @@
+0 -- make work -- 3
+1 -- make work -- 3
+2 -- make work -- 2
+3 -- make work -- 1
+0 -- make work -- 1
+1 -- make work -- 2
+2 -- make work -- 2
+3 -- make work -- 1
+2 -- make work -- 2
+0 -- make work -- 2
+3 -- make work -- 2
+3 -- make work -- 2
+0 -- send token -> WHITE
+1 <- recv token -- WHITE
+1 -- send token -> WHITE
+2 <- recv token -- WHITE
+2 -- send token -> WHITE
+3 <- recv token -- WHITE
+3 -- send token -> WHITE
+2 -- recv action -> FINALIZE
+2 -- work made -- 6
+2 -- work done -- 7
+2 -- FINALIZE -- 
+1 -- recv action -> FINALIZE
+1 -- work made -- 5
+1 -- work done -- 6
+1 -- FINALIZE -- 
+0 <- recv token -- WHITE
+0 -- work made -- 6
+0 -- work done -- 7
+0 -- FINALIZE -- 
+3 -- recv action -> FINALIZE
+3 -- work made -- 6
+3 -- work done -- 7
+3 -- FINALIZE -- 
