@@ -6,18 +6,18 @@
 //
 //------------------------------------------------------------------
 function loadFileFromServer(filename) {
-    return new Promise((resolve, reject) => {
-        let xmlHttp = new XMLHttpRequest();
+  return new Promise((resolve, reject) => {
+    let xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === XMLHttpRequest.DONE) {
-                resolve(xmlHttp.responseText);
-            }
-        };
+    xmlHttp.onreadystatechange = function() {
+      if (xmlHttp.readyState === XMLHttpRequest.DONE) {
+        resolve(xmlHttp.responseText);
+      }
+    };
 
-        xmlHttp.open("GET", filename, true);
-        xmlHttp.send();
-    });
+    xmlHttp.open("GET", filename, true);
+    xmlHttp.send();
+  });
 }
 
 //------------------------------------------------------------------
@@ -25,36 +25,27 @@ function loadFileFromServer(filename) {
 // Helper function to multiply two 4x4 matrices.
 //
 //------------------------------------------------------------------
-function multiplyMatrix4x4(m1, m2) {
-    let result = [
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0
+function multiplyMatrix4x4(...matricies) {
+  return matricies.reduce((a, b) => {
+    return [
+      b[0]  * a[0] + b[1]  * a[4] + b[2]  * a[8]  + b[3]  * a[12],
+      b[0]  * a[1] + b[1]  * a[5] + b[2]  * a[9]  + b[3]  * a[13],
+      b[0]  * a[2] + b[1]  * a[6] + b[2]  * a[10] + b[3]  * a[14],
+      b[0]  * a[3] + b[1]  * a[7] + b[2]  * a[11] + b[3]  * a[15],
+      b[4]  * a[0] + b[5]  * a[4] + b[6]  * a[8]  + b[7]  * a[12],
+      b[4]  * a[1] + b[5]  * a[5] + b[6]  * a[9]  + b[7]  * a[13],
+      b[4]  * a[2] + b[5]  * a[6] + b[6]  * a[10] + b[7]  * a[14],
+      b[4]  * a[3] + b[5]  * a[7] + b[6]  * a[11] + b[7]  * a[15],
+      b[8]  * a[0] + b[9]  * a[4] + b[10] * a[8]  + b[11] * a[12],
+      b[8]  * a[1] + b[9]  * a[5] + b[10] * a[9]  + b[11] * a[13],
+      b[8]  * a[2] + b[9]  * a[6] + b[10] * a[10] + b[11] * a[14],
+      b[8]  * a[3] + b[9]  * a[7] + b[10] * a[11] + b[11] * a[15],
+      b[12] * a[0] + b[13] * a[4] + b[14] * a[8]  + b[15] * a[12],
+      b[12] * a[1] + b[13] * a[5] + b[14] * a[9]  + b[15] * a[13],
+      b[12] * a[2] + b[13] * a[6] + b[14] * a[10] + b[15] * a[14],
+      b[12] * a[3] + b[13] * a[7] + b[14] * a[11] + b[15] * a[15],
     ];
-
-    // "Optimized" manual multiplication
-    result[0] = m1[0] * m2[0] + m1[1] * m2[4] + m1[2] * m2[8] + m1[3] * m2[12];
-    result[1] = m1[0] * m2[1] + m1[1] * m2[5] + m1[2] * m2[9] + m1[3] * m2[13];
-    result[2] = m1[0] * m2[2] + m1[1] * m2[6] + m1[2] * m2[10] + m1[3] * m2[14];
-    result[3] = m1[0] * m2[3] + m1[1] * m2[7] + m1[2] * m2[11] + m1[3] * m2[15];
-
-    result[4] = m1[4] * m2[0] + m1[5] * m2[4] + m1[6] * m2[8] + m1[7] * m2[12];
-    result[5] = m1[4] * m2[1] + m1[5] * m2[5] + m1[6] * m2[9] + m1[7] * m2[13];
-    result[6] = m1[4] * m2[2] + m1[5] * m2[6] + m1[6] * m2[10] + m1[7] * m2[14];
-    result[7] = m1[4] * m2[3] + m1[5] * m2[7] + m1[6] * m2[11] + m1[7] * m2[15];
-
-    result[8] = m1[8] * m2[0] + m1[9] * m2[4] + m1[10] * m2[8] + m1[11] * m2[12];
-    result[9] = m1[8] * m2[1] + m1[9] * m2[5] + m1[10] * m2[9] + m1[11] * m2[13];
-    result[10] = m1[8] * m2[2] + m1[9] * m2[6] + m1[10] * m2[10] + m1[11] * m2[14];
-    result[11] = m1[8] * m2[3] + m1[9] * m2[7] + m1[10] * m2[11] + m1[11] * m2[15];
-
-    result[12] = m1[12] * m2[0] + m1[13] * m2[4] + m1[14] * m2[8] + m1[15] * m2[12];
-    result[13] = m1[12] * m2[1] + m1[13] * m2[5] + m1[14] * m2[9] + m1[15] * m2[13];
-    result[14] = m1[12] * m2[2] + m1[13] * m2[6] + m1[14] * m2[10] + m1[15] * m2[14];
-    result[15] = m1[12] * m2[3] + m1[13] * m2[7] + m1[14] * m2[11] + m1[15] * m2[15];
-
-    return result;
+  });
 }
 
 //------------------------------------------------------------------
@@ -63,12 +54,12 @@ function multiplyMatrix4x4(m1, m2) {
 //
 //------------------------------------------------------------------
 function transposeMatrix4x4(m) {
-    let transpose = [
-        m[0], m[4], m[8], m[12],
-        m[1], m[5], m[9], m[13],
-        m[2], m[6], m[10], m[14],
-        m[3], m[7], m[11], m[15]
-    ];
+  let transpose = [
+    m[0], m[4], m[8], m[12],
+    m[1], m[5], m[9], m[13],
+    m[2], m[6], m[10], m[14],
+    m[3], m[7], m[11], m[15]
+  ];
 
-    return transpose;
+  return transpose;
 }

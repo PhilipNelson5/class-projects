@@ -16,7 +16,12 @@ varying vec4 vColor;
 
 void main()
 {
-    mat4 mFinal = uAspect * uProjection * uView * uModel;
-    gl_Position = mFinal * aPosition;
+    gl_Position =
+      uAspect
+      * uProjection 
+      * uView
+      * uModel
+      * aPosition;
+
     vColor = aColor;
 }

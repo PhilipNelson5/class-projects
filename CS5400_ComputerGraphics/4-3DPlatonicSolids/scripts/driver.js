@@ -5,20 +5,20 @@ Engine.main = (function(graphics, objs, glUtils) {
   let top = parseFloat(document.getElementById("top").value, 10);
   let near = parseFloat(document.getElementById("nearPlane").value, 10);
   let far = parseFloat(document.getElementById("farPlane").value, 10);
-	let maxElements = parseInt(document.getElementById("maxElements").value, 10);
+  let maxElements = parseInt(document.getElementById("maxElements").value, 10);
 
   let canvas = document.getElementById('canvas-main');
   let gl = canvas.getContext('webgl');
 
   let solids = [];
   //solids.push(objs.make_solid({
-    //center:{x:0, y:0, z:-3},
-    //scale:{x:.75, y:.75, z:.75},
-    //xRotDir:-1,
-    //yRotDir:1,
-    //zRotDir:1,
-    //update:function(th){
-    //},
+  //center:{x:0, y:0, z:-3},
+  //scale:{x:.75, y:.75, z:.75},
+  //xRotDir:-1,
+  //yRotDir:1,
+  //zRotDir:1,
+  //update:function(th){
+  //},
   //}, objs.Solids.TETRAHEDRON));
 
   solids.push(objs.make_solid({
@@ -217,7 +217,7 @@ Engine.main = (function(graphics, objs, glUtils) {
     top = parseFloat(document.getElementById("top").value, 10);
     near = parseFloat(document.getElementById("nearPlane").value, 10);
     far = parseFloat(document.getElementById("farPlane").value, 10);
-	  maxElements = parseInt(document.getElementById("maxElements").value, 10);
+    maxElements = parseInt(document.getElementById("maxElements").value, 10);
 
     document.getElementById("rightVal").textContent = right;
     document.getElementById("topVal").textContent = top;

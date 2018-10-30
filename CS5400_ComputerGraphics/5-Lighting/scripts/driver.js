@@ -4,7 +4,7 @@ Engine.main = (function() {
   let canvas = document.getElementById('canvas-main');
   let gl = canvas.getContext('webgl');
 
-  let environment = {}
+  let environment = {};
   let model = {};
   let buffers = {};
   let shaders = {};
@@ -27,8 +27,8 @@ Engine.main = (function() {
     //
     // Rotation update rate
     model.rotationRate = {   // Radians per second (divide by 1000 to go from ms to seconds)
-      x: 0,
-      y: (Math.PI / 4) / 1000,
+      x: Math.PI / 5 / 1000,
+      y: Math.PI / 4 / 1000,
       z: 0
     };
   }
@@ -153,6 +153,7 @@ Engine.main = (function() {
     shaders.matProjection = gl.getUniformLocation(shaders.shaderProgram, 'uProjection');
     shaders.matView = gl.getUniformLocation(shaders.shaderProgram, 'uView');
     shaders.matModel = gl.getUniformLocation(shaders.shaderProgram, 'uModel');
+
     let position = gl.getAttribLocation(shaders.shaderProgram, 'aPosition');
     gl.vertexAttribPointer(position, 3, gl.FLOAT, false, model.vertices.BYTES_PER_ELEMENT * 3, 0);
     gl.enableVertexAttribArray(position);
@@ -169,7 +170,10 @@ Engine.main = (function() {
   //
   //------------------------------------------------------------------
   function initializeWebGLSettings() {
-    gl.clearColor(0.3921568627450980392156862745098, 0.58431372549019607843137254901961, 0.92941176470588235294117647058824, 1.0);
+    gl.clearColor(
+      0.3921568627450980392156862745098,
+      0.58431372549019607843137254901961,
+      0.92941176470588235294117647058824, 1.0);
     gl.clearDepth(1.0);
     gl.depthFunc(gl.LEQUAL);
     gl.enable(gl.DEPTH_TEST);
@@ -197,45 +201,36 @@ Engine.main = (function() {
     model.rotation.y += (model.rotationRate.y * elapsedTime);
     let sinY = Math.sin(model.rotation.y);
     let cosY = Math.cos(model.rotation.y);
-    let matRotateY = [
+    let matRotateY = transposeMatrix4x4([
       cosY,  0,  sinY, 0,
       0,  1,     0, 0,
       -sinY,  0,  cosY, 0,
       0,  0,     0, 1
-    ];
-    matRotateY = transposeMatrix4x4(matRotateY);
+    ]);
 
     model.rotation.z += (model.rotationRate.z * elapsedTime);
     let sinZ = Math.sin(model.rotation.z);
     let cosZ = Math.cos(model.rotation.z);
-    let matRotateZ = [
+    let matRotateZ = transposeMatrix4x4([
       cosZ, -sinZ, 0, 0,
       sinZ,  cosZ, 0, 0,
       0,     0, 1, 0,
       0,     0, 0, 1
-    ];
-    matRotateZ = transposeMatrix4x4(matRotateZ);
+    ]);
 
-    let matTranslate = [
+    let matTranslate = transposeMatrix4x4([
       1,  0,  0, model.center.x,
       0,  1,  0, model.center.y,
       0,  0,  1, model.center.z,
       0,  0,  0, 1
-    ];
-    matTranslate = transposeMatrix4x4(matTranslate);
+    ]);
 
-    model.matModel = [
-      1,  0,  0,  0,
-      0,  1,  0,  0,
-      0,  0,  1,  0,
-      0,  0,  0,  1
-    ];
-    model.matModel = transposeMatrix4x4(model.matModel);
-
-    model.matModel = multiplyMatrix4x4(matTranslate, model.matModel);
-    model.matModel = multiplyMatrix4x4(matRotateX, model.matModel);
-    model.matModel = multiplyMatrix4x4(matRotateY, model.matModel);
-    model.matModel = multiplyMatrix4x4(matRotateZ, model.matModel);
+    model.matModel = multiplyMatrix4x4(
+      matTranslate,
+      matRotateX,
+      matRotateY, 
+      matRotateZ
+    );
   }
 
   //------------------------------------------------------------------
@@ -274,13 +269,16 @@ Engine.main = (function() {
 
   console.log('initializing...');
   console.log('    Loading model');
-  ModelLoaderPLY.load('models/cube.ply')
+  //ModelLoaderPLY.load('models/cube.ply')
+  //ModelLoaderPLY.load('models/dodecahedron.ply')
+  //ModelLoaderPLY.load('models/bunny.ply')
+  ModelLoaderPLY.load('models/galleon.ply')
     .then(modelSource => {
       model = modelSource;
       initializeModelRotation(model);
       console.log('    WebGL settings');
       initializeWebGLSettings();
-      console.log('    raw data')
+      console.log('    raw data');
       initializeData();
       console.log('    vertex buffer objects');
       initializeBufferObjects();
@@ -290,6 +288,7 @@ Engine.main = (function() {
     .then(() => {
       console.log('initialization complete!');
       requestAnimationFrame(animationLoop);
-    });
+    })
+    .catch(error => console.error('[ERROR] ' + error));
 
 }());
