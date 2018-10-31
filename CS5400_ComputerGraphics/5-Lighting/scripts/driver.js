@@ -270,9 +270,9 @@ Engine.main = (function() {
   console.log('initializing...');
   console.log('    Loading model');
   //ModelLoaderPLY.load('models/cube.ply')
-  //ModelLoaderPLY.load('models/dodecahedron.ply')
+  ModelLoaderPLY.load('models/dodecahedron.ply')
   //ModelLoaderPLY.load('models/bunny.ply')
-  ModelLoaderPLY.load('models/galleon.ply')
+  //ModelLoaderPLY.load('models/galleon.ply')
     .then(modelSource => {
       model = modelSource;
       initializeModelRotation(model);
