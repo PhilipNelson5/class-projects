@@ -1,14 +1,22 @@
 Engine.main = (function() {
   'use strict';
 
-  let canvas = document.getElementById('canvas-main');
-  let gl = canvas.getContext('webgl');
-
   let environment = {};
+  let models = [];
   let model = {};
   let buffers = {};
-  let shaders = {};
+  let shaders = { vecLightPos:[], vecLightColor:[] };
   let previousTime = performance.now();
+  let lightPos = [
+    [1, 1, 1, 1],
+    [-1, -1, -1, 1],
+    [1, -1, 1, 1],
+  ];
+  let lightColor = [
+    [1, 0, 0, 1],
+    [0, 1, 0, 1],
+    [0, 0, 1, 1],
+  ];
 
   //------------------------------------------------------------------
   //
@@ -20,15 +28,18 @@ Engine.main = (function() {
     //
     // Current rotation status
     model.rotation = {  // Radians
-      x: Math.PI / 4,
+      x: Math.PI/4,
       y: 0,
       z: 0
     };
     //
     // Rotation update rate
     model.rotationRate = {   // Radians per second (divide by 1000 to go from ms to seconds)
-      x: Math.PI / 5 / 1000,
+      //x: Math.PI / 4 / 1000,
+      x: 0,
       y: Math.PI / 4 / 1000,
+      //y: 0,
+      //z: Math.PI / 4 / 1000,
       z: 0
     };
   }
@@ -56,14 +67,13 @@ Engine.main = (function() {
     // Obtain the projection matrix
     environment.matProjection = projectionPerspectiveFOV(Math.PI / 2, 1.0, 10.0);
 
-    environment.vEye = new Float32Array([0.0, 0.0, 3.0]);
-    environment.matView  = [
+    environment.vEye = new Float32Array([0.0, 0.0, 1.0]);
+    environment.matView = transposeMatrix4x4([
       1,  0,  0,  -environment.vEye[0],
       0,  1,  0,  -environment.vEye[1],
       0,  0,  1,  -environment.vEye[2],
       0,  0,  0,  1
-    ];
-    environment.matView = transposeMatrix4x4(environment.matView);
+    ]);
   }
 
   //------------------------------------------------------------------
@@ -75,10 +85,10 @@ Engine.main = (function() {
   function projectionPerspectiveFOV(fov, near, far) {
     let scale = Math.tan(Math.PI * 0.5 - 0.5 * fov);
     let m = [
-      scale, 0.0, 0.0, 0.0,
-      0.0, scale, 0.0, 0.0,
-      0.0, 0.0, -(far + near) / (far - near), -(2 * far * near) / (far - near),
-      0.0, 0.0, -1, 0
+      scale,  0.0,  0.0, 0.0,
+      0.0,   scale, 0.0, 0.0,
+      0.0,    0.0, -(far + near) / (far - near), -(2 * far * near) / (far - near),
+      0.0,    0.0, -1,   0
     ];
     return transposeMatrix4x4(m);
   }
@@ -92,6 +102,11 @@ Engine.main = (function() {
     buffers.vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffers.vertexBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, model.vertices, gl.STATIC_DRAW);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+    buffers.vertexNormalBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.vertexNormalBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, model.normals, gl.STATIC_DRAW);
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
     buffers.vertexColorBuffer = gl.createBuffer();
@@ -117,12 +132,20 @@ Engine.main = (function() {
           shaders.vertexShader = gl.createShader(gl.VERTEX_SHADER);
           gl.shaderSource(shaders.vertexShader, source);
           gl.compileShader(shaders.vertexShader);
+
+          if (!gl.getShaderParameter(shaders.vertexShader, gl.COMPILE_STATUS)){
+            console.log("ERROR - createShader: ", gl.getShaderInfoLog(shaders.vertexShader));
+          }
+
           return loadFileFromServer('shaders/simple.frag');
         })
         .then(source => {
           shaders.fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
           gl.shaderSource(shaders.fragmentShader, source);
           gl.compileShader(shaders.fragmentShader);
+          if (!gl.getShaderParameter(shaders.fragmentShader, gl.COMPILE_STATUS)){
+            console.log("ERROR - createShader: ", gl.getShaderInfoLog(shaders.fragmentShader));
+          }
         })
         .then(() => {
           shaders.shaderProgram = gl.createProgram();
@@ -148,15 +171,25 @@ Engine.main = (function() {
   function associateShadersWithBuffers() {
     gl.useProgram(shaders.shaderProgram);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.vertexBuffer);
-    shaders.matAspect = gl.getUniformLocation(shaders.shaderProgram, 'uAspect');
-    shaders.matProjection = gl.getUniformLocation(shaders.shaderProgram, 'uProjection');
-    shaders.matView = gl.getUniformLocation(shaders.shaderProgram, 'uView');
-    shaders.matModel = gl.getUniformLocation(shaders.shaderProgram, 'uModel');
+    shaders.matAspect          = gl.getUniformLocation(shaders.shaderProgram, 'uAspect');
+    shaders.matProjection      = gl.getUniformLocation(shaders.shaderProgram, 'uProjection');
+    shaders.matView            = gl.getUniformLocation(shaders.shaderProgram, 'uView');
+    shaders.matModel           = gl.getUniformLocation(shaders.shaderProgram, 'uModel');
+    shaders.matNormal          = gl.getUniformLocation(shaders.shaderProgram, 'uNormal');
+    for (let i = 0; i < lightPos.length; ++i) {
+      shaders.vecLightPos[i]   = gl.getUniformLocation(shaders.shaderProgram, `uLightPos${i}`);
+      shaders.vecLightColor[i] = gl.getUniformLocation(shaders.shaderProgram, `uLightColor${i}`);
+    }
 
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.vertexBuffer);
     let position = gl.getAttribLocation(shaders.shaderProgram, 'aPosition');
     gl.vertexAttribPointer(position, 3, gl.FLOAT, false, model.vertices.BYTES_PER_ELEMENT * 3, 0);
     gl.enableVertexAttribArray(position);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.vertexNormalBuffer);
+    let normal = gl.getAttribLocation(shaders.shaderProgram, 'aNormal');
+    gl.vertexAttribPointer(normal, 3, gl.FLOAT, false, model.normals.BYTES_PER_ELEMENT * 3, 0);
+    gl.enableVertexAttribArray(normal);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, buffers.vertexColorBuffer);
     let color = gl.getAttribLocation(shaders.shaderProgram, 'aColor');
@@ -170,6 +203,7 @@ Engine.main = (function() {
   //
   //------------------------------------------------------------------
   function initializeWebGLSettings() {
+    let ext = gl.getExtension('OES_element_index_uint');
     gl.clearColor(
       0.3921568627450980392156862745098,
       0.58431372549019607843137254901961,
@@ -188,34 +222,41 @@ Engine.main = (function() {
     //
     // Update the rotation matrices
     model.rotation.x += (model.rotationRate.x * elapsedTime);
-    let sinX = Math.sin(model.rotation.x);
-    let cosX = Math.cos(model.rotation.x);
+    let sin = Math.sin(model.rotation.x);
+    let cos = Math.cos(model.rotation.x);
     let matRotateX = [
-      1,    0,    0,   0,
-      0,  cosX, -sinX, 0,
-      0,  sinX,  cosX, 0,
-      0,     0,    0,  1
+      1,   0,    0,   0,
+      0,  cos, -sin,  0,
+      0,  sin,  cos,  0,
+      0,   0,    0,   1
     ];
     matRotateX = transposeMatrix4x4(matRotateX);
 
     model.rotation.y += (model.rotationRate.y * elapsedTime);
-    let sinY = Math.sin(model.rotation.y);
-    let cosY = Math.cos(model.rotation.y);
+    sin = Math.sin(model.rotation.y);
+    cos = Math.cos(model.rotation.y);
     let matRotateY = transposeMatrix4x4([
-      cosY,  0,  sinY, 0,
-      0,  1,     0, 0,
-      -sinY,  0,  cosY, 0,
-      0,  0,     0, 1
+      cos,  0,  sin, 0,
+      0,    1,   0,  0,
+      -sin, 0,  cos, 0,
+      0,    0,   0,  1
     ]);
 
     model.rotation.z += (model.rotationRate.z * elapsedTime);
-    let sinZ = Math.sin(model.rotation.z);
-    let cosZ = Math.cos(model.rotation.z);
+    sin = Math.sin(model.rotation.z);
+    cos = Math.cos(model.rotation.z);
     let matRotateZ = transposeMatrix4x4([
-      cosZ, -sinZ, 0, 0,
-      sinZ,  cosZ, 0, 0,
-      0,     0, 1, 0,
-      0,     0, 0, 1
+      cos, -sin, 0, 0,
+      sin,  cos, 0, 0,
+      0,     0,  1, 0,
+      0,     0,  0, 1
+    ]);
+
+    let matScale = transposeMatrix4x4([
+      model.scale.x,       0,             0,             0,
+      0,             model.scale.y,       0,             0,
+      0,                   0,       model.scale.z,       0,
+      0,                   0,             0,             1,
     ]);
 
     let matTranslate = transposeMatrix4x4([
@@ -227,10 +268,13 @@ Engine.main = (function() {
 
     model.matModel = multiplyMatrix4x4(
       matTranslate,
+      matScale,
       matRotateX,
       matRotateY, 
       matRotateZ
     );
+
+    model.matNormal = invert(multiplyMatrix4x4(model.matModel, environment.matView));
   }
 
   //------------------------------------------------------------------
@@ -248,8 +292,13 @@ Engine.main = (function() {
     gl.uniformMatrix4fv(shaders.matProjection, false, environment.matProjection);
     gl.uniformMatrix4fv(shaders.matView, false, environment.matView);
     gl.uniformMatrix4fv(shaders.matModel, false, model.matModel);
+    gl.uniformMatrix4fv(shaders.matNormal, false, model.matNormal);
+    for(let i = 0; i < lightPos.length; ++i){
+      gl.uniform4fv(shaders.vecLightPos[i], lightPos[i]);
+      gl.uniform4fv(shaders.vecLightColor[i], lightColor[i]);
+    }
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indexBuffer);
-    gl.drawElements(gl.TRIANGLES, model.indices.length, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLES, model.indices.length, model.indices_type, 0);
   }
 
   //------------------------------------------------------------------
@@ -270,9 +319,10 @@ Engine.main = (function() {
   console.log('initializing...');
   console.log('    Loading model');
   //ModelLoaderPLY.load('models/cube.ply')
-  ModelLoaderPLY.load('models/dodecahedron.ply')
-  //ModelLoaderPLY.load('models/bunny.ply')
+  //ModelLoaderPLY.load('models/dodecahedron.ply')
+  ModelLoaderPLY.load('models/bunny.ply')
   //ModelLoaderPLY.load('models/galleon.ply')
+  //ModelLoaderPLY.load('models/happy.ply')
     .then(modelSource => {
       model = modelSource;
       initializeModelRotation(model);

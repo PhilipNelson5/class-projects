@@ -11,9 +11,67 @@ ModelLoaderPLY = (function() {
    *}
    */
 
+  /**
+   * normalize the normal vectors
+   */
+  function normalize(normals){
+    for(let i = 0; i < normals.length; i += 3){
+      let vx = normals[i];
+      let vy = normals[i+1];
+      let vz = normals[i+2];
+
+      let norm = Math.sqrt(vx*vx + vy*vy + vz*vz)
+
+      normals[i]   /= norm;
+      normals[i+1] /= norm;
+      normals[i+2] /= norm;
+    }
+  }
+
+  /**
+   * figure out which vertices are actually used and
+   * normalize only based on those vertices.
+   */
+  function normUsed(verts, indices){
+    let usedVerts = [];
+
+    for(let i = 0; i < verts.length; ++i)
+      usedVerts[i] = false;
+
+    for(let i = 0; i < indices.length; ++i){
+      usedVerts[indices[i]*3+0] = true;
+      usedVerts[indices[i]*3+1] = true;
+      usedVerts[indices[i]*3+2] = true;
+    }
+
+    let min = verts[0];
+    let max = verts[0];
+
+    let ct = 0;
+    for(let i = 0; i < verts.length; ++i)
+    {
+      if(usedVerts[i])
+      {
+        ++ct;
+        min = Math.min(min, verts[i]);
+        max = Math.max(max, verts[i]);
+      }
+    }
+    console.log({ct:ct/3, min, max});
+
+    let nMin = -1;
+    let nMax = 1;
+
+    for(let i = 0; i < verts.length; ++i){
+      if(usedVerts[i])
+        verts[i] = nMin + (nMax - nMin)/(max - min)*(verts[i] - min);
+    }
+  }
+
   function norm(array){
     let max = array.reduce((acc, val)=>{return Math.max(acc, val);}, array[0]);
     let min = array.reduce((acc, val)=>{return Math.min(acc, val);}, array[0]);
+    console.log({min, max});
     let nMin = -1;
     let nMax = 1;
 
@@ -47,7 +105,7 @@ ModelLoaderPLY = (function() {
     // initialize vertex and face count
     let vct = 0;
     let fct = 0;
-    let verts, faces;
+    let verts, faces, normals;
 
     // get the count of vertices and faces
     while (lines[row] !== 'end_header'){
@@ -58,9 +116,11 @@ ModelLoaderPLY = (function() {
           words = lines[++row].split(' ');
           if (words[1] === 'float' || words[1] === 'float32'){
             verts = new Float32Array(vct*3);
+            normals = new Float32Array(vct*3);
             console.log('verts: Float32Array');
           } else if (words[1] === 'double') {
             verts = new Float64Array(vct*3);
+            normals = new Float64Array(vct*3);
             console.log('verts: Float64Array');
           } else {
             return {
@@ -74,12 +134,15 @@ ModelLoaderPLY = (function() {
           words = lines[++row].split(' ');
           if (words[3] === 'int8' || words[3] === 'uint8' || words[3] == 'uchar'){
             faces = new Uint8Array(fct*3);
+            model.indices_type = gl.UNSIGNED_SHORT;
             console.log('indices: Uint8Array');
           } else if (words[3] === 'int16' || words[3] === 'uint16' || words[3] == 'int'){
             faces = new Uint16Array(fct*3);
+            model.indices_type = gl.UNSIGNED_SHORT;
             console.log('indices: Uint16Array');
           } else if (words[3] === 'int32' || words[3] === 'uint32'){
             faces = new Uint32Array(fct*3);
+            model.indices_type = gl.UNSIGNED_INT;
             console.log('indices: Uint32Array');
           } else {
             return {
@@ -117,65 +180,92 @@ ModelLoaderPLY = (function() {
         faces[i*3+j-1] = parseFloat(words[j]);
       }
     }
-    console.log({vct:verts.length/3, fct:faces.length/3});
+
+    // calculate the normals
+    //let vfct = new Float32Array(vct);
+    for (i = 0; i < faces.length;){
+      let v1 = faces[i++];
+      let v1x = verts[v1*3];
+      let v1y = verts[v1*3+1];
+      let v1z = verts[v1*3+2];
+
+      let v2 = faces[i++];
+      let v2x = verts[v2*3];
+      let v2y = verts[v2*3+1];
+      let v2z = verts[v2*3+2];
+
+      let v3 = faces[i++];
+      let v3x = verts[v3*3];
+      let v3y = verts[v3*3+1];
+      let v3z = verts[v3*3+2];
+
+      let ux = v2x-v1x;
+      let uy = v2y-v1y;
+      let uz = v2z-v1z;
+
+      let vx = v3x-v1x;
+      let vy = v3y-v1y;
+      let vz = v3z-v1z;
+
+      let nx = uy*vz-uz*vy;
+      let ny = uz*vx-ux*vz;
+      let nz = ux*vy-uy*vx;
+
+      normals[v1*3] += nx;
+      normals[v1*3+1] += ny;
+      normals[v1*3+2] += nz;
+
+      normals[v2*3] += nx;
+      normals[v2*3+1] += ny;
+      normals[v2*3+2] += nz;
+
+      normals[v3*3] += nx;
+      normals[v3*3+1] += ny;
+      normals[v3*3+2] += nz;
+
+      //++vfct[v1];
+      //++vfct[v2];
+      //++vfct[v3];
+    }
+
+    //for (let i = 0; i < vfct.length; ++i){
+    //normals[i*3] /= vfct[i];
+    //normals[i*3+1] /= vfct[i];
+    //normals[i*3+2] /= vfct[i];
+    //}
+
+    normalize(normals);
 
     // random vertex colors
     let colors = new Float32Array(verts.length);
     for(i = 0; i < verts.length; ++i)
     {
-      colors[i*3+0]=(randDouble(.5, 1));
-      colors[i*3+1]=(randDouble(.5, 1));
-      colors[i*3+2]=(randDouble(.5, 1));
+      colors[i*3+0]=(1);
+      colors[i*3+1]=(1);
+      colors[i*3+2]=(1);
+      //colors[i*3+0]=(randDouble(.5, 1));
+      //colors[i*3+1]=(randDouble(.5, 1));
+      //colors[i*3+2]=(randDouble(.5, 1));
     }
 
-    norm(verts);
+    //norm(verts);
+    normUsed(verts, faces);
 
     model.vertices = verts;
     model.indices = faces;
+    model.normals = normals;
     model.vertexColors = colors;
-
-    /*
-     *    model.vertices = new Float32Array([
-     *      -0.5, -0.5, 0.5,   // 0 - 3 (Front face)
-     *      0.5, -0.5, 0.5,
-     *      0.5,  0.5, 0.5,
-     *      -0.5,  0.5, 0.5,
-     *
-     *      -0.5, -0.5, -0.5,   // 4 - 7 (Back face)
-     *      0.5, -0.5, -0.5,
-     *      0.5,  0.5, -0.5,
-     *      -0.5,  0.5, -0.5,
-     *    ]);
-     *
-     *    model.vertexColors = new Float32Array([
-     *      0.0, 0.0, 1.0,  // Front face
-     *      0.0, 0.0, 1.0,
-     *      0.0, 0.0, 1.0,
-     *      0.0, 0.0, 1.0,
-     *
-     *      1.0, 0.0, 0.0,  // Back face
-     *      1.0, 0.0, 0.0,
-     *      1.0, 0.0, 0.0,
-     *      1.0, 0.0, 0.0,
-     *    ]);
-     *
-     *
-     *    // CCW winding order
-     *    model.indices = new Uint16Array([
-     *      0, 1, 2, 0, 2, 3,   // Front face
-     *      5, 4, 7, 5, 7, 6,   // Back face
-     *      1, 5, 6, 1, 6, 2,   // Right face
-     *      7, 4, 0, 3, 7, 0,   // Left face
-     *      3, 2, 6, 3, 6, 7,   // Top face
-     *      5, 1, 0, 5, 0, 4    // Bottom face
-     *    ]);
-     */
-
 
     model.center = {
       x: 0.0,
       y: 0.0,
       z: -2.0
+    };
+
+    model.scale = {
+      x: 1.0,
+      y: 1.0,
+      z: 1.0
     };
 
     return model;
