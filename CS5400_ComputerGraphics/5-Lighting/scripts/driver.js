@@ -8,8 +8,8 @@ Engine.main = (function() {
   let previousTime = performance.now();
   let lightPos = [
     [1, 1, 1, 1],
-    [-1, -1, -1, 1],
-    [1, -1, 1, 1],
+    [-1, -1, 1, 1],
+    [0, 0, -1, 1],
   ];
   let lightColor = [
     [1, 0, 0, 1],
@@ -27,7 +27,7 @@ Engine.main = (function() {
     //
     // Current rotation status
     model.rotation = {  // Radians
-      x: Math.PI/4,
+      x: Math.PI/10,
       y: 0,
       z: 0
     };
@@ -56,6 +56,7 @@ Engine.main = (function() {
       0.0, 0.0, 1.0, 0.0,
       0.0, 0.0, 0.0, 1.0
     ];
+
     if (canvas.width > canvas.height) {
       environment.matAspect[0] = canvas.height / canvas.width;
     } else {
@@ -67,12 +68,12 @@ Engine.main = (function() {
     environment.matProjection = projectionPerspectiveFOV(Math.PI / 2, 1.0, 10.0);
 
     environment.vEye = new Float32Array([0.0, 0.0, 1.0]);
-    environment.matView = transposeMatrix4x4([
+    environment.matView = [
       1,  0,  0,  -environment.vEye[0],
       0,  1,  0,  -environment.vEye[1],
       0,  0,  1,  -environment.vEye[2],
       0,  0,  0,  1
-    ]);
+    ];
   }
 
   //------------------------------------------------------------------
@@ -83,13 +84,12 @@ Engine.main = (function() {
   //------------------------------------------------------------------
   function projectionPerspectiveFOV(fov, near, far) {
     let scale = Math.tan(Math.PI * 0.5 - 0.5 * fov);
-    let m = [
+    return [
       scale,  0.0,  0.0, 0.0,
       0.0,   scale, 0.0, 0.0,
       0.0,    0.0, -(far + near) / (far - near), -(2 * far * near) / (far - near),
-      0.0,    0.0, -1,   0
+      0.0,    0.0,  -1,   0
     ];
-    return transposeMatrix4x4(m);
   }
 
   //------------------------------------------------------------------
@@ -175,6 +175,7 @@ Engine.main = (function() {
     shaders.matView            = gl.getUniformLocation(shaders.shaderProgram, 'uView');
     shaders.matModel           = gl.getUniformLocation(shaders.shaderProgram, 'uModel');
     shaders.matNormal          = gl.getUniformLocation(shaders.shaderProgram, 'uNormal');
+
     for (let i = 0; i < lightPos.length; ++i) {
       shaders.vecLightPos[i]   = gl.getUniformLocation(shaders.shaderProgram, `uLightPos${i}`);
       shaders.vecLightColor[i] = gl.getUniformLocation(shaders.shaderProgram, `uLightColor${i}`);
@@ -217,10 +218,10 @@ Engine.main = (function() {
   // Scene updates go here.
   //
   //------------------------------------------------------------------
-  function update(elapsedTime) {
+  function update(dt) {
     //
     // Update the rotation matrices
-    model.rotation.x += (model.rotationRate.x * elapsedTime);
+    model.rotation.x += (model.rotationRate.x * dt);
     let sin = Math.sin(model.rotation.x);
     let cos = Math.cos(model.rotation.x);
     let matRotateX = [
@@ -229,51 +230,55 @@ Engine.main = (function() {
       0,  sin,  cos,  0,
       0,   0,    0,   1
     ];
-    matRotateX = transposeMatrix4x4(matRotateX);
 
-    model.rotation.y += (model.rotationRate.y * elapsedTime);
+    model.rotation.y += (model.rotationRate.y * dt);
     sin = Math.sin(model.rotation.y);
     cos = Math.cos(model.rotation.y);
-    let matRotateY = transposeMatrix4x4([
+    let matRotateY = [
       cos,  0,  sin, 0,
       0,    1,   0,  0,
       -sin, 0,  cos, 0,
       0,    0,   0,  1
-    ]);
+    ];
 
-    model.rotation.z += (model.rotationRate.z * elapsedTime);
+    model.rotation.z += (model.rotationRate.z * dt);
     sin = Math.sin(model.rotation.z);
     cos = Math.cos(model.rotation.z);
-    let matRotateZ = transposeMatrix4x4([
+    let matRotateZ = [
       cos, -sin, 0, 0,
       sin,  cos, 0, 0,
       0,     0,  1, 0,
       0,     0,  0, 1
-    ]);
+    ];
 
-    let matScale = transposeMatrix4x4([
+    let matScale = [
       model.scale.x,       0,             0,             0,
       0,             model.scale.y,       0,             0,
       0,                   0,       model.scale.z,       0,
       0,                   0,             0,             1,
-    ]);
+    ];
 
-    let matTranslate = transposeMatrix4x4([
+    let matTranslate = [
       1,  0,  0, model.center.x,
       0,  1,  0, model.center.y,
       0,  0,  1, model.center.z,
       0,  0,  0, 1
-    ]);
+    ];
 
     model.matModel = multiplyMatrix4x4(
-      matTranslate,
-      matScale,
       matRotateX,
       matRotateY, 
-      matRotateZ
+      matRotateZ,
+      matScale,
+      matTranslate
     );
 
-    model.matNormal = invert(multiplyMatrix4x4(model.matModel, environment.matView));
+    model.matNormal = invert(
+      multiplyMatrix4x4(
+        model.matModel,
+        environment.matView
+      )
+    );
   }
 
   //------------------------------------------------------------------
@@ -287,11 +292,11 @@ Engine.main = (function() {
     //
     // This sets which buffers/shaders to use for the draw call in the render function.
     associateShadersWithBuffers();
-    gl.uniformMatrix4fv(shaders.matAspect, false, environment.matAspect);
-    gl.uniformMatrix4fv(shaders.matProjection, false, environment.matProjection);
-    gl.uniformMatrix4fv(shaders.matView, false, environment.matView);
-    gl.uniformMatrix4fv(shaders.matModel, false, model.matModel);
-    gl.uniformMatrix4fv(shaders.matNormal, false, model.matNormal);
+    gl.uniformMatrix4fv(shaders.matAspect, false, transposeMatrix4x4(environment.matAspect));
+    gl.uniformMatrix4fv(shaders.matProjection, false, transposeMatrix4x4(environment.matProjection));
+    gl.uniformMatrix4fv(shaders.matView, false, transposeMatrix4x4(environment.matView));
+    gl.uniformMatrix4fv(shaders.matModel, false, transposeMatrix4x4(model.matModel));
+    gl.uniformMatrix4fv(shaders.matNormal, false, (model.matNormal));
     for(let i = 0; i < lightPos.length; ++i){
       gl.uniform4fv(shaders.vecLightPos[i], lightPos[i]);
       gl.uniform4fv(shaders.vecLightColor[i], lightColor[i]);
@@ -318,8 +323,8 @@ Engine.main = (function() {
   console.log('initializing...');
   console.log('    Loading model');
   //ModelLoaderPLY.load('models/cube.ply')
-  ModelLoaderPLY.load('models/dodecahedron.ply')
-  //ModelLoaderPLY.load('models/bunny.ply')
+  //ModelLoaderPLY.load('models/dodecahedron.ply')
+  ModelLoaderPLY.load('models/bunny.ply')
   //ModelLoaderPLY.load('models/galleon.ply')
   //ModelLoaderPLY.load('models/happy.ply')
 

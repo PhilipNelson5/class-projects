@@ -248,8 +248,8 @@ ModelLoaderPLY = (function() {
       //colors[i*3+2]=(randDouble(.5, 1));
     }
 
-    //norm(verts);
-    normUsed(verts, faces);
+    norm(verts);
+    //normUsed(verts, faces);
 
     model.vertices = verts;
     model.indices = faces;
