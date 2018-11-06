@@ -19,9 +19,9 @@ uniform vec4 uLightColor2;
 
 //
 // Geometry
-attribute vec4 aPosition;
-attribute vec4 aNormal;
 attribute vec4 aColor;
+attribute vec4 aNormal;
+attribute vec4 aPosition;
 
 //
 // Output
@@ -36,7 +36,7 @@ void main()
     * uModel
     * aPosition;
 
-  vec4 ambientLight = vec4(.5, .5, .5, 1);
+  vec4 ambientLight = vec4(.1, .1, .1, 1);
   vec4 ambient = ambientLight * aColor;
 
   //mat4 invModelVew = transpose(inverse(uView*uModel));

@@ -5,15 +5,11 @@ ModelLoaderPLY = (function() {
     return Math.random() * (max - min) + min;
   }
 
-  /*
-   *function getRandomInt(min, max) {
-   *  return Math.floor(Math.random() * (max - min + 1)) + min;
-   *}
-   */
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
-  /**
-   * normalize the normal vectors
-   */
+  //normalize the normal vectors
   function normalize(normals){
     for(let i = 0; i < normals.length; i += 3){
       let vx = normals[i];
@@ -69,15 +65,13 @@ ModelLoaderPLY = (function() {
   }
 
   function norm(array){
-    let max = array.reduce((acc, val)=>{return Math.max(acc, val);}, array[0]);
-    let min = array.reduce((acc, val)=>{return Math.min(acc, val);}, array[0]);
-    console.log({min, max});
-    let nMin = -1;
-    let nMax = 1;
+    let max = array.reduce( (acc, val) => { return Math.max(acc, val); }, array[0]);
+    let min = array.reduce( (acc, val) => { return Math.min(acc, val); }, array[0]);
+    //let max = Math.max(...array);
+    //let min = Math.min(...array);
 
     for(let i = 0; i < array.length; ++i){
-      let x = array[i];
-      array[i] = nMin + (nMax - nMin)/(max - min)*(x - min);
+      array[i] = (array[i] - min) * 2 / (max - min) - 1;
     }
   }
 
@@ -181,6 +175,9 @@ ModelLoaderPLY = (function() {
       }
     }
 
+    norm(verts);
+    //normUsed(verts, faces);
+
     // calculate the normals
     //let vfct = new Float32Array(vct);
     for (i = 0; i < faces.length;){
@@ -243,13 +240,7 @@ ModelLoaderPLY = (function() {
       colors[i*3+0]=(1);
       colors[i*3+1]=(1);
       colors[i*3+2]=(1);
-      //colors[i*3+0]=(randDouble(.5, 1));
-      //colors[i*3+1]=(randDouble(.5, 1));
-      //colors[i*3+2]=(randDouble(.5, 1));
     }
-
-    norm(verts);
-    //normUsed(verts, faces);
 
     model.vertices = verts;
     model.indices = faces;
@@ -278,6 +269,7 @@ ModelLoaderPLY = (function() {
   //
   //------------------------------------------------------------------
   function load(filename) {
+    console.log("LOADING: ", filename);
     return new Promise((resolve, reject) => {
       loadFileFromServer(filename)
         .then(fileText => {

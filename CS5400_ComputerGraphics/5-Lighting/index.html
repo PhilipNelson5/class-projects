@@ -6,11 +6,15 @@
   </head>
   <body>
     <canvas id = "canvas-main" width = "800" height = "800"></canvas>
-
+    <div>
+    <input type="checkbox" name="color1" id="color0" checked> Color 0<br>
+    <input type="checkbox" name="color2" id="color1" checked> Color 1<br>
+    <input type="checkbox" name="color3" id="color2" checked> Color 2<br>
+    </div>
     <script>
-      let Engine = {};
-      let canvas = document.getElementById('canvas-main');
-      let gl = canvas.getContext('webgl');
+let Engine = {};
+let canvas = document.getElementById('canvas-main');
+let gl = canvas.getContext('webgl');
     </script>
     <script src = "scripts/utilities.js"></script>
     <script src = "scripts/model-loader-ply.js"></script>
