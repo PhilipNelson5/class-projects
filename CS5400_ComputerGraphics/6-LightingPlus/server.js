@@ -2,14 +2,18 @@ let http = require('http');
 let path = require('path');
 let fs = require('fs');
 let mimeTypes = {
-  '.ply' : 'text/plain',
-  '.obj' : 'text/plain',
-  '.vs' : 'text/plain',
+  '.ply'  : 'text/plain',
+  '.obj'  : 'text/plain',
+  '.vs'   : 'text/plain',
   '.frag' : 'text/plain',
-  '.js' : 'text/javascript',
+  '.js'   : 'text/javascript',
   '.html' : 'text/html',
-  '.css' : 'text/css',
-  '.ico' : 'image/x-icon',
+  '.css'  : 'text/css',
+  '.ico'  : 'image/x-icon',
+  '.jpg'  : 'image/jpeg',
+  '.jpeg' : 'image/jpeg',
+  '.bmp'  : 'image/bmp',
+  '.png'  : 'image/png',
 };
 
 function handleRequest(request, response) {

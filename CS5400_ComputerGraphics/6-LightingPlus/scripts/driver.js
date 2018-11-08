@@ -3,7 +3,7 @@ Engine.main = (function() {
 
   let environment = {};
   let models = [];
-  let buffers = {};
+  let skybox = {};
   let shaders = { vecLightPos:[], vecLightColor:[] };
   let previousTime = performance.now();
   let lightPos = [
@@ -81,7 +81,7 @@ Engine.main = (function() {
       environment.matAspect[5] = canvas.width / canvas.height;
     }
 
-    environment.matProjection = projectionPerspectiveFOV(Math.PI / 2, 1.0, 10.0);
+    environment.matProjection = projectionPerspectiveFOV(Math.PI/2 , 1.0, 50.0);
 
     environment.vEye = new Float32Array([0.0, 0.0, 1.5]);
     environment.matView = translate(
@@ -112,6 +112,22 @@ Engine.main = (function() {
     }
   }
 
+  function initializeCubeMap(model, texCube){
+    model.cube = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, model.cube);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+    gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texCube.posx);
+    gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texCube.negx);
+    gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texCube.posy);
+    gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texCube.negy);
+    gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texCube.posz);
+    gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texCube.negz);
+    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  }
+
   function initializeBufferObject(model) {
     model.vertexBuffer = createBuffer(
       gl, model.vertices, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
@@ -135,21 +151,35 @@ Engine.main = (function() {
     return new Promise((resolve, reject) => {
       loadFileFromServer('shaders/diffuse.vs')
         .then(source => {
-          shaders.diffuse = {}; //TODO Finish refactor
+          shaders.diffuse = {};
           shaders.diffuse.vShader = createShader(gl, gl.VERTEX_SHADER, source);
 
           return loadFileFromServer('shaders/diffuse.frag');
         })
         .then(source => {
-          shaders.diffuseFShader = createShader(gl, gl.FRAGMENT_SHADER, source);
+          shaders.diffuse.fShader = createShader(gl, gl.FRAGMENT_SHADER, source);
 
-          shaders.diffuseProgram = createProgram(
-            gl, shaders.diffuseVShader, shaders.diffuseFShader);
+          shaders.diffuse.program = createProgram(
+            gl, shaders.diffuse.vShader, shaders.diffuse.fShader);
+
+          return loadFileFromServer('shaders/skybox.vs');
+        })
+        .then(source => {
+          shaders.skybox = {};
+          shaders.skybox.vShader = createShader(gl, gl.VERTEX_SHADER, source);
+
+          return loadFileFromServer('shaders/skybox.frag');
+        })
+        .then(source => {
+          shaders.skybox.fShader = createShader(gl, gl.FRAGMENT_SHADER, source);
+
+          shaders.skybox.program = createProgram(
+            gl, shaders.diffuse.vShader, shaders.diffuse.fShader);
 
           resolve();
         })
         .catch(error => {
-          console.log('(initializeShaders) something bad happened: ', error);
+          console.error('(initializeShaders) ERROR : ', error);
           reject();
         });
     });
@@ -205,6 +235,33 @@ Engine.main = (function() {
     gl.clearDepth(1.0);
     gl.depthFunc(gl.LEQUAL);
     gl.enable(gl.DEPTH_TEST);
+  }
+
+  function renderSkybox(sb){
+    gl.useProgram(shaders.skybox.program);
+    // setup uniforms
+    let uAspect = gl.getUniformLocation(shaders.skybox.program, 'uAspect');
+    gl.uniformMatrix4fv(uAspect, false, transposeMatrix4x4(environment.matAspect));
+
+    let uProjection = gl.getUniformLocation(shaders.skybox.program, 'uProjection');
+    gl.uniformMatrix4fv(uProjection, false, transposeMatrix4x4(environment.matProjection));
+
+    let uModel = gl.getUniformLocation(shaders.skybox.program, 'uModel');
+    gl.uniformMatrix4fv(uModel, false, transposeMatrix4x4(scale(sb.model.scale.x, sb.model.scale.y, sb.model.scale.z)));
+
+    let uView = gl.getUniformLocation(shaders.skybox.program, 'uView');
+    gl.uniformMatrix4fv(uView, false, transposeMatrix4x4(environment.matView));
+
+    // setup position attribute
+    gl.bindBuffer(gl.ARRAY_BUFFER, sb.model.vertexBuffer);
+    let position = gl.getAttribLocation(shaders.skybox.program, 'aPosition');
+    gl.vertexAttribPointer(position, 3, gl.FLOAT, false, sb.model.vertices.BYTES_PER_ELEMENT * 3, 0);
+    gl.enableVertexAttribArray(position);
+
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sb.model.indexBuffer);
+
+    // draw the box
+    gl.drawElements(gl.TRIANGLES, sb.model.indices.length, sb.model.indices_type, 0);
   }
 
   //------------------------------------------------------------------
@@ -276,6 +333,9 @@ Engine.main = (function() {
   function render() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
+    renderSkybox(skybox);
+
+    gl.useProgram(shaders.diffuse.program);
     //
     // This sets which buffers/shaders to use for the draw call in the render function.
     gl.uniformMatrix4fv(shaders.matAspect, false, transposeMatrix4x4(environment.matAspect));
@@ -288,7 +348,7 @@ Engine.main = (function() {
     }
 
     for (let i = 0; i < models.length; ++i){
-      associateShadersWithBuffers(models[i], shaders.diffuseProgram);
+      associateShadersWithBuffers(models[i], shaders.diffuse.program);
       gl.uniformMatrix4fv(shaders.matModel, false, transposeMatrix4x4(models[i].matModel));
       gl.uniformMatrix4fv(shaders.matNormal, false, models[i].matNormal);
 
@@ -317,7 +377,19 @@ Engine.main = (function() {
   //ModelLoaderPLY.load('models/cube.ply')
   //ModelLoaderPLY.load('models/dodecahedron.ply')
   //ModelLoaderPLY.load('models/bunny.ply')
-  ModelLoaderPLY.load('models/cube.ply')
+  loadTexCube('NightPark', 'jpg')
+    .then(texCube => {
+      skybox.texCube = texCube;
+      initializeCubeMap(skybox, skybox.texCube);
+      return ModelLoaderPLY.load('models/cube.ply');
+    })
+    .then(model => {
+      skybox.model = model;
+      initializeBufferObject(skybox.model);
+      model.center = { x:0, y:0, z:0 };
+      model.scale  = { x:10, y:10, z:10 };
+      return ModelLoaderPLY.load('models/cube.ply');
+    })
     .then(model => {
       model.rotation = {
         x: Math.PI/100,

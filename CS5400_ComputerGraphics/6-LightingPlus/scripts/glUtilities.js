@@ -14,7 +14,7 @@ function createShader(gl, type, source){
     return shader;
   }
 
-  console.log("ERROR - createShader: ", gl.getShaderInfoLog(shader));
+  console.error("ERROR - createShader: ", gl.getShaderInfoLog(shader));
   gl.deleteShader(shader);
 }
 
@@ -33,7 +33,7 @@ function createProgram(gl, vertexShader, fragmentShader) {
     return program;
   }
 
-  console.log("ERROR - createProgram: ", gl.getProgramInfoLog(program));
+  console.error("ERROR - createProgram: ", gl.getProgramInfoLog(program));
   gl.deleteProgram(program);
 }
 

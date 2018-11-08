@@ -19,6 +19,64 @@ function loadFileFromServer(filename) {
     xmlHttp.send();
   });
 }
+//------------------------------------------------------------------//
+// Helper function used to load a texture file from the server.//
+//------------------------------------------------------------------
+function loadTextureFromServer(filename) {
+  return new Promise((resolve, reject) => {
+    let xmlHttp = new XMLHttpRequest();
+    xmlHttp.onload = function() {
+      if (xmlHttp.status === 200) {
+        let asset = new Image();
+        asset.onload = function() {
+          window.URL.revokeObjectURL(asset.src);
+          resolve(asset);
+        }
+        asset.src = window.URL.createObjectURL(xmlHttp.response);
+      } else { 
+        reject();
+      } 
+    }; 
+    xmlHttp.open("GET", filename, true);
+    xmlHttp.responseType = 'blob';
+    xmlHttp.send();
+  });
+}
+
+function loadTexCube(name, ext){
+  return new Promise((resolve, reject) => {
+    let texCube = {};
+    loadTextureFromServer(`assets/${name}/negx.${ext}`)
+      .then(texture => {
+        texCube.negx = texture;
+        return loadTextureFromServer(`assets/${name}/negy.${ext}`);
+      })
+      .then(texture => {
+        texCube.negy = texture;
+        return loadTextureFromServer(`assets/${name}/negz.${ext}`);
+      })
+      .then(texture => {
+        texCube.negz = texture;
+        return loadTextureFromServer(`assets/${name}/posx.${ext}`);
+      })
+      .then(texture => {
+        texCube.posx = texture;
+        return loadTextureFromServer(`assets/${name}/posy.${ext}`);
+      })
+      .then(texture => {
+        texCube.posy = texture;
+        return loadTextureFromServer(`assets/${name}/posz.${ext}`);
+      })
+      .then(texture => {
+        texCube.posz = texture;
+        resolve(texCube);
+      })
+      .catch(error => {
+        console.error('(loadTexCube) ERROR : ', error);
+        reject();
+      });
+  });
+}
 
 //------------------------------------------------------------------
 //
