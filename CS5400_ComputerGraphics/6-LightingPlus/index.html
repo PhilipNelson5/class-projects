@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang = "en-US">
+  <head>
+    <meta charset = "UTF-8">
+    <title>Shedding Light ++</title>
+  </head>
+  <body>
+    <canvas id = "canvas-main" width = "800" height = "800"></canvas>
+    <div style="display:flex;">
+    <div style="margin:1mm">
+      <input type="checkbox" name="color1" id="color0" style="margin:2.5mm" checked> Color 0<br>
+      <input type="checkbox" name="color2" id="color1" style="margin:2.5mm" checked> Color 1<br>
+      <input type="checkbox" name="color3" id="color2" style="margin:2.5mm" checked> Color 2<br>
+    </div>
+    <div>
+      <input type="color" id="colorpicker0" value="#ff0000" style="display:block; margin:1.5mm">
+      <input type="color" id="colorpicker1" value="#00ff00" style="display:block; margin:1.5mm">
+      <input type="color" id="colorpicker2" value="#0000ff" style="display:block; margin:1.5mm">
+    </div>
+    </div>
+    <script>
+let Engine = {};
+let canvas = document.getElementById('canvas-main');
+let gl = canvas.getContext('webgl');
+    </script>
+    <script src = "scripts/utilities.js"></script>
+    <script src = "scripts/model-loader-ply.js"></script>
+    <script src = "scripts/driver.js"></script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+[ ] Renders a skybox
+
+[X] Renders one of the Stanford ply models with:
+  [X] Per-fragment diffuse
+
+[ ] Renders one of the Stanford ply models with:
+  [ ] Per-fragment diffuse
+  [ ] Per-fragment specular
+
+[ ] Renders one of the Stanford ply models with:
+  [ ] Per-fragment reflection mapping; 100% reflection
+
+[ ] Renders one of the Stanford ply models with:
+  [ ] 80% per-fragment diffuse and specular
+  [ ] 20% per-fragment reflection mapping
+
+[X] Uses perspective projection.
+
+[ ] Provides an "interesting" animation/demonstration of the rendering techniques
