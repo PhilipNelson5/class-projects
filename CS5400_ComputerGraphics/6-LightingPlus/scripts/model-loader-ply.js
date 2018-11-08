@@ -179,7 +179,6 @@ ModelLoaderPLY = (function() {
     //normUsed(verts, faces);
 
     // calculate the normals
-    //let vfct = new Float32Array(vct);
     for (i = 0; i < faces.length;){
       let v1 = faces[i++];
       let v1x = verts[v1*3];
@@ -219,27 +218,17 @@ ModelLoaderPLY = (function() {
       normals[v3*3] += nx;
       normals[v3*3+1] += ny;
       normals[v3*3+2] += nz;
-
-      //++vfct[v1];
-      //++vfct[v2];
-      //++vfct[v3];
     }
-
-    //for (let i = 0; i < vfct.length; ++i){
-    //normals[i*3] /= vfct[i];
-    //normals[i*3+1] /= vfct[i];
-    //normals[i*3+2] /= vfct[i];
-    //}
 
     normalize(normals);
 
-    // random vertex colors
+    // vertex colors
     let colors = new Float32Array(verts.length);
     for(i = 0; i < verts.length; ++i)
     {
-      colors[i*3+0]=(1);
-      colors[i*3+1]=(1);
-      colors[i*3+2]=(1);
+      colors[i*3+0] = 1;
+      colors[i*3+1] = 1;
+      colors[i*3+2] = 1;
     }
 
     model.vertices = verts;

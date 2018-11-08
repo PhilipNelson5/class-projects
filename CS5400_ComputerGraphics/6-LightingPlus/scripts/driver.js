@@ -81,33 +81,14 @@ Engine.main = (function() {
       environment.matAspect[5] = canvas.width / canvas.height;
     }
 
-    //
-    // Obtain the projection matrix
     environment.matProjection = projectionPerspectiveFOV(Math.PI / 2, 1.0, 10.0);
 
-    environment.vEye = new Float32Array([0.0, 0.0, 1.0]);
-    environment.matView = [
-      1,  0,  0,  -environment.vEye[0],
-      0,  1,  0,  -environment.vEye[1],
-      0,  0,  1,  -environment.vEye[2],
-      0,  0,  0,  1
-    ];
-  }
+    environment.vEye = new Float32Array([0.0, 0.0, 1.5]);
+    environment.matView = translate(
+      -environment.vEye[0],
+      -environment.vEye[1],
+      -environment.vEye[2]);
 
-  //------------------------------------------------------------------
-  //
-  // Creates a Perspective Projection matrix based on a requested FOV.
-  // The matrix results in the vertices in Normalized Device Coordinates...
-  //
-  //------------------------------------------------------------------
-  function projectionPerspectiveFOV(fov, near, far) {
-    let scale = Math.tan(Math.PI * 0.5 - 0.5 * fov);
-    return [
-      scale,  0.0,  0.0, 0.0,
-      0.0,   scale, 0.0, 0.0,
-      0.0,    0.0, -(far + near) / (far - near), -(2 * far * near) / (far - near),
-      0.0,    0.0,  -1,   0
-    ];
   }
 
   //------------------------------------------------------------------
@@ -117,48 +98,32 @@ Engine.main = (function() {
   //------------------------------------------------------------------
   function initializeBufferObjects() {
     for (let i = 0; i < models.length; ++i) {
-      models[i].vertexBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, models[i].vertexBuffer);
-      gl.bufferData(gl.ARRAY_BUFFER, models[i].vertices, gl.STATIC_DRAW);
-      gl.bindBuffer(gl.ARRAY_BUFFER, null);
+      models[i].vertexBuffer = createBuffer(
+        gl, models[i].vertices, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
 
-      models[i].vertexNormalBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, models[i].vertexNormalBuffer);
-      gl.bufferData(gl.ARRAY_BUFFER, models[i].normals, gl.STATIC_DRAW);
-      gl.bindBuffer(gl.ARRAY_BUFFER, null);
+      models[i].vertexNormalBuffer = createBuffer(
+        gl, models[i].normals, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
 
-      models[i].vertexColorBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, models[i].vertexColorBuffer);
-      gl.bufferData(gl.ARRAY_BUFFER, models[i].vertexColors, gl.STATIC_DRAW);
-      gl.bindBuffer(gl.ARRAY_BUFFER, null);
+      models[i].vertexColorBuffer = createBuffer(
+        gl, models[i].vertexColors, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
 
-      models[i].indexBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, models[i].indexBuffer);
-      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, models[i].indices, gl.STATIC_DRAW);
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+      models[i].indexBuffer = createBuffer(
+        gl, models[i].indices, gl.ELEMENT_ARRAY_BUFFER, gl.STATIC_DRAW);
     }
   }
 
   function initializeBufferObject(model) {
-    model.vertexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, model.vertices, gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    model.vertexBuffer = createBuffer(
+      gl, model.vertices, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
 
-    model.vertexNormalBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexNormalBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, model.normals, gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    model.vertexNormalBuffer = createBuffer(
+      gl, model.normals, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
 
-    model.vertexColorBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexColorBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, model.vertexColors, gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    model.vertexColorBuffer = createBuffer(
+      gl, model.vertexColors, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
 
-    model.indexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.indexBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, model.indices, gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+    model.indexBuffer = createBuffer(
+      gl, model.indices, gl.ELEMENT_ARRAY_BUFFER, gl.STATIC_DRAW);
   }
 
   //------------------------------------------------------------------
@@ -168,31 +133,18 @@ Engine.main = (function() {
   //------------------------------------------------------------------
   function initializeShaders() {
     return new Promise((resolve, reject) => {
-      loadFileFromServer('shaders/simple.vs')
+      loadFileFromServer('shaders/diffuse.vs')
         .then(source => {
-          shaders.vertexShader = gl.createShader(gl.VERTEX_SHADER);
-          gl.shaderSource(shaders.vertexShader, source);
-          gl.compileShader(shaders.vertexShader);
+          shaders.diffuse = {}; //TODO Finish refactor
+          shaders.diffuse.vShader = createShader(gl, gl.VERTEX_SHADER, source);
 
-          if (!gl.getShaderParameter(shaders.vertexShader, gl.COMPILE_STATUS)){
-            console.log("ERROR - createShader: ", gl.getShaderInfoLog(shaders.vertexShader));
-          }
-
-          return loadFileFromServer('shaders/simple.frag');
+          return loadFileFromServer('shaders/diffuse.frag');
         })
         .then(source => {
-          shaders.fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-          gl.shaderSource(shaders.fragmentShader, source);
-          gl.compileShader(shaders.fragmentShader);
-          if (!gl.getShaderParameter(shaders.fragmentShader, gl.COMPILE_STATUS)){
-            console.log("ERROR - createShader: ", gl.getShaderInfoLog(shaders.fragmentShader));
-          }
-        })
-        .then(() => {
-          shaders.shaderProgram = gl.createProgram();
-          gl.attachShader(shaders.shaderProgram, shaders.vertexShader);
-          gl.attachShader(shaders.shaderProgram, shaders.fragmentShader);
-          gl.linkProgram(shaders.shaderProgram);
+          shaders.diffuseFShader = createShader(gl, gl.FRAGMENT_SHADER, source);
+
+          shaders.diffuseProgram = createProgram(
+            gl, shaders.diffuseVShader, shaders.diffuseFShader);
 
           resolve();
         })
@@ -209,33 +161,33 @@ Engine.main = (function() {
   // format with the VBO.
   //
   //------------------------------------------------------------------
-  function associateShadersWithBuffers(i) {
-    gl.useProgram(shaders.shaderProgram);
+  function associateShadersWithBuffers(model, program) {
+    gl.useProgram(program);
 
-    shaders.matAspect              = gl.getUniformLocation(shaders.shaderProgram, 'uAspect');
-    shaders.matProjection          = gl.getUniformLocation(shaders.shaderProgram, 'uProjection');
-    shaders.matView                = gl.getUniformLocation(shaders.shaderProgram, 'uView');
-    shaders.matModel               = gl.getUniformLocation(shaders.shaderProgram, 'uModel');
-    shaders.matNormal              = gl.getUniformLocation(shaders.shaderProgram, 'uNormal');
+    shaders.matAspect              = gl.getUniformLocation(program, 'uAspect');
+    shaders.matProjection          = gl.getUniformLocation(program, 'uProjection');
+    shaders.matView                = gl.getUniformLocation(program, 'uView');
+    shaders.matModel               = gl.getUniformLocation(program, 'uModel');
+    shaders.matNormal              = gl.getUniformLocation(program, 'uNormal');
 
     for (let light = 0; light < lightPos.length; ++light) {
-      shaders.vecLightPos[light]   = gl.getUniformLocation(shaders.shaderProgram, `uLightPos${light}`);
-      shaders.vecLightColor[light] = gl.getUniformLocation(shaders.shaderProgram, `uLightColor${light}`);
+      shaders.vecLightPos[light]   = gl.getUniformLocation(program, `uLightPos${light}`);
+      shaders.vecLightColor[light] = gl.getUniformLocation(program, `uLightColor${light}`);
     }
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, models[i].vertexBuffer);
-    let position = gl.getAttribLocation(shaders.shaderProgram, 'aPosition');
-    gl.vertexAttribPointer(position, 3, gl.FLOAT, false, models[i].vertices.BYTES_PER_ELEMENT * 3, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexBuffer);
+    let position = gl.getAttribLocation(program, 'aPosition');
+    gl.vertexAttribPointer(position, 3, gl.FLOAT, false, model.vertices.BYTES_PER_ELEMENT * 3, 0);
     gl.enableVertexAttribArray(position);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, models[i].vertexNormalBuffer);
-    let normal = gl.getAttribLocation(shaders.shaderProgram, 'aNormal');
-    gl.vertexAttribPointer(normal, 3, gl.FLOAT, false, models[i].normals.BYTES_PER_ELEMENT * 3, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexNormalBuffer);
+    let normal = gl.getAttribLocation(program, 'aNormal');
+    gl.vertexAttribPointer(normal, 3, gl.FLOAT, false, model.normals.BYTES_PER_ELEMENT * 3, 0);
     gl.enableVertexAttribArray(normal);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, models[i].vertexColorBuffer);
-    let color = gl.getAttribLocation(shaders.shaderProgram, 'aColor');
-    gl.vertexAttribPointer(color, 3, gl.FLOAT, false, models[i].vertexColors.BYTES_PER_ELEMENT * 3, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexColorBuffer);
+    let color = gl.getAttribLocation(program, 'aColor');
+    gl.vertexAttribPointer(color, 3, gl.FLOAT, false, model.vertexColors.BYTES_PER_ELEMENT * 3, 0);
     gl.enableVertexAttribArray(color);
   }
 
@@ -267,48 +219,22 @@ Engine.main = (function() {
       // Update the rotation matrices
       //dt = 0;
       models[i].rotation.x += (models[i].rotationRate.x * dt);
-      let sin = Math.sin(models[i].rotation.x);
-      let cos = Math.cos(models[i].rotation.x);
-      let matRotateX = [
-        1,   0,    0,   0,
-        0,  cos, -sin,  0,
-        0,  sin,  cos,  0,
-        0,   0,    0,   1
-      ];
-
       models[i].rotation.y += (models[i].rotationRate.y * dt);
-      sin = Math.sin(models[i].rotation.y);
-      cos = Math.cos(models[i].rotation.y);
-      let matRotateY = [
-        cos,  0,  sin, 0,
-        0,    1,   0,  0,
-        -sin, 0,  cos, 0,
-        0,    0,   0,  1
-      ];
-
       models[i].rotation.z += (models[i].rotationRate.z * dt);
-      sin = Math.sin(models[i].rotation.z);
-      cos = Math.cos(models[i].rotation.z);
-      let matRotateZ = [
-        cos, -sin, 0, 0,
-        sin,  cos, 0, 0,
-        0,     0,  1, 0,
-        0,     0,  0, 1
-      ];
 
-      let matScale = [
-        models[i].scale.x,       0,             0,             0,
-        0,             models[i].scale.y,       0,             0,
-        0,                   0,       models[i].scale.z,       0,
-        0,                   0,             0,             1,
-      ];
+      let matRotateX = x_axis_rotate(models[i].rotation.x);
+      let matRotateY = y_axis_rotate(models[i].rotation.y);
+      let matRotateZ = z_axis_rotate(models[i].rotation.z);
 
-      let matTranslate = [
-        1,  0,  0, models[i].center.x,
-        0,  1,  0, models[i].center.y,
-        0,  0,  1, models[i].center.z,
-        0,  0,  0, 1
-      ];
+      let matScale = scale(
+        models[i].scale.x,
+        models[i].scale.y,
+        models[i].scale.z); 
+
+      let matTranslate = translate(
+        models[i].center.x,
+        models[i].center.y,
+        models[i].center.z);
 
       models[i].matModel = multiplyMatrix4x4(
         matRotateX,
@@ -324,6 +250,7 @@ Engine.main = (function() {
           environment.matView
         )
       );
+
       lightPos[1][0] = 5 * Math.cos(th);
       lightPos[1][2] = 5 * Math.sin(th);
 
@@ -361,7 +288,7 @@ Engine.main = (function() {
     }
 
     for (let i = 0; i < models.length; ++i){
-      associateShadersWithBuffers(i);
+      associateShadersWithBuffers(models[i], shaders.diffuseProgram);
       gl.uniformMatrix4fv(shaders.matModel, false, transposeMatrix4x4(models[i].matModel));
       gl.uniformMatrix4fv(shaders.matNormal, false, models[i].matNormal);
 
@@ -468,34 +395,4 @@ Engine.main = (function() {
     })
     .catch(error => console.error('[ERROR] ' + error));
 
-
-  function dcopy(src) {
-    let copy = {};
-    for (let prop in src) {
-      if (src.hasOwnProperty(prop)) {
-        copy[prop] = src[prop];
-      }
-    }
-    return copy;
-  }
-
-  function cloneObject(obj) {
-    var clone = {};
-    for(let prop in obj) {
-      if(obj[prop] != null &&  typeof(obj[prop])=="object")
-        clone[prop] = cloneObject(obj[prop]);
-      else
-        clone[prop] = obj[prop];
-    }
-    return clone;
-  }
-
-  function hexToRgba(hex) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? [
-      parseInt(result[1], 16)/255,
-      parseInt(result[2], 16)/255,
-      parseInt(result[3], 16)/255, 1
-    ] : null;
-  }
 }());

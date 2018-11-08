@@ -85,3 +85,33 @@ function transposeMatrix4x4(m) {
     m[3], m[7], m[11], m[15]
   ];
 }
+
+function dcopy(src) {
+  let copy = {};
+  for (let prop in src) {
+    if (src.hasOwnProperty(prop)) {
+      copy[prop] = src[prop];
+    }
+  }
+  return copy;
+}
+
+function cloneObject(obj) {
+  var clone = {};
+  for(let prop in obj) {
+    if(obj[prop] != null &&  typeof(obj[prop])=="object")
+      clone[prop] = cloneObject(obj[prop]);
+    else
+      clone[prop] = obj[prop];
+  }
+  return clone;
+}
+
+function hexToRgba(hex) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? [
+    parseInt(result[1], 16)/255,
+    parseInt(result[2], 16)/255,
+    parseInt(result[3], 16)/255, 1
+  ] : null;
+}

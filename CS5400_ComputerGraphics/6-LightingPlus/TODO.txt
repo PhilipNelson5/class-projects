@@ -17,3 +17,16 @@
 [X] Uses perspective projection.
 
 [ ] Provides an "interesting" animation/demonstration of the rendering techniques
+
+Notes:
+* Should the model keep track of the program that it is rendered with?
+  * model.program
+* Should the model have a list of associations 
+
+    OR
+
+* Should there be functions to render each thing?
+  * renderSkyBox(skyBox)
+  * renderDiffuse(model)
+  * renderSpectral(model)
+  * ...
