@@ -19,7 +19,7 @@ varying vec4 vColor;
 
 void main()
 {
-  vec4 ambientLight = vec4(.1, .1, .1, 1);
+  vec4 ambientLight = vec4(.2, .2, .2, 1);
   vec4 ambient = ambientLight * vColor;
 
   vec4 L0 = normalize(uLightPos0 - vPosition);

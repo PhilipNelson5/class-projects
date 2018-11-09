@@ -239,6 +239,8 @@ Engine.main = (function() {
 
   function renderSkybox(sb){
     gl.useProgram(shaders.skybox.program);
+
+    //
     // setup uniforms
     let uAspect = gl.getUniformLocation(shaders.skybox.program, 'uAspect');
     gl.uniformMatrix4fv(uAspect, false, transposeMatrix4x4(environment.matAspect));
@@ -252,6 +254,7 @@ Engine.main = (function() {
     let uView = gl.getUniformLocation(shaders.skybox.program, 'uView');
     gl.uniformMatrix4fv(uView, false, transposeMatrix4x4(environment.matView));
 
+    //
     // setup position attribute
     gl.bindBuffer(gl.ARRAY_BUFFER, sb.model.vertexBuffer);
     let position = gl.getAttribLocation(shaders.skybox.program, 'aPosition');
@@ -260,6 +263,7 @@ Engine.main = (function() {
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sb.model.indexBuffer);
 
+    //
     // draw the box
     gl.drawElements(gl.TRIANGLES, sb.model.indices.length, sb.model.indices_type, 0);
   }
@@ -336,6 +340,7 @@ Engine.main = (function() {
     renderSkybox(skybox);
 
     gl.useProgram(shaders.diffuse.program);
+
     //
     // This sets which buffers/shaders to use for the draw call in the render function.
     gl.uniformMatrix4fv(shaders.matAspect, false, transposeMatrix4x4(environment.matAspect));
