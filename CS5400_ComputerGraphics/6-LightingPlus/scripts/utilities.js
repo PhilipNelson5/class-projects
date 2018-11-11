@@ -19,8 +19,11 @@ function loadFileFromServer(filename) {
     xmlHttp.send();
   });
 }
+
 //------------------------------------------------------------------//
+//
 // Helper function used to load a texture file from the server.//
+//
 //------------------------------------------------------------------
 function loadTextureFromServer(filename) {
   return new Promise((resolve, reject) => {
@@ -33,16 +36,21 @@ function loadTextureFromServer(filename) {
           resolve(asset);
         }
         asset.src = window.URL.createObjectURL(xmlHttp.response);
-      } else { 
+      } else {
         reject();
-      } 
-    }; 
+      }
+    };
     xmlHttp.open("GET", filename, true);
     xmlHttp.responseType = 'blob';
     xmlHttp.send();
   });
 }
 
+//------------------------------------------------------------------
+//
+// Given the base name of a texture cube, load all the images
+//
+//------------------------------------------------------------------
 function loadTexCube(name, ext){
   return new Promise((resolve, reject) => {
     let texCube = {};
@@ -80,7 +88,7 @@ function loadTexCube(name, ext){
 
 //------------------------------------------------------------------
 //
-// Helper function to multiply two 4x4 matrices.
+// Multiply an arbitrary number of 4x4 matrices.
 //
 //------------------------------------------------------------------
 function multiplyMatrix4x4(...matricies) {
@@ -106,6 +114,11 @@ function multiplyMatrix4x4(...matricies) {
   });
 }
 
+//------------------------------------------------------------------
+//
+// Invert a matrix
+//
+//------------------------------------------------------------------
 function invert(m) {
 
   let r = [
@@ -130,9 +143,10 @@ function invert(m) {
   for (var i = 0; i < 16; i++) r[i] /= det;
   return r;
 };
+
 //------------------------------------------------------------------
 //
-// Transpose a matrix.
+// Transpose a matrix
 //
 //------------------------------------------------------------------
 function transposeMatrix4x4(m) {
@@ -144,6 +158,11 @@ function transposeMatrix4x4(m) {
   ];
 }
 
+//------------------------------------------------------------------
+//
+// Two deep copy functions, not sure which one works
+//
+//------------------------------------------------------------------
 function dcopy(src) {
   let copy = {};
   for (let prop in src) {
@@ -165,6 +184,11 @@ function cloneObject(obj) {
   return clone;
 }
 
+//------------------------------------------------------------------
+//
+// Helper function to turn hex into rgba
+//
+//------------------------------------------------------------------
 function hexToRgba(hex) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? [
@@ -173,3 +197,17 @@ function hexToRgba(hex) {
     parseInt(result[3], 16)/255, 1
   ] : null;
 }
+
+//------------------------------------------------------------------
+//
+// Debugging function to print out the uniforms of a shader program
+//
+//------------------------------------------------------------------
+function printUniforms(program){
+  const numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+  for (let i = 0; i < numUniforms; ++i) {
+    const info = gl.getActiveUniform(program, i);
+    console.log(info);
+  }
+}
+

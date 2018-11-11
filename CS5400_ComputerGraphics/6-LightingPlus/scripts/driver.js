@@ -93,25 +93,9 @@ Engine.main = (function() {
 
   //------------------------------------------------------------------
   //
-  // Prepare and set the Vertex Buffer Object to render.
+  // Initialize a CubeMap for a skybox
   //
   //------------------------------------------------------------------
-  function initializeBufferObjects() {
-    for (let i = 0; i < models.length; ++i) {
-      models[i].vertexBuffer = createBuffer(
-        gl, models[i].vertices, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
-
-      models[i].vertexNormalBuffer = createBuffer(
-        gl, models[i].normals, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
-
-      models[i].vertexColorBuffer = createBuffer(
-        gl, models[i].vertexColors, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
-
-      models[i].indexBuffer = createBuffer(
-        gl, models[i].indices, gl.ELEMENT_ARRAY_BUFFER, gl.STATIC_DRAW);
-    }
-  }
-
   function initializeCubeMap(sb, texCube){
     sb.cubeMap = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, sb.cubeMap);
@@ -128,6 +112,12 @@ Engine.main = (function() {
     gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   }
 
+  //------------------------------------------------------------------
+  //
+  // Initialize the buffers for a model:
+  //   vertex, normal, color, index
+  //
+  //------------------------------------------------------------------
   function initializeBufferObject(model) {
     model.vertexBuffer = createBuffer(
       gl, model.vertices, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
@@ -149,10 +139,15 @@ Engine.main = (function() {
   //------------------------------------------------------------------
   function initializeShaders() {
     return new Promise((resolve, reject) => {
+      // --------------------
+      // Diffuse Shader
+      // --------------------
       loadFileFromServer('shaders/diffuse.vs')
         .then(source => {
           shaders.diffuse = {};
+          shaders.specular = {};
           shaders.diffuse.vShader = createShader(gl, gl.VERTEX_SHADER, source);
+          shaders.specular.vShader = shaders.diffuse.vShader;
 
           return loadFileFromServer('shaders/diffuse.frag');
         })
@@ -162,6 +157,39 @@ Engine.main = (function() {
           shaders.diffuse.program = createProgram(
             gl, shaders.diffuse.vShader, shaders.diffuse.fShader);
 
+          // Get Uniform Locations
+          shaders.diffuse.uAspect     = gl.getUniformLocation(shaders.diffuse.program, 'uAspect');
+          shaders.diffuse.uProjection = gl.getUniformLocation(shaders.diffuse.program, 'uProjection');
+          shaders.diffuse.uView       = gl.getUniformLocation(shaders.diffuse.program, 'uView');
+          shaders.diffuse.uModel      = gl.getUniformLocation(shaders.diffuse.program, 'uModel');
+          shaders.diffuse.uNormal     = gl.getUniformLocation(shaders.diffuse.program, 'uNormal');
+
+          shaders.diffuse.uLightPos   = [];
+          shaders.diffuse.uLightColor = [];
+          for (let i = 0; i < lightPos.length; ++i) {
+            shaders.diffuse.uLightPos[i]   = gl.getUniformLocation(shaders.diffuse.program, `uLightPos${i}`);
+            shaders.diffuse.uLightColor[i] = gl.getUniformLocation(shaders.diffuse.program, `uLightColor${i}`);
+          }
+
+          // Get Attribute Locations
+          shaders.diffuse.aPosition = gl.getAttribLocation(shaders.diffuse.program, 'aPosition');
+          shaders.diffuse.aNormal   = gl.getAttribLocation(shaders.diffuse.program, 'aNormal');
+          shaders.diffuse.aColor    = gl.getAttribLocation(shaders.diffuse.program, 'aColor');
+
+          // --------------------
+          // Specular Shader
+          // --------------------
+          return loadFileFromServer('shaders/specular.frag');
+        })
+        .then(source => {
+          shaders.specular.fShader = createShader(gl, gl.FRAGMENT_SHADER, source);
+
+          shaders.specular.program = createProgram(
+            gl, shaders.specular.vShader, shaders.specular.fShader);
+
+          // --------------------
+          // Skybox Shader
+          // --------------------
           return loadFileFromServer('shaders/skybox.vs');
         })
         .then(source => {
@@ -176,11 +204,15 @@ Engine.main = (function() {
           shaders.skybox.program = createProgram(
             gl, shaders.skybox.vShader, shaders.skybox.fShader);
 
-          const numUniforms = gl.getProgramParameter(shaders.skybox.program, gl.ACTIVE_UNIFORMS);
-          for (let i = 0; i < numUniforms; ++i) {
-            const info = gl.getActiveUniform(shaders.skybox.program, i);
-          console.log(info);
-          }
+          // Get Uniform Locations
+          shaders.skybox.uAspect = gl.getUniformLocation(shaders.skybox.program, 'uAspect');
+          shaders.skybox.uModel = gl.getUniformLocation(shaders.skybox.program, 'uModel');
+          shaders.skybox.uProjection = gl.getUniformLocation(shaders.skybox.program, 'uProjection');
+          shaders.skybox.uSampler = gl.getUniformLocation(shaders.skybox.program, 'uSampler');
+          shaders.skybox.uView = gl.getUniformLocation(shaders.skybox.program, 'uView');
+
+          // Get Attribute Locations
+          shaders.skybox.aPosition = gl.getAttribLocation(shaders.skybox.program, 'aPosition');
 
           resolve();
         })
@@ -193,43 +225,7 @@ Engine.main = (function() {
 
   //------------------------------------------------------------------
   //
-  // Associate the vertex and pixel shaders, and the expected vertex
-  // format with the VBO.
-  //
-  //------------------------------------------------------------------
-  function associateShadersWithBuffers(model, program) {
-    gl.useProgram(program);
-
-    shaders.matAspect              = gl.getUniformLocation(program, 'uAspect');
-    shaders.matProjection          = gl.getUniformLocation(program, 'uProjection');
-    shaders.matView                = gl.getUniformLocation(program, 'uView');
-    shaders.matModel               = gl.getUniformLocation(program, 'uModel');
-    shaders.matNormal              = gl.getUniformLocation(program, 'uNormal');
-
-    for (let light = 0; light < lightPos.length; ++light) {
-      shaders.vecLightPos[light]   = gl.getUniformLocation(program, `uLightPos${light}`);
-      shaders.vecLightColor[light] = gl.getUniformLocation(program, `uLightColor${light}`);
-    }
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexBuffer);
-    let position = gl.getAttribLocation(program, 'aPosition');
-    gl.vertexAttribPointer(position, 3, gl.FLOAT, false, model.vertices.BYTES_PER_ELEMENT * 3, 0);
-    gl.enableVertexAttribArray(position);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexNormalBuffer);
-    let normal = gl.getAttribLocation(program, 'aNormal');
-    gl.vertexAttribPointer(normal, 3, gl.FLOAT, false, model.normals.BYTES_PER_ELEMENT * 3, 0);
-    gl.enableVertexAttribArray(normal);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexColorBuffer);
-    let color = gl.getAttribLocation(program, 'aColor');
-    gl.vertexAttribPointer(color, 3, gl.FLOAT, false, model.vertexColors.BYTES_PER_ELEMENT * 3, 0);
-    gl.enableVertexAttribArray(color);
-  }
-
-  //------------------------------------------------------------------
-  //
-  // Prepare some WegGL settings, things like the clear color, depth buffer, etc.
+  // Prepare WegGL settings like the clear color, depth buffer, etc.
   //
   //------------------------------------------------------------------
   function initializeWebGLSettings() {
@@ -243,52 +239,87 @@ Engine.main = (function() {
     gl.enable(gl.DEPTH_TEST);
   }
 
+  //------------------------------------------------------------------
+  //
+  // Render a skybox
+  //
+  //------------------------------------------------------------------
   function renderSkybox(sb){
-    //
+
     // Use the skybox shader program
     gl.useProgram(shaders.skybox.program);
 
-    //
     // Activate the cubeMap texture
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, sb.cubeMap);
 
-    //
     // Setup the cubeSampler
-    let uSampler = gl.getUniformLocation(shaders.skybox.program, 'uSampler');
-    gl.uniform1i(uSampler, 0);
+    gl.uniform1i(shaders.skybox.uSampler, 0);
 
-    //
     // setup uniforms
-    let uAspect = gl.getUniformLocation(shaders.skybox.program, 'uAspect');
-    gl.uniformMatrix4fv(uAspect, false, transposeMatrix4x4(environment.matAspect));
+    gl.uniformMatrix4fv(shaders.skybox.uAspect, false, transposeMatrix4x4(environment.matAspect));
+    gl.uniformMatrix4fv(shaders.skybox.uProjection, false, transposeMatrix4x4(environment.matProjection));
+    gl.uniformMatrix4fv(shaders.skybox.uModel, false, transposeMatrix4x4(scale(sb.model.scale.x, sb.model.scale.y, sb.model.scale.z)));
+    gl.uniformMatrix4fv(shaders.skybox.uView, false, transposeMatrix4x4(environment.matView));
 
-    let uProjection = gl.getUniformLocation(shaders.skybox.program, 'uProjection');
-    gl.uniformMatrix4fv(uProjection, false, transposeMatrix4x4(environment.matProjection));
-
-    let uModel = gl.getUniformLocation(shaders.skybox.program, 'uModel');
-    gl.uniformMatrix4fv(uModel, false, transposeMatrix4x4(scale(sb.model.scale.x, sb.model.scale.y, sb.model.scale.z)));
-
-    let uView = gl.getUniformLocation(shaders.skybox.program, 'uView');
-    gl.uniformMatrix4fv(uView, false, transposeMatrix4x4(environment.matView));
-
-    //
     // setup position attribute
     gl.bindBuffer(gl.ARRAY_BUFFER, sb.model.vertexBuffer);
-    let position = gl.getAttribLocation(shaders.skybox.program, 'aPosition');
-    gl.vertexAttribPointer(position, 3, gl.FLOAT, false, sb.model.vertices.BYTES_PER_ELEMENT * 3, 0);
-    gl.enableVertexAttribArray(position);
+    gl.vertexAttribPointer(shaders.skybox.aPosition, 3, gl.FLOAT, false, sb.model.vertices.BYTES_PER_ELEMENT * 3, 0);
+    gl.enableVertexAttribArray(shaders.skybox.aPosition);
 
+    // Index buffer
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sb.model.indexBuffer);
 
-    //
     // draw the box
     gl.drawElements(gl.TRIANGLES, sb.model.indices.length, sb.model.indices_type, 0);
   }
 
   //------------------------------------------------------------------
   //
-  // Scene updates go here.
+  // Render a model with diffuse lighting
+  //
+  //------------------------------------------------------------------
+  function renderDiffuse(model)
+  {
+    gl.useProgram(shaders.diffuse.program);
+
+    // Set uniforms
+    gl.uniformMatrix4fv(shaders.diffuse.uAspect, false, transposeMatrix4x4(environment.matAspect));
+    gl.uniformMatrix4fv(shaders.diffuse.uModel, false, transposeMatrix4x4(model.matModel));
+    gl.uniformMatrix4fv(shaders.diffuse.uNormal, false, model.matNormal);
+    gl.uniformMatrix4fv(shaders.diffuse.uProjection, false, transposeMatrix4x4(environment.matProjection));
+    gl.uniformMatrix4fv(shaders.diffuse.uView, false, transposeMatrix4x4(environment.matView));
+
+    for (let i = 0; i < lightPos.length; ++i){
+      gl.uniform4fv(shaders.diffuse.uLightPos[i], lightPos[i]);
+      gl.uniform4fv(shaders.diffuse.uLightColor[i], lightOn[i] ? lightColor[i] : [0, 0, 0, 1]);
+    }
+
+    // aPosition
+    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexBuffer);
+    gl.vertexAttribPointer(shaders.diffuse.aPosition, 3, gl.FLOAT, false, model.vertices.BYTES_PER_ELEMENT * 3, 0);
+    gl.enableVertexAttribArray(shaders.diffuse.aPosition);
+
+    // aNormal
+    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexNormalBuffer);
+    gl.vertexAttribPointer(shaders.diffuse.aNormal, 3, gl.FLOAT, false, model.normals.BYTES_PER_ELEMENT * 3, 0);
+    gl.enableVertexAttribArray(shaders.diffuse.aNormal);
+
+    // aColor
+    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexColorBuffer);
+    gl.vertexAttribPointer(shaders.diffuse.aColor, 3, gl.FLOAT, false, model.vertexColors.BYTES_PER_ELEMENT * 3, 0);
+    gl.enableVertexAttribArray(shaders.diffuse.aColor);
+
+    // index buffer
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.indexBuffer);
+
+    // draw model
+    gl.drawElements(gl.TRIANGLES, model.indices.length, model.indices_type, 0);
+  }
+
+  //------------------------------------------------------------------
+  //
+  // The scene updates
   //
   //------------------------------------------------------------------
   let th = 0;
@@ -308,7 +339,7 @@ Engine.main = (function() {
       let matScale = scale(
         models[i].scale.x,
         models[i].scale.y,
-        models[i].scale.z); 
+        models[i].scale.z);
 
       let matTranslate = translate(
         models[i].center.x,
@@ -317,7 +348,7 @@ Engine.main = (function() {
 
       models[i].matModel = multiplyMatrix4x4(
         matRotateX,
-        matRotateY, 
+        matRotateY,
         matRotateZ,
         matScale,
         matTranslate
@@ -349,7 +380,7 @@ Engine.main = (function() {
 
   //------------------------------------------------------------------
   //
-  // Rendering code goes here
+  // Rendering the models
   //
   //------------------------------------------------------------------
   function render() {
@@ -357,32 +388,15 @@ Engine.main = (function() {
 
     renderSkybox(skybox);
 
-    gl.useProgram(shaders.diffuse.program);
-
-    //
-    // This sets which buffers/shaders to use for the draw call in the render function.
-    gl.uniformMatrix4fv(shaders.matAspect, false, transposeMatrix4x4(environment.matAspect));
-    gl.uniformMatrix4fv(shaders.matProjection, false, transposeMatrix4x4(environment.matProjection));
-    gl.uniformMatrix4fv(shaders.matView, false, transposeMatrix4x4(environment.matView));
-
-    for (let i = 0; i < lightPos.length; ++i){
-      gl.uniform4fv(shaders.vecLightPos[i], lightPos[i]);
-      gl.uniform4fv(shaders.vecLightColor[i], lightOn[i] ? lightColor[i] : [0,0,0, 1]);
-    }
 
     for (let i = 0; i < models.length; ++i){
-      associateShadersWithBuffers(models[i], shaders.diffuse.program);
-      gl.uniformMatrix4fv(shaders.matModel, false, transposeMatrix4x4(models[i].matModel));
-      gl.uniformMatrix4fv(shaders.matNormal, false, models[i].matNormal);
-
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, models[i].indexBuffer);
-      gl.drawElements(gl.TRIANGLES, models[i].indices.length, models[i].indices_type, 0);
+      renderDiffuse(models[i]);
     }
   }
 
   //------------------------------------------------------------------
   //
-  // This is the animation loop.
+  // Animation loop.
   //
   //------------------------------------------------------------------
   function animationLoop(time) {
@@ -395,6 +409,11 @@ Engine.main = (function() {
     requestAnimationFrame(animationLoop);
   }
 
+  //------------------------------------------------------------------
+  //
+  // Load and initialize everything
+  //
+  //------------------------------------------------------------------
   console.log('initializing...');
   console.log('    Loading model');
   //ModelLoaderPLY.load('models/cube.ply')

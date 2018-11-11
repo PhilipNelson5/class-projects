@@ -27,9 +27,6 @@ void main()
     * uModel
     * aPosition;
 
-  //mat4 invModelVew = transpose(inverse(uView*uModel));
-  //transformedNormal = invModelVew * aNormal;
-
   vNormal = uNormal * aNormal;
   vPosition = uModel * uView * aPosition;
   vColor = aColor;
