@@ -7,7 +7,7 @@ Engine.main = (function() {
   let shaders = { vecLightPos:[], vecLightColor:[] };
   let previousTime = performance.now();
   let lightPos = [
-    [0, 10, 0, 1],
+    [10, 10, 10, 1],
     [0, 0, 10, 1],
     [10, 0, 0, 1],
   ];
@@ -83,7 +83,7 @@ Engine.main = (function() {
 
     environment.matProjection = projectionPerspectiveFOV(Math.PI/2 , 1.0, 50.0);
 
-    environment.vEye = new Float32Array([0.0, 0.0, 1.5]);
+    environment.vEye = new Float32Array([0.0, 0.0, 1.5, 1.0]);
     environment.matView = translate(
       -environment.vEye[0],
       -environment.vEye[1],
@@ -186,6 +186,27 @@ Engine.main = (function() {
 
           shaders.specular.program = createProgram(
             gl, shaders.specular.vShader, shaders.specular.fShader);
+
+          // Get Uniform Locations
+          shaders.specular.uAspect     = gl.getUniformLocation(shaders.specular.program, 'uAspect');
+          shaders.specular.uProjection = gl.getUniformLocation(shaders.specular.program, 'uProjection');
+          shaders.specular.uView       = gl.getUniformLocation(shaders.specular.program, 'uView');
+          shaders.specular.uModel      = gl.getUniformLocation(shaders.specular.program, 'uModel');
+          shaders.specular.uNormal     = gl.getUniformLocation(shaders.specular.program, 'uNormal');
+          shaders.specular.uEye        = gl.getUniformLocation(shaders.specular.program, 'uEye');
+          shaders.specular.uShine      = gl.getUniformLocation(shaders.specular.program, 'uShine');
+
+          shaders.specular.uLightPos   = [];
+          shaders.specular.uLightColor = [];
+          for (let i = 0; i < lightPos.length; ++i) {
+            shaders.specular.uLightPos[i]   = gl.getUniformLocation(shaders.specular.program, `uLightPos${i}`);
+            shaders.specular.uLightColor[i] = gl.getUniformLocation(shaders.specular.program, `uLightColor${i}`);
+          }
+
+          // Get Attribute Locations
+          shaders.specular.aPosition = gl.getAttribLocation(shaders.specular.program, 'aPosition');
+          shaders.specular.aNormal   = gl.getAttribLocation(shaders.specular.program, 'aNormal');
+          shaders.specular.aColor    = gl.getAttribLocation(shaders.specular.program, 'aColor');
 
           // --------------------
           // Skybox Shader
@@ -319,6 +340,51 @@ Engine.main = (function() {
 
   //------------------------------------------------------------------
   //
+  // Render a model with diffuse lighting
+  //
+  //------------------------------------------------------------------
+  function renderSpecular(model)
+  {
+    gl.useProgram(shaders.specular.program);
+
+    // Set uniforms
+    gl.uniformMatrix4fv(shaders.specular.uAspect, false, transposeMatrix4x4(environment.matAspect));
+    gl.uniformMatrix4fv(shaders.specular.uModel, false, transposeMatrix4x4(model.matModel));
+    gl.uniformMatrix4fv(shaders.specular.uNormal, false, model.matNormal);
+    gl.uniformMatrix4fv(shaders.specular.uProjection, false, transposeMatrix4x4(environment.matProjection));
+    gl.uniformMatrix4fv(shaders.specular.uView, false, transposeMatrix4x4(environment.matView));
+    gl.uniform4fv(shaders.specular.uShine, model.specularMaterial);
+    gl.uniform4fv(shaders.specular.uEye, environment.vEye);
+
+    for (let i = 0; i < lightPos.length; ++i){
+      gl.uniform4fv(shaders.specular.uLightPos[i], lightPos[i]);
+      gl.uniform4fv(shaders.specular.uLightColor[i], lightOn[i] ? lightColor[i] : [0, 0, 0, 1]);
+    }
+
+    // aPosition
+    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexBuffer);
+    gl.vertexAttribPointer(shaders.specular.aPosition, 3, gl.FLOAT, false, model.vertices.BYTES_PER_ELEMENT * 3, 0);
+    gl.enableVertexAttribArray(shaders.specular.aPosition);
+
+    // aNormal
+    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexNormalBuffer);
+    gl.vertexAttribPointer(shaders.specular.aNormal, 3, gl.FLOAT, false, model.normals.BYTES_PER_ELEMENT * 3, 0);
+    gl.enableVertexAttribArray(shaders.specular.aNormal);
+
+    // aColor
+    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexColorBuffer);
+    gl.vertexAttribPointer(shaders.specular.aColor, 3, gl.FLOAT, false, model.vertexColors.BYTES_PER_ELEMENT * 3, 0);
+    gl.enableVertexAttribArray(shaders.specular.aColor);
+
+    // index buffer
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.indexBuffer);
+
+    // draw model
+    gl.drawElements(gl.TRIANGLES, model.indices.length, model.indices_type, 0);
+  }
+
+  //------------------------------------------------------------------
+  //
   // The scene updates
   //
   //------------------------------------------------------------------
@@ -361,12 +427,12 @@ Engine.main = (function() {
         )
       );
 
-      lightPos[1][0] = 5 * Math.cos(th);
-      lightPos[1][2] = 5 * Math.sin(th);
+      //lightPos[1][0] = 5 * Math.cos(th);
+      //lightPos[1][2] = 5 * Math.sin(th);
 
-      lightPos[2][0] = 5 * Math.cos(th/10);
-      lightPos[2][1] = 5 * Math.sin(th/10);
-      th += dt / 1000 / 2;
+      //lightPos[2][0] = 5 * Math.cos(th/10);
+      //lightPos[2][1] = 5 * Math.sin(th/10);
+      //th += dt / 1000 / 2;
 
       lightOn[0] = lightCheckBox[0].checked;
       lightOn[1] = lightCheckBox[1].checked;
@@ -389,9 +455,8 @@ Engine.main = (function() {
     renderSkybox(skybox);
 
 
-    for (let i = 0; i < models.length; ++i){
-      renderDiffuse(models[i]);
-    }
+      renderDiffuse(models[0]);
+      renderSpecular(models[1]);
   }
 
   //------------------------------------------------------------------
@@ -419,17 +484,18 @@ Engine.main = (function() {
   //ModelLoaderPLY.load('models/cube.ply')
   //ModelLoaderPLY.load('models/dodecahedron.ply')
   //ModelLoaderPLY.load('models/bunny.ply')
-  loadTexCube('NightPark', 'jpg')
+  //loadTexCube('NightPark', 'jpg')
+  loadTexCube('alps', 'jpg')
     .then(texCube => {
       skybox.texCube = texCube;
       initializeCubeMap(skybox, skybox.texCube);
       return ModelLoaderPLY.load('models/cube.ply');
     })
     .then(model => {
-      skybox.model = model;
-      initializeBufferObject(skybox.model);
       model.center = { x:0, y:0, z:0 };
       model.scale  = { x:10, y:10, z:10 };
+      skybox.model = model;
+      initializeBufferObject(skybox.model);
       return ModelLoaderPLY.load('models/cube.ply');
     })
     .then(model => {
@@ -446,7 +512,7 @@ Engine.main = (function() {
       model.center = {
         x:0,
         y:-3,
-        z:-3,
+        z:30,
       };
       model.scale = {
         x:5,
@@ -492,11 +558,34 @@ Engine.main = (function() {
   //})
   //.catch(error => console.error('[ERROR] ' + error));
 
+  // diffuse galleon
   ModelLoaderPLY.load('models/galleon.ply')
     .then(model => {
+      model.center.x = 1.5;
       model.rotation = {
         x: -Math.PI/2,
         y: Math.PI/2.5,
+        z: 0
+      };
+      model.rotationRate = {
+        x: 0,
+        y: Math.PI / 4 / 1000,
+        z: 0
+      };
+      initializeBufferObject(model);
+      models.push(model);
+    })
+    .catch(error => console.error('[ERROR] ' + error));
+
+  // specular galleon
+  ModelLoaderPLY.load('models/galleon.ply')
+    .then(model => {
+      model.specularMaterial = new Float32Array([-0.5, -0.5, -0.5, 1.0]);
+      model.center.x = -1.5;
+
+      model.rotation = {
+        x: -Math.PI/2,
+        y: Math.PI/2,
         z: 0
       };
       model.rotationRate = {

@@ -4,10 +4,10 @@
   [X] Per-fragment ambient
   [X] Per-fragment diffuse
 
-[ ] Renders one of the Stanford ply models with:
-  [ ] Per-fragment ambient
-  [ ] Per-fragment diffuse
-  [ ] Per-fragment specular
+[X] Renders one of the Stanford ply models with:
+  [X] Per-fragment ambient
+  [X] Per-fragment diffuse
+  [X] Per-fragment specular
 
 [ ] Renders one of the Stanford ply models with:
   [ ] Per-fragment reflection mapping; 100% reflection
