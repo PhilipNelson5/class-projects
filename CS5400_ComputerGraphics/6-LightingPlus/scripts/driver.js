@@ -209,6 +209,37 @@ Engine.main = (function() {
           shaders.specular.aColor    = gl.getAttribLocation(shaders.specular.program, 'aColor');
 
           // --------------------
+          // Environment Mapping Shader
+          // --------------------
+          return loadFileFromServer('shaders/environmentMapping.vs')
+        })
+        .then(source => {
+          shaders.envMap = {};
+          shaders.envMap.vShader = createShader(gl, gl.VERTEX_SHADER, source);
+
+          return loadFileFromServer('shaders/environmentMapping.frag')
+        })
+        .then(source => {
+          shaders.envMap.fShader = createShader(gl, gl.FRAGMENT_SHADER, source);
+
+          shaders.envMap.program = createProgram(
+            gl, shaders.envMap.vShader, shaders.envMap.fShader);
+
+          // Get Uniform Locations
+          shaders.envMap.uAspect     = gl.getUniformLocation(shaders.envMap.program, 'uAspect');
+          shaders.envMap.uProjection = gl.getUniformLocation(shaders.envMap.program, 'uProjection');
+          shaders.envMap.uView       = gl.getUniformLocation(shaders.envMap.program, 'uView');
+          shaders.envMap.uModel      = gl.getUniformLocation(shaders.envMap.program, 'uModel');
+          shaders.envMap.uNormal     = gl.getUniformLocation(shaders.envMap.program, 'uNormal');
+          shaders.envMap.uEye        = gl.getUniformLocation(shaders.envMap.program, 'uEye');
+          shaders.envMap.uSampler    = gl.getUniformLocation(shaders.envMap.program, 'uSampler');
+          shaders.envMap.uReflection = gl.getUniformLocation(shaders.envMap.program, 'uReflection');
+
+          // Get Attribute Locations
+          shaders.envMap.aPosition = gl.getAttribLocation(shaders.envMap.program, 'aPosition');
+          shaders.envMap.aNormal   = gl.getAttribLocation(shaders.envMap.program, 'aNormal');
+
+          // --------------------
           // Skybox Shader
           // --------------------
           return loadFileFromServer('shaders/skybox.vs');
@@ -385,6 +416,50 @@ Engine.main = (function() {
 
   //------------------------------------------------------------------
   //
+  // Render a model with environment mapping
+  //
+  //------------------------------------------------------------------
+    let vEye = new Float32Array([0.0, 0.0, 1.5]);
+  function renderEnvMap(model, sb)
+  {
+    gl.useProgram(shaders.envMap.program);
+
+    // Activate the cubeMap texture
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, sb.cubeMap);
+
+    // Setup the cubeSampler
+    gl.uniform1i(shaders.envMap.uSampler, 0);
+
+    // Set uniforms
+    gl.uniformMatrix4fv(shaders.envMap.uAspect, false, transposeMatrix4x4(environment.matAspect));
+    gl.uniformMatrix4fv(shaders.envMap.uModel, false, transposeMatrix4x4(model.matModel));
+    gl.uniformMatrix4fv(shaders.envMap.uNormal, false, model.matNormal);
+    gl.uniformMatrix4fv(shaders.envMap.uProjection, false, transposeMatrix4x4(environment.matProjection));
+    gl.uniformMatrix4fv(shaders.envMap.uView, false, transposeMatrix4x4(environment.matView));
+    gl.uniform3fv(shaders.envMap.uEye, vEye);
+    // true - reflection, false - refraction
+    gl.uniform1i(shaders.envMap.uReflection, false);
+
+    // aPosition
+    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexBuffer);
+    gl.vertexAttribPointer(shaders.specular.aPosition, 3, gl.FLOAT, false, model.vertices.BYTES_PER_ELEMENT * 3, 0);
+    gl.enableVertexAttribArray(shaders.specular.aPosition);
+
+    // aNormal
+    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexNormalBuffer);
+    gl.vertexAttribPointer(shaders.specular.aNormal, 3, gl.FLOAT, false, model.normals.BYTES_PER_ELEMENT * 3, 0);
+    gl.enableVertexAttribArray(shaders.specular.aNormal);
+
+    // index buffer
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.indexBuffer);
+
+    // draw model
+    gl.drawElements(gl.TRIANGLES, model.indices.length, model.indices_type, 0);
+  }
+
+  //------------------------------------------------------------------
+  //
   // The scene updates
   //
   //------------------------------------------------------------------
@@ -457,6 +532,7 @@ Engine.main = (function() {
 
       renderDiffuse(models[0]);
       renderSpecular(models[1]);
+      renderEnvMap(models[2], skybox);
   }
 
   //------------------------------------------------------------------
@@ -559,12 +635,13 @@ Engine.main = (function() {
   //.catch(error => console.error('[ERROR] ' + error));
 
   // diffuse galleon
-  ModelLoaderPLY.load('models/galleon.ply')
+  let file = 'models/galleon.ply'
+  ModelLoaderPLY.load(file)
     .then(model => {
       model.center.x = 1.5;
       model.rotation = {
         x: -Math.PI/2,
-        y: Math.PI/2.5,
+        y: Math.PI/2,
         z: 0
       };
       model.rotationRate = {
@@ -578,10 +655,31 @@ Engine.main = (function() {
     .catch(error => console.error('[ERROR] ' + error));
 
   // specular galleon
-  ModelLoaderPLY.load('models/galleon.ply')
+  ModelLoaderPLY.load(file)
     .then(model => {
       model.specularMaterial = new Float32Array([-0.5, -0.5, -0.5, 1.0]);
       model.center.x = -1.5;
+
+      model.rotation = {
+        x: -Math.PI/2,
+        y: Math.PI/2,
+        z: 0
+      };
+      model.rotationRate = {
+        x: 0,
+        y: Math.PI / 4 / 1000,
+        z: 0
+      };
+      initializeBufferObject(model);
+      models.push(model);
+    })
+    .catch(error => console.error('[ERROR] ' + error));
+
+  // environment mapping galleon
+  ModelLoaderPLY.load(file)
+    .then(model => {
+      model.specularMaterial = new Float32Array([-0.5, -0.5, -0.5, 1.0]);
+      model.center.x = 0.0;
 
       model.rotation = {
         x: -Math.PI/2,

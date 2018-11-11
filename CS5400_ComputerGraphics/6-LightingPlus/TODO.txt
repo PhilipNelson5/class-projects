@@ -9,8 +9,8 @@
   [X] Per-fragment diffuse
   [X] Per-fragment specular
 
-[ ] Renders one of the Stanford ply models with:
-  [ ] Per-fragment reflection mapping; 100% reflection
+[X] Renders one of the Stanford ply models with:
+  [X] Per-fragment reflection mapping; 100% reflection
 
 [ ] Renders one of the Stanford ply models with:
   [ ] 80% per-fragment diffuse and specular
