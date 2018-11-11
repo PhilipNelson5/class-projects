@@ -15,12 +15,12 @@ varying vec4 vTexCoord;
 
 void main()
 {
-  mat4 view = mat4(mat3(uView));
+  mat4 mView = mat4(mat3(uView));
 
   gl_Position =
     uAspect
     * uProjection 
-    * view
+    * mView
     * uModel
     * aPosition;
 

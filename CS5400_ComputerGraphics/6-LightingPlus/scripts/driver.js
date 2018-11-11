@@ -112,9 +112,9 @@ Engine.main = (function() {
     }
   }
 
-  function initializeCubeMap(model, texCube){
-    model.cube = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_CUBE_MAP, model.cube);
+  function initializeCubeMap(sb, texCube){
+    sb.cubeMap = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, sb.cubeMap);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
     gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texCube.posx);
     gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texCube.negx);
@@ -174,7 +174,13 @@ Engine.main = (function() {
           shaders.skybox.fShader = createShader(gl, gl.FRAGMENT_SHADER, source);
 
           shaders.skybox.program = createProgram(
-            gl, shaders.diffuse.vShader, shaders.diffuse.fShader);
+            gl, shaders.skybox.vShader, shaders.skybox.fShader);
+
+          const numUniforms = gl.getProgramParameter(shaders.skybox.program, gl.ACTIVE_UNIFORMS);
+          for (let i = 0; i < numUniforms; ++i) {
+            const info = gl.getActiveUniform(shaders.skybox.program, i);
+          console.log(info);
+          }
 
           resolve();
         })
@@ -238,7 +244,19 @@ Engine.main = (function() {
   }
 
   function renderSkybox(sb){
+    //
+    // Use the skybox shader program
     gl.useProgram(shaders.skybox.program);
+
+    //
+    // Activate the cubeMap texture
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, sb.cubeMap);
+
+    //
+    // Setup the cubeSampler
+    let uSampler = gl.getUniformLocation(shaders.skybox.program, 'uSampler');
+    gl.uniform1i(uSampler, 0);
 
     //
     // setup uniforms
@@ -323,9 +341,9 @@ Engine.main = (function() {
       lightOn[1] = lightCheckBox[1].checked;
       lightOn[2] = lightCheckBox[2].checked;
 
-      lightColor[0] = hexToRgba(lightColorPicker[0].value)
-      lightColor[1] = hexToRgba(lightColorPicker[1].value)
-      lightColor[2] = hexToRgba(lightColorPicker[2].value)
+      lightColor[0] = hexToRgba(lightColorPicker[0].value);
+      lightColor[1] = hexToRgba(lightColorPicker[1].value);
+      lightColor[2] = hexToRgba(lightColorPicker[2].value);
     }
   }
 
@@ -410,12 +428,12 @@ Engine.main = (function() {
         x:0,
         y:-3,
         z:-3,
-      }
+      };
       model.scale = {
         x:5,
         y:1,
         z:5,
-      }
+      };
       models.push(model);
 
       console.log('    WebGL settings');
@@ -468,7 +486,7 @@ Engine.main = (function() {
         z: 0
       };
       initializeBufferObject(model);
-      models.push(model)
+      models.push(model);
     })
     .catch(error => console.error('[ERROR] ' + error));
 

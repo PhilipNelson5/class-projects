@@ -1,9 +1,11 @@
-[ ] Renders a skybox
+[X] Renders a skybox
 
 [X] Renders one of the Stanford ply models with:
+  [X] Per-fragment ambient
   [X] Per-fragment diffuse
 
 [ ] Renders one of the Stanford ply models with:
+  [ ] Per-fragment ambient
   [ ] Per-fragment diffuse
   [ ] Per-fragment specular
 
