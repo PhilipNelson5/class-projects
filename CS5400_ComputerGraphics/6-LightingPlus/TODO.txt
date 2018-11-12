@@ -19,6 +19,8 @@
 [X] Uses perspective projection.
 
 [ ] Provides an "interesting" animation/demonstration of the rendering techniques
+  [ ] Shininess slider
+  [ ] reflection / refraction toggle
 
 Notes:
 * Should the model keep track of the program that it is rendered with?

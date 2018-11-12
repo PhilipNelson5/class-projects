@@ -438,8 +438,9 @@ Engine.main = (function() {
     gl.uniformMatrix4fv(shaders.envMap.uProjection, false, transposeMatrix4x4(environment.matProjection));
     gl.uniformMatrix4fv(shaders.envMap.uView, false, transposeMatrix4x4(environment.matView));
     gl.uniform3fv(shaders.envMap.uEye, vEye);
+
     // true - reflection, false - refraction
-    gl.uniform1i(shaders.envMap.uReflection, false);
+    gl.uniform1i(shaders.envMap.uReflection, true);
 
     // aPosition
     gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexBuffer);
