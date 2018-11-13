@@ -3,6 +3,7 @@ precision mediump float;
 uniform samplerCube uSampler;
 
 uniform bool uReflection;
+uniform float uRefractiveIndex;
 
 // Viewer Location
 uniform vec3 uEye;
@@ -20,7 +21,7 @@ void main()
   }
   else
   {
-    r = refract(normalize(vPosition - uEye), vNormal, 1.0/1.1);
+    r = refract(normalize(vPosition - uEye), vNormal, 1.0/uRefractiveIndex);
   }
   gl_FragColor = textureCube(uSampler, r);
 }

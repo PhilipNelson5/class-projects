@@ -27,7 +27,7 @@ void main()
     * uModel
     * aPosition;
 
-  vNormal = uNormal * aNormal;
+  vNormal = normalize(uNormal * aNormal);
   vPosition = uModel * uView * aPosition;
   vColor = aColor;
 

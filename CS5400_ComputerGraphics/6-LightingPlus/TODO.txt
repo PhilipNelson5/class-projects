@@ -20,12 +20,13 @@
 
 [ ] Provides an "interesting" animation/demonstration of the rendering techniques
   [ ] Shininess slider
-  [ ] reflection / refraction toggle
+  [ ] Refraction slider
+  [X] reflection / refraction toggle
 
 Notes:
 * Should the model keep track of the program that it is rendered with?
   * model.program
-* Should the model have a list of associations 
+* Should the model have a list of associations
 
     OR
 

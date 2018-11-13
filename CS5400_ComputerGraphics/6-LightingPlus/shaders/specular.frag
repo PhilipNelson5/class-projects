@@ -27,33 +27,33 @@ varying vec4 vColor;
 
 void main()
 {
-  vec4 ambientLight = vec4(.2, .2, .2, 1);
-  vec4 ambient = ambientLight * vColor;
+  vec3 ambientLight = vec3(.2, .2, .2);
+  vec3 ambient = ambientLight * vColor.xyz;
 
-  vec4 L0 = normalize(uLightPos0 - vPosition);
-  vec4 L1 = normalize(uLightPos1 - vPosition);
-  vec4 L2 = normalize(uLightPos2 - vPosition);
+  vec3 L0 = normalize(uLightPos0 - vPosition).xyz;
+  vec3 L1 = normalize(uLightPos1 - vPosition).xyz;
+  vec3 L2 = normalize(uLightPos2 - vPosition).xyz;
 
-  vec4 diffuse0 = dot(vNormal, L0) * uLightColor0 * vColor;
-  vec4 diffuse1 = dot(vNormal, L1) * uLightColor1 * vColor;
-  vec4 diffuse2 = dot(vNormal, L2) * uLightColor2 * vColor;
-  vec4 diffuse = diffuse0 + diffuse1 + diffuse2;
+  vec3 diffuse0 = dot(vNormal.xyz, L0) * uLightColor0.xyz * vColor.xyz;
+  vec3 diffuse1 = dot(vNormal.xyz, L1) * uLightColor1.xyz * vColor.xyz;
+  vec3 diffuse2 = dot(vNormal.xyz, L2) * uLightColor2.xyz * vColor.xyz;
+  vec3 diffuse = diffuse0 + diffuse1 + diffuse2;
 
-  //vec4 R0 = reflect(L0, normalize(vNormal));
-  //vec4 R1 = reflect(L1, normalize(vNormal));
-  //vec4 R2 = reflect(L2, normalize(vNormal));
+  //vec4 R0 = reflect(-L0, normalize(vNormal));
+  //vec4 R1 = reflect(-L1, normalize(vNormal));
+  //vec4 R2 = reflect(-L2, normalize(vNormal));
 
-  vec4 R0 = 2.0*dot(vNormal,L0)*vNormal-L0;
-  vec4 R1 = 2.0*dot(vNormal,L1)*vNormal-L1;
-  vec4 R2 = 2.0*dot(vNormal,L2)*vNormal-L2;
+  vec3 R0 = 2.0 * dot(vNormal.xyz, L0) * normalize(vNormal.xyz - L0);
+  vec3 R1 = 2.0 * dot(vNormal.xyz, L1) * normalize(vNormal.xyz - L1);
+  vec3 R2 = 2.0 * dot(vNormal.xyz, L2) * normalize(vNormal.xyz - L2);
 
-  vec4 V = uEye - vPosition;
+  vec3 V = uEye.xyz - vPosition.xyz;
 
-  vec4 specular0 = (vColor+uShine) * uLightColor0 * dot(V, R0);
-  vec4 specular1 = (vColor+uShine) * uLightColor1 * dot(V, R1);
-  vec4 specular2 = (vColor+uShine) * uLightColor2 * dot(V, R2);
-  vec4 specular = specular0 + specular1 + specular2;
+  vec3 specular0 = uShine.rgb * uLightColor0.rgb * pow(dot(V.xyz, R0.xyz), uShine.a);
+  vec3 specular1 = uShine.rgb * uLightColor1.rgb * pow(dot(V.xyz, R1.xyz), uShine.a);
+  vec3 specular2 = uShine.rgb * uLightColor2.rgb * pow(dot(V.xyz, R2.xyz), uShine.a);
+  vec3 specular = specular0 + specular1 + specular2;
 
-  gl_FragColor = clamp(ambient + diffuse + specular0, 0.0, 1.0);
-  gl_FragColor.a = 1.0;
+  gl_FragColor = vec4(clamp(ambient + diffuse + specular0, 0.0, 1.0), 1.0);
+  //gl_FragColor.a = 1.0;
 }

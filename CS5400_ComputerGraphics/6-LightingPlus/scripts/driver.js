@@ -6,6 +6,10 @@ Engine.main = (function() {
   let skybox = {};
   let shaders = { vecLightPos:[], vecLightColor:[] };
   let previousTime = performance.now();
+  let refractiveIndex = 1.0;
+  let shiny = 1;
+  let phongVal = 80;
+  let reflectVal = 20;
   let lightPos = [
     [10, 10, 10, 1],
     [0, 0, 10, 1],
@@ -31,6 +35,17 @@ Engine.main = (function() {
     document.getElementById('colorpicker1'),
     document.getElementById('colorpicker2'),
   ];
+
+  let reflectChecked = document.getElementById('radioReflect');
+
+  let refractionSlider = document.getElementById('sliderRefraction');
+  let refractionSliderLabel = document.getElementById('sliderRefractionLabel');
+
+  let shinySlider = document.getElementById('sliderShiny');
+  let shinySliderLabel = document.getElementById('sliderShinyLabel');
+
+  let diffuseReflectSlider = document.getElementById('sliderDiffuseReflect');
+  let diffuseReflectSliderLabel = document.getElementById('sliderDiffuseReflectLabel');
 
   //------------------------------------------------------------------
   //
@@ -209,6 +224,48 @@ Engine.main = (function() {
           shaders.specular.aColor    = gl.getAttribLocation(shaders.specular.program, 'aColor');
 
           // --------------------
+          // Phong Reflect Shader
+          // --------------------
+          return loadFileFromServer('shaders/phongReflection.vs')
+        })
+        .then(source => {
+          shaders.phongReflect = {};
+          shaders.phongReflect.vShader = createShader(gl, gl.VERTEX_SHADER, source);
+
+          return loadFileFromServer('shaders/phongReflection.frag')
+        })
+        .then(source => {
+          shaders.phongReflect.fShader = createShader(gl, gl.FRAGMENT_SHADER, source);
+
+          shaders.phongReflect.program = createProgram(
+            gl, shaders.phongReflect.vShader, shaders.phongReflect.fShader);
+
+          // Get Uniform Locations
+          shaders.phongReflect.uAspect          = gl.getUniformLocation(shaders.phongReflect.program, 'uAspect');
+          shaders.phongReflect.uProjection      = gl.getUniformLocation(shaders.phongReflect.program, 'uProjection');
+          shaders.phongReflect.uView            = gl.getUniformLocation(shaders.phongReflect.program, 'uView');
+          shaders.phongReflect.uModel           = gl.getUniformLocation(shaders.phongReflect.program, 'uModel');
+          shaders.phongReflect.uNormal          = gl.getUniformLocation(shaders.phongReflect.program, 'uNormal');
+          shaders.phongReflect.uEye             = gl.getUniformLocation(shaders.phongReflect.program, 'uEye');
+          shaders.phongReflect.uShine           = gl.getUniformLocation(shaders.phongReflect.program, 'uShine');
+          shaders.phongReflect.uSampler         = gl.getUniformLocation(shaders.phongReflect.program, 'uSampler');
+          shaders.phongReflect.uReflection      = gl.getUniformLocation(shaders.phongReflect.program, 'uReflection');
+          shaders.phongReflect.uRefractiveIndex = gl.getUniformLocation(shaders.phongReflect.program, 'uRefractiveIndex');
+          shaders.phongReflect.uPercentPhong    = gl.getUniformLocation(shaders.phongReflect.program, 'uPercentPhong');
+
+          shaders.phongReflect.uLightPos   = [];
+          shaders.phongReflect.uLightColor = [];
+          for (let i = 0; i < lightPos.length; ++i) {
+            shaders.phongReflect.uLightPos[i]   = gl.getUniformLocation(shaders.phongReflect.program, `uLightPos${i}`);
+            shaders.phongReflect.uLightColor[i] = gl.getUniformLocation(shaders.phongReflect.program, `uLightColor${i}`);
+          }
+
+          // Get Attribute Locations
+          shaders.phongReflect.aPosition = gl.getAttribLocation(shaders.phongReflect.program, 'aPosition');
+          shaders.phongReflect.aNormal   = gl.getAttribLocation(shaders.phongReflect.program, 'aNormal');
+          shaders.phongReflect.aColor    = gl.getAttribLocation(shaders.phongReflect.program, 'aColor');
+
+          // --------------------
           // Environment Mapping Shader
           // --------------------
           return loadFileFromServer('shaders/environmentMapping.vs')
@@ -234,6 +291,7 @@ Engine.main = (function() {
           shaders.envMap.uEye        = gl.getUniformLocation(shaders.envMap.program, 'uEye');
           shaders.envMap.uSampler    = gl.getUniformLocation(shaders.envMap.program, 'uSampler');
           shaders.envMap.uReflection = gl.getUniformLocation(shaders.envMap.program, 'uReflection');
+          shaders.envMap.uRefractiveIndex = gl.getUniformLocation(shaders.envMap.program, 'uRefractiveIndex');
 
           // Get Attribute Locations
           shaders.envMap.aPosition = gl.getAttribLocation(shaders.envMap.program, 'aPosition');
@@ -419,7 +477,7 @@ Engine.main = (function() {
   // Render a model with environment mapping
   //
   //------------------------------------------------------------------
-    let vEye = new Float32Array([0.0, 0.0, 1.5]);
+  let vEye = new Float32Array([0.0, 0.0, 1.5]);
   function renderEnvMap(model, sb)
   {
     gl.useProgram(shaders.envMap.program);
@@ -440,7 +498,54 @@ Engine.main = (function() {
     gl.uniform3fv(shaders.envMap.uEye, vEye);
 
     // true - reflection, false - refraction
-    gl.uniform1i(shaders.envMap.uReflection, true);
+    gl.uniform1i(shaders.envMap.uReflection, reflectChecked.checked);
+    gl.uniform1f(shaders.envMap.uRefractiveIndex, refractiveIndex);
+
+    // aPosition
+    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexBuffer);
+    gl.vertexAttribPointer(shaders.specular.aPosition, 3, gl.FLOAT, false, model.vertices.BYTES_PER_ELEMENT * 3, 0);
+    gl.enableVertexAttribArray(shaders.specular.aPosition);
+
+    // aNormal
+    gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexNormalBuffer);
+    gl.vertexAttribPointer(shaders.specular.aNormal, 3, gl.FLOAT, false, model.normals.BYTES_PER_ELEMENT * 3, 0);
+    gl.enableVertexAttribArray(shaders.specular.aNormal);
+
+    // index buffer
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.indexBuffer);
+
+    // draw model
+    gl.drawElements(gl.TRIANGLES, model.indices.length, model.indices_type, 0);
+  }
+
+  function renderPhongReflection(model, sb, phongPercent){
+    gl.useProgram(shaders.phongReflect.program);
+
+    // Activate the cubeMap texture
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, sb.cubeMap);
+
+    // Setup the cubeSampler
+    gl.uniform1i(shaders.phongReflect.uSampler, 0);
+
+    // Set uniforms
+    gl.uniformMatrix4fv(shaders.phongReflect.uAspect,     false, transposeMatrix4x4(environment.matAspect));
+    gl.uniformMatrix4fv(shaders.phongReflect.uModel,      false, transposeMatrix4x4(model.matModel));
+    gl.uniformMatrix4fv(shaders.phongReflect.uNormal,     false, model.matNormal);
+    gl.uniformMatrix4fv(shaders.phongReflect.uProjection, false, transposeMatrix4x4(environment.matProjection));
+    gl.uniformMatrix4fv(shaders.phongReflect.uView,       false, transposeMatrix4x4(environment.matView));
+    gl.uniform3fv(shaders.phongReflect.uEye, vEye);
+    gl.uniform4fv(shaders.phongReflect.uShine, model.specularMaterial);
+
+    for (let i = 0; i < lightPos.length; ++i){
+      gl.uniform4fv(shaders.phongReflect.uLightPos[i], lightPos[i]);
+      gl.uniform4fv(shaders.phongReflect.uLightColor[i], lightOn[i] ? lightColor[i] : [0, 0, 0, 1]);
+    }
+
+    // true - reflection, false - refraction
+    gl.uniform1i(shaders.phongReflect.uReflection, reflectChecked.checked);
+    gl.uniform1f(shaders.phongReflect.uRefractiveIndex, refractiveIndex);
+    gl.uniform1f(shaders.phongReflect.uPercentPhong, phongPercent);
 
     // aPosition
     gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexBuffer);
@@ -518,6 +623,17 @@ Engine.main = (function() {
       lightColor[1] = hexToRgba(lightColorPicker[1].value);
       lightColor[2] = hexToRgba(lightColorPicker[2].value);
     }
+
+    refractionSliderLabel.innerText = refractionSlider.value;
+    refractiveIndex = parseFloat(refractionSlider.value);
+
+    shinySliderLabel.innerText = shinySlider.value;
+    models[1].specularMaterial[3] = parseFloat(shinySlider.value);
+
+    phongVal = parseFloat(diffuseReflectSlider.value);
+    reflectVal = 100 - phongVal;
+    diffuseReflectSliderLabel.innerText = `${phongVal} / ${reflectVal}`;
+
   }
 
   //------------------------------------------------------------------
@@ -531,9 +647,11 @@ Engine.main = (function() {
     renderSkybox(skybox);
 
 
-      renderDiffuse(models[0]);
-      renderSpecular(models[1]);
-      renderEnvMap(models[2], skybox);
+    renderDiffuse(models[0]);
+    renderSpecular(models[1]);
+    renderEnvMap(models[2], skybox);
+    //renderDiffuse(models[3]);
+    renderPhongReflection(models[3], skybox, phongVal/100);
   }
 
   //------------------------------------------------------------------
@@ -658,7 +776,7 @@ Engine.main = (function() {
   // specular galleon
   ModelLoaderPLY.load(file)
     .then(model => {
-      model.specularMaterial = new Float32Array([-0.5, -0.5, -0.5, 1.0]);
+      model.specularMaterial = new Float32Array([0.5, 0.5, 0.5, 2.0]);
       model.center.x = -1.5;
 
       model.rotation = {
@@ -679,8 +797,28 @@ Engine.main = (function() {
   // environment mapping galleon
   ModelLoaderPLY.load(file)
     .then(model => {
-      model.specularMaterial = new Float32Array([-0.5, -0.5, -0.5, 1.0]);
       model.center.x = 0.0;
+
+      model.rotation = {
+        x: -Math.PI/2,
+        y: Math.PI/2,
+        z: 0
+      };
+      model.rotationRate = {
+        x: 0,
+        y: Math.PI / 4 / 1000,
+        z: 0
+      };
+      initializeBufferObject(model);
+      models.push(model);
+    })
+    .catch(error => console.error('[ERROR] ' + error));
+
+  // diffuse and environment mapping galleon
+  ModelLoaderPLY.load(file)
+    .then(model => {
+      model.specularMaterial = new Float32Array([0.5, 0.5, 0.5, 2.0]);
+      model.center.y = -1.5;
 
       model.rotation = {
         x: -Math.PI/2,
