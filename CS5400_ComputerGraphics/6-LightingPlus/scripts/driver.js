@@ -231,6 +231,7 @@ Engine.main = (function() {
         .then(source => {
           shaders.phongReflect = {};
           shaders.phongReflect.vShader = createShader(gl, gl.VERTEX_SHADER, source);
+          shaders.phongReflect.vShader = shaders.diffuse.vShader;
 
           return loadFileFromServer('shaders/phongReflection.frag')
         })
@@ -629,6 +630,7 @@ Engine.main = (function() {
 
     shinySliderLabel.innerText = shinySlider.value;
     models[1].specularMaterial[3] = parseFloat(shinySlider.value);
+    models[3].specularMaterial[3] = parseFloat(shinySlider.value);
 
     phongVal = parseFloat(diffuseReflectSlider.value);
     reflectVal = 100 - phongVal;
@@ -650,7 +652,7 @@ Engine.main = (function() {
     renderDiffuse(models[0]);
     renderSpecular(models[1]);
     renderEnvMap(models[2], skybox);
-    //renderDiffuse(models[3]);
+    //renderSpecular(models[3]);
     renderPhongReflection(models[3], skybox, phongVal/100);
   }
 

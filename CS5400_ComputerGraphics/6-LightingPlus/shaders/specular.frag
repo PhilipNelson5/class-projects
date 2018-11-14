@@ -30,9 +30,9 @@ void main()
   vec3 ambientLight = vec3(.2, .2, .2);
   vec3 ambient = ambientLight * vColor.xyz;
 
-  vec3 L0 = normalize(uLightPos0 - vPosition).xyz;
-  vec3 L1 = normalize(uLightPos1 - vPosition).xyz;
-  vec3 L2 = normalize(uLightPos2 - vPosition).xyz;
+  vec3 L0 = normalize(uLightPos0.xyz - vPosition.xyz);
+  vec3 L1 = normalize(uLightPos1.xyz - vPosition.xyz);
+  vec3 L2 = normalize(uLightPos2.xyz - vPosition.xyz);
 
   vec3 diffuse0 = dot(vNormal.xyz, L0) * uLightColor0.xyz * vColor.xyz;
   vec3 diffuse1 = dot(vNormal.xyz, L1) * uLightColor1.xyz * vColor.xyz;
