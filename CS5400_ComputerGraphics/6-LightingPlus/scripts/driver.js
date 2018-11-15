@@ -695,7 +695,8 @@ Engine.main = (function() {
     dodecahedron:'models/dodecahedron.ply',
     polyhedron120:'models/120polyhedron.ply',
     galleon:'models/galleon.ply',
-    bunny:'models/bunny.ply'
+    bunny:'models/bunny.ply',
+    happy:'models/happy.ply'
   };
   console.log('initializing...');
   console.log('    Loading model');
