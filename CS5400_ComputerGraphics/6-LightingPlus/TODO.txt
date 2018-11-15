@@ -18,7 +18,7 @@
 
 [X] Uses perspective projection.
 
-[ ] Provides an "interesting" animation/demonstration of the rendering techniques
+[X] Provides an "interesting" animation/demonstration of the rendering techniques
   [X] Shininess slider
   [X] Refractive index slider
   [X] reflection / refraction toggle
