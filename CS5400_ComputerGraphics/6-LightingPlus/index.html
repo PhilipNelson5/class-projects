@@ -15,9 +15,9 @@
         <input type="checkbox" name="color3" id="color2" style="margin:2.5mm" checked> Color 2<br>
       </div>
       <div>
-        <input type="color" id="colorpicker0" value="#444444" style="display:block; margin:1.5mm">
-        <input type="color" id="colorpicker1" value="#00ff00" style="display:block; margin:1.5mm">
-        <input type="color" id="colorpicker2" value="#0000ff" style="display:block; margin:1.5mm">
+        <input type="color" id="colorpicker0" value="#212121" style="display:block; margin:1.5mm">
+        <input type="color" id="colorpicker1" value="#ff0000" style="display:block; margin:1.5mm">
+        <input type="color" id="colorpicker2" value="#ff5151" style="display:block; margin:1.5mm">
       </div>
       <div style="margin:1mm">
         <label for="radioReflect">Reflect</label>
@@ -28,22 +28,25 @@
       </div>
       <div>
         <div>
-          <label for="sliderRefraction">Refractive Index</label>
+          <label for="sliderRefraction" style="margin:2mm">Refractive Index</label>
           <input type="range" min="1" max="3" value="1" class="slider" step="0.01" id="sliderRefraction">
           <label id="sliderRefractionLabel">1</label>
         </div>
 
         <div>
-          <label for="sliderShiny">Shiny Parameter</label>
+          <label for="sliderShiny" style="margin:2mm">Shiny Parameter</label>
           <input type="range" min="1" max="20" value="1" class="slider" step="1" id="sliderShiny">
           <label id="sliderShinyLabel">1</label>
         </div>
 
         <div>
-          <label for="sliderDiffuseReflect">Phong / Reflect</label>
+          <label for="sliderDiffuseReflect" style="margin:2mm">Phong / Reflect</label>
           <input type="range" min="0" max="100" value="80" class="slider" step="1" id="sliderDiffuseReflect">
           <label id="sliderDiffuseReflectLabel">80 / 20</label>
         </div>
+      </div>
+      <div>
+        <input type="checkbox" name="scrollShips" id="scrollShips" style="margin:2.5mm" checked> Scroll Ships<br>
       </div>
     </div>
 

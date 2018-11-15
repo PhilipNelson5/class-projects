@@ -34,9 +34,9 @@ void main()
   vec3 L1 = normalize(uLightPos1.xyz - vPosition.xyz);
   vec3 L2 = normalize(uLightPos2.xyz - vPosition.xyz);
 
-  vec3 diffuse0 = dot(vNormal.xyz, L0) * uLightColor0.xyz * vColor.xyz;
-  vec3 diffuse1 = dot(vNormal.xyz, L1) * uLightColor1.xyz * vColor.xyz;
-  vec3 diffuse2 = dot(vNormal.xyz, L2) * uLightColor2.xyz * vColor.xyz;
+  vec3 diffuse0 = clamp(dot(vNormal.xyz, L0), 0.0, 1.0) * uLightColor0.xyz * vColor.xyz;
+  vec3 diffuse1 = clamp(dot(vNormal.xyz, L1), 0.0, 1.0) * uLightColor1.xyz * vColor.xyz;
+  vec3 diffuse2 = clamp(dot(vNormal.xyz, L2), 0.0, 1.0) * uLightColor2.xyz * vColor.xyz;
   vec3 diffuse = diffuse0 + diffuse1 + diffuse2;
 
   //vec4 R0 = reflect(-L0, normalize(vNormal));

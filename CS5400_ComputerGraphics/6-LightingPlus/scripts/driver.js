@@ -3,6 +3,7 @@ Engine.main = (function() {
 
   let environment = {};
   let models = [];
+  let modelDiffuse, modelSpecular, modelEnvMap, modelPhongReflective;
   let skybox = {};
   let shaders = { vecLightPos:[], vecLightColor:[] };
   let previousTime = performance.now();
@@ -11,9 +12,9 @@ Engine.main = (function() {
   let phongVal = 80;
   let reflectVal = 20;
   let lightPos = [
-    [10, 10, 10, 1],
-    [0, 0, 10, 1],
-    [10, 0, 0, 1],
+    [-2, 2, 1, 1],
+    [0, 10, 0, 1],
+    [0, 0, -10, 1],
   ];
   let lightColor = [
     [0, 0, 1, 1],
@@ -46,6 +47,8 @@ Engine.main = (function() {
 
   let diffuseReflectSlider = document.getElementById('sliderDiffuseReflect');
   let diffuseReflectSliderLabel = document.getElementById('sliderDiffuseReflectLabel');
+
+  let scrollShips = document.getElementById('scrollShips');
 
   //------------------------------------------------------------------
   //
@@ -627,14 +630,20 @@ Engine.main = (function() {
 
     refractionSliderLabel.innerText = refractionSlider.value;
     refractiveIndex = parseFloat(refractionSlider.value);
+    refractionSlider.style.display = (reflectChecked.checked ? 'none' : 'inline');
+    refractionSliderLabel.style.display = (reflectChecked.checked ? 'none' : 'inline');
 
     shinySliderLabel.innerText = shinySlider.value;
-    models[1].specularMaterial[3] = parseFloat(shinySlider.value);
-    models[3].specularMaterial[3] = parseFloat(shinySlider.value);
+    //models[1].specularMaterial[3] = parseFloat(shinySlider.value);
+    //models[3].specularMaterial[3] = parseFloat(shinySlider.value);
 
     phongVal = parseFloat(diffuseReflectSlider.value);
     reflectVal = 100 - phongVal;
     diffuseReflectSliderLabel.innerText = `${phongVal} / ${reflectVal}`;
+
+    for(let i = 0; i < models.length; ++i) {
+      models[i].update(dt);
+    }
 
   }
 
@@ -648,12 +657,15 @@ Engine.main = (function() {
 
     renderSkybox(skybox);
 
+    for(let i = 0; i < models.length; ++i) {
+      models[i].render();
+    }
 
-    renderDiffuse(models[0]);
-    renderSpecular(models[1]);
-    renderEnvMap(models[2], skybox);
-    //renderSpecular(models[3]);
-    renderPhongReflection(models[3], skybox, phongVal/100);
+
+    //if(modelDiffuse) renderDiffuse(modelDiffuse);
+    //if(modelSpecular) renderSpecular(modelSpecular);
+    //if(modelEnvMap) renderEnvMap(modelEnvMap, skybox);
+    //if(modelPhongReflective) renderPhongReflection(modelPhongReflective, skybox, phongVal/100);
   }
 
   //------------------------------------------------------------------
@@ -676,24 +688,32 @@ Engine.main = (function() {
   // Load and initialize everything
   //
   //------------------------------------------------------------------
+  let file = 'models/galleon.ply'
+  let speed = 2500;
+  let files = {
+    cube:'models/cube.ply',
+    dodecahedron:'models/dodecahedron.ply',
+    polyhedron120:'models/120polyhedron.ply',
+    galleon:'models/galleon.ply',
+    bunny:'models/bunny.ply'
+  };
   console.log('initializing...');
   console.log('    Loading model');
-  //ModelLoaderPLY.load('models/cube.ply')
-  //ModelLoaderPLY.load('models/dodecahedron.ply')
-  //ModelLoaderPLY.load('models/bunny.ply')
   //loadTexCube('NightPark', 'jpg')
-  loadTexCube('alps', 'jpg')
+  //loadTexCube('sea', 'jpg')
+  //loadTexCube('alps', 'jpg')
+  loadTexCube('cupertin', 'jpg')
     .then(texCube => {
       skybox.texCube = texCube;
       initializeCubeMap(skybox, skybox.texCube);
-      return ModelLoaderPLY.load('models/cube.ply');
+      return ModelLoaderPLY.load(files.cube);
     })
     .then(model => {
       model.center = { x:0, y:0, z:0 };
       model.scale  = { x:10, y:10, z:10 };
       skybox.model = model;
       initializeBufferObject(skybox.model);
-      return ModelLoaderPLY.load('models/cube.ply');
+      return ModelLoaderPLY.load(files.galleon);
     })
     .then(model => {
       model.rotation = {
@@ -716,124 +736,238 @@ Engine.main = (function() {
         y:1,
         z:5,
       };
+      initializeBufferObject(model);
+      model.update = function() {};
+      model.render = function() {};
+      models.push(model);
+
+      // --------------
+      // diffuse model
+      // --------------
+      return ModelLoaderPLY.load(files.galleon);
+    })
+    .then( model => {
+      model.center = {
+        x: 4,
+        y: -2.5,
+        z: -2,
+      };
+      model.rotation = {
+        x: -Math.PI/2,
+        y: -Math.PI/2,
+        z: 0
+      };
+      model.rotationRate = {
+        x: 0,
+        y: 0,
+        z: 0
+      };
+      model.scale = {
+        x: 0.75,
+        y: 0.75,
+        z: 0.75
+      };
+      initializeBufferObject(model);
+      model.rotDir = 1;
+      model.update = function(dt) {
+        this.center.x += dt/speed * (scrollShips.checked ? 1 : 0);
+        if(this.center.x < -4) this.center.x = 4;
+
+        this.rotation.x += this.rotDir*dt/speed/3;
+        if(this.rotation.x > -Math.PI*13/30 || this.rotation.x < -Math.PI*17/30){
+          this.rotDir *= -1;
+          this.rotation.x += this.rotDir*dt/speed/3;
+        }
+      };
+      model.render = function() {renderDiffuse(this);};
+      models.push(model);
+
+      // ---------------
+      // specular model
+      // ---------------
+      return ModelLoaderPLY.load(files.galleon)
+    })
+    .then(model => {
+      model.specularMaterial = new Float32Array([0.5, 0.5, 0.5, 2.0]);
+      model.center = {
+        x: -2,
+        y: -2.5,
+        z: -2,
+      };
+      model.rotation = {
+        x: -Math.PI/2,
+        y: -Math.PI/2,
+        z: 0
+      };
+      model.rotationRate = {
+        x: 0,
+        y: 0,
+        z: 0
+      };
+      model.scale = {
+        x: 0.75,
+        y: 0.75,
+        z: 0.75
+      };
+      initializeBufferObject(model);
+      model.rotDir = 1;
+      model.update = function(dt) {
+        this.center.x += dt/speed * (scrollShips.checked ? 1 : 0);
+        if(this.center.x < -4) this.center.x = 4;
+        this.specularMaterial[3] = parseFloat(shinySlider.value);
+
+        this.rotation.x += this.rotDir*dt/speed/4;
+        if(this.rotation.x > -Math.PI*13/30 || this.rotation.x < -Math.PI*17/30){
+          this.rotDir *= -1;
+          this.rotation.x += this.rotDir*dt/speed/3;
+        }
+      };
+      model.render = function() { renderSpecular(this); };
+      models.push(model);
+
+      // --------------------------
+      // environment mapping model
+      // --------------------------
+      return ModelLoaderPLY.load(files.galleon);
+    })
+    .then(model => {
+      model.center = {
+        x: 0,
+        y: -2.5,
+        z: -2,
+      };
+      model.rotation = {
+        x: -Math.PI/2,
+        y: -Math.PI/2,
+        z: 0
+      };
+      model.rotationRate = {
+        x: 0,
+        y: 0,
+        z: 0
+      };
+      model.scale = {
+        x: 0.75,
+        y: 0.75,
+        z: 0.75
+      };
+      initializeBufferObject(model);
+      model.rotDir = 1;
+      model.update = function(dt) {
+        this.center.x += dt/speed * (scrollShips.checked ? 1 : 0);
+        if(this.center.x < -4) this.center.x = 4;
+
+        this.rotation.x += this.rotDir*dt/speed/5;
+        if(this.rotation.x > -Math.PI*13/30 || this.rotation.x < -Math.PI*17/30){
+          this.rotDir *= -1;
+          this.rotation.x += this.rotDir*dt/speed/3;
+        }
+      };
+      model.render = function() { renderEnvMap(this, skybox); };
+      models.push(model);
+
+      // --------------------------------------
+      // diffuse and environment mapping model
+      // --------------------------------------
+      return ModelLoaderPLY.load(files.galleon)
+    })
+    .then(model => {
+      model.specularMaterial = new Float32Array([0.5, 0.5, 0.5, 2.0]);
+      model.center = {
+        x: 2,
+        y: -2.5,
+        z: -2,
+      };
+      model.rotation = {
+        x: -Math.PI/2,
+        y: -Math.PI/2,
+        z: 0
+      };
+      model.rotationRate = {
+        x: 0,
+        y: 0,
+        z: 0
+      };
+      model.scale = {
+        x: 0.75,
+        y: 0.75,
+        z: 0.75
+      };
+      initializeBufferObject(model);
+      model.rotDir = 1;
+      model.update = function(dt) {
+        this.center.x += dt/speed * (scrollShips.checked ? 1 : 0);
+        if(this.center.x < -4) this.center.x = 4;
+        this.specularMaterial[3] = parseFloat(shinySlider.value);
+
+        this.rotation.x += this.rotDir*dt/speed/6;
+        if(this.rotation.x > -Math.PI*13/30 || this.rotation.x < -Math.PI*17/30){
+          this.rotDir *= -1;
+          this.rotation.x += this.rotDir*dt/speed/3;
+        }
+      };
+      model.render = function() { renderPhongReflection(this, skybox, phongVal/100); };
+      models.push(model);
+
+      return ModelLoaderPLY.load(files.polyhedron120)
+    })
+    .then(model => {
+      model.specularMaterial = new Float32Array([0.5, 0.5, 0.5, 2.0]);
+      model.center = {
+        x: 1,
+        y: 0,
+        z: -2,
+      };
+      model.rotation = {
+        x: 0,
+        y: 0,
+        z: 0
+      };
+      model.rotationRate = {
+        x: 0.00025,
+        y: 0.00025,
+        z: 0.00025
+      };
+      initializeBufferObject(model);
+      model.update = function(dt) { };
+      model.render = function() { renderPhongReflection(this, skybox, phongVal/100); };
+      models.push(model);
+
+      return ModelLoaderPLY.load(files.bunny)
+    })
+    .then(model => {
+      model.specularMaterial = new Float32Array([1.0, 1.0, 1.0, 2.0]);
+      model.center = {
+        x: -1.5,
+        y: -0.5,
+        z: -2,
+      };
+      model.rotation = {
+        x: 0,
+        y: 0,
+        z: 0
+      };
+      model.rotationRate = {
+        x: 0,
+        y: -.0005,
+        z: 0
+      };
+      initializeBufferObject(model);
+      model.update = function(dt) { };
+      model.render = function() { renderSpecular(this); };
       models.push(model);
 
       console.log('    WebGL settings');
       initializeWebGLSettings();
       console.log('    raw data');
       initializeData();
-      console.log('    vertex buffer objects');
-      initializeBufferObject(model);
       console.log('    shaders');
       return initializeShaders();
     })
     .then(() => {
       console.log('initialization complete!');
+      previousTime = performance.now();
       requestAnimationFrame(animationLoop);
-    })
-    .catch(error => console.error('[ERROR] ' + error));
-
-  //ModelLoaderPLY.load('models/bunny.ply')
-  //.then(model => {
-  //model.rotation = {
-  //x: Math.PI/16,
-  //y: 0,
-  //z: 0
-  //};
-  //model.rotationRate = {
-  //x: 0,
-  //y: 0,
-  //z: 0,
-  //};
-  //model.center = {
-  //x:1,
-  //y:-1.75,
-  //z:-3,
-  //}
-  //models.push(model)
-  //initializeBufferObject(model);
-  //})
-  //.catch(error => console.error('[ERROR] ' + error));
-
-  // diffuse galleon
-  let file = 'models/galleon.ply'
-  ModelLoaderPLY.load(file)
-    .then(model => {
-      model.center.x = 1.5;
-      model.rotation = {
-        x: -Math.PI/2,
-        y: Math.PI/2,
-        z: 0
-      };
-      model.rotationRate = {
-        x: 0,
-        y: Math.PI / 4 / 1000,
-        z: 0
-      };
-      initializeBufferObject(model);
-      models.push(model);
-    })
-    .catch(error => console.error('[ERROR] ' + error));
-
-  // specular galleon
-  ModelLoaderPLY.load(file)
-    .then(model => {
-      model.specularMaterial = new Float32Array([0.5, 0.5, 0.5, 2.0]);
-      model.center.x = -1.5;
-
-      model.rotation = {
-        x: -Math.PI/2,
-        y: Math.PI/2,
-        z: 0
-      };
-      model.rotationRate = {
-        x: 0,
-        y: Math.PI / 4 / 1000,
-        z: 0
-      };
-      initializeBufferObject(model);
-      models.push(model);
-    })
-    .catch(error => console.error('[ERROR] ' + error));
-
-  // environment mapping galleon
-  ModelLoaderPLY.load(file)
-    .then(model => {
-      model.center.x = 0.0;
-
-      model.rotation = {
-        x: -Math.PI/2,
-        y: Math.PI/2,
-        z: 0
-      };
-      model.rotationRate = {
-        x: 0,
-        y: Math.PI / 4 / 1000,
-        z: 0
-      };
-      initializeBufferObject(model);
-      models.push(model);
-    })
-    .catch(error => console.error('[ERROR] ' + error));
-
-  // diffuse and environment mapping galleon
-  ModelLoaderPLY.load(file)
-    .then(model => {
-      model.specularMaterial = new Float32Array([0.5, 0.5, 0.5, 2.0]);
-      model.center.y = -1.5;
-
-      model.rotation = {
-        x: -Math.PI/2,
-        y: Math.PI/2,
-        z: 0
-      };
-      model.rotationRate = {
-        x: 0,
-        y: Math.PI / 4 / 1000,
-        z: 0
-      };
-      initializeBufferObject(model);
-      models.push(model);
     })
     .catch(error => console.error('[ERROR] ' + error));
 

@@ -12,26 +12,13 @@
 [X] Renders one of the Stanford ply models with:
   [X] Per-fragment reflection mapping; 100% reflection
 
-[ ] Renders one of the Stanford ply models with:
-  [ ] 80% per-fragment diffuse and specular
-  [ ] 20% per-fragment reflection mapping
+[X] Renders one of the Stanford ply models with:
+  [X] 80% per-fragment diffuse and specular
+  [X] 20% per-fragment reflection mapping
 
 [X] Uses perspective projection.
 
 [ ] Provides an "interesting" animation/demonstration of the rendering techniques
-  [ ] Shininess slider
-  [ ] Refraction slider
+  [X] Shininess slider
+  [X] Refractive index slider
   [X] reflection / refraction toggle
-
-Notes:
-* Should the model keep track of the program that it is rendered with?
-  * model.program
-* Should the model have a list of associations
-
-    OR
-
-* Should there be functions to render each thing?
-  * renderSkyBox(skyBox)
-  * renderDiffuse(model)
-  * renderSpectral(model)
-  * ...
