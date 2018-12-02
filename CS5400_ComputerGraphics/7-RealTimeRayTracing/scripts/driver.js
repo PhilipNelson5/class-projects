@@ -13,9 +13,9 @@ MySample.main = (function() {
   let offsetX = 1.0/canvas.width;
   let offsetY = 1.0/canvas.height;
   let circleDiffuse = {
-    c : new Float32Array([0.0, 0.0, -2.0]),
+    c : new Float32Array([0.0, 0.0, -10.0]),
     r : 1.0,
-    color : new Float32Array([0.0, 1.0, 0.0]),
+    color : new Float32Array([0.0, 0.25, 0.0]),
     material : 0,
   };
 
@@ -38,9 +38,9 @@ MySample.main = (function() {
 
     data.indices = new Uint16Array([ 0, 1, 2, 3, 0, 2 ]);
 
-    data.eye = new Float32Array([0.0, 0.0, 2.0]);
+    data.eye = new Float32Array([0.0, 0.0, 5.0]);
 
-    data.light = new Float32Array([0.0, 0.0, 3.0]);
+    data.light = new Float32Array([5.0, 5.0, 25.0]);
   }
 
   //------------------------------------------------------------------
@@ -146,8 +146,7 @@ MySample.main = (function() {
 
     //data.light[0] = 5 * Math.cos(th);
     //data.light[1] = 5 * Math.sin(th);
-    //console.log(data.light);
-    th += dt / 1000 / 2;
+    //th += dt / 1000 * 2;
   }
 
   //------------------------------------------------------------------

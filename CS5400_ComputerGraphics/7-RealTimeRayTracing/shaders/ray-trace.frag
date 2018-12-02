@@ -117,8 +117,8 @@ Intersection iSphere(Ray r, Sphere s)
 {
   float A = dot(r.d, r.d);
   float B = 2.0 * dot(r.d, (r.o - s.c));
-  float C = dot(r.o - s.c, r.o - s.c) - s.r * s.r;
-  float descrim = B * B - 4.0 * A * C;
+  float C = dot(r.o - s.c, r.o - s.c) - (s.r * s.r);
+  float descrim = (B * B) - (4.0 * A * C);
 
   if(descrim < 0.0)
     return Intersection(false, 0.0, -1, vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 0.0));
@@ -126,15 +126,15 @@ Intersection iSphere(Ray r, Sphere s)
 
   if(descrim == 0.0)
   {
-    float t = dot(-r.d, (r.o - s.c)) / dot(r.d, r.d);
+    float t = dot(-r.d, (r.o - s.c)) / dot(r.d, r.d) / 2.0;
     vec3 normal = normalize((r.o + r.d * t) - s.c);
     return Intersection(true, t, s.material, s.color, normal);
   }
 
-  float t1 = dot(-r.d, (r.o - s.c)) + sqrt(descrim) / dot(r.d, r.d);
-  float t2 = dot(-r.d, (r.o - s.c)) - sqrt(descrim) / dot(r.d, r.d);
+  float t1 = (dot(-r.d, (r.o - s.c)) + sqrt(descrim)) / dot(r.d, r.d) / 2.0;
+  float t2 = (dot(-r.d, (r.o - s.c)) - sqrt(descrim)) / dot(r.d, r.d) / 2.0;
 
-  if(t1 > t2)
+  if(t1 < t2)
   {
     vec3 normal = normalize((r.o + r.d * t1) - s.c);
     return Intersection(true, t1, s.material, s.color, normal);
@@ -173,15 +173,19 @@ vec3 castRay(Ray r)
       vec3 o = r.o + r.d * inter.t;
       vec3 d = normalize(uLightPos - o);
       Ray shadow = Ray(o, d);
-      if(!intersectScene(shadow).didIntersect)
+      Intersection interShadow = intersectScene(shadow);
+      if(!interShadow.didIntersect)
       {
-        vec3 loc = r.o + r.d * inter.t;
-        vec3 light = normalize(loc - uLightPos);
-        vec3 diffuse = dot(inter.normal, light) * vec3(1.0, 1.0, 1.0) *  inter.color;
-        return diffuse;
+        vec3 diffuse = dot(inter.normal, d) * inter.color;
+        vec3 reflected = reflect(-d, inter.normal);
+        vec3 V = normalize(uEye - o);
+        vec3 specular = pow(dot(V, reflected), 25.0) * vec3(1.0, 1.0, 1.0);
+        return diffuse + specular;
+        //return vec3(dot(V, reflected), 0.0, 0.0);
       }
       else
         return inter.color * .2;
+        //return vec3(0.0, 0.0, 0.0);
     }
   }
 

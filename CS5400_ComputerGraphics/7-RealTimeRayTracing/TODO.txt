@@ -1,0 +1,9 @@
+[ ] All rendering is performed using (recursive) ray-tracer
+[ ] Renders a plane that represents the horizon.
+[ ] Renders at least three spheres that with the following characteristics:
+  [X]  Sphere is diffuse and specular
+  [ ]  Sphere is Reflective
+  [ ]  Sphere is 80% diffuse/specular and 20% reflective
+[ ] Renders a "sky" when no other object is intersected by the pixel ray.  Recommendation is to define a large sphere that encompasses the entire scene and the color the sphere in a way other than a single flat color.
+[ ] Provides an "interesting" animation/demonstration:
+[ ] At least one of the spheres must follow a curved path using one of the curve algorithms from earlier in the semester.
