@@ -19,3 +19,14 @@ function loadFileFromServer(filename) {
         xmlHttp.send();
     });
 }
+
+//------------------------------------------------------------------
+//
+// Helper function used to normalize an N dimensional vector
+//
+//------------------------------------------------------------------
+  function normalize(array) {
+    const mag = array.reduce((acc, val)=>{return acc + val;}, 0.0);
+    return array.map(val => val/mag);
+  }
+

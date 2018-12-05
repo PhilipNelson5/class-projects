@@ -2,8 +2,41 @@
 MySample.main = (function() {
   'use strict';
 
+  let cBezier = {
+    p0: {x: 5, y: -15},
+    p1: {x: -4, y: 0, x0: -4, y0: 0},
+    p2: {x: 4, y: -15, x0: 4, y0: -15},
+    p3: {x: -5, y: 0},
+    t: 0,
+    update: dt => {
+      dt /= 1000;
+      cBezier.t += dt * 5;
+      cBezier.p1.x = cBezier.p1.x0 + graphics.pixelsX / 5 * Math.cos(cBezier.t / 2);
+      cBezier.p1.y = cBezier.p1.y0 + graphics.pixelsX / 5 * Math.sin(cBezier.t / 2.5);
+      cBezier.p2.x = cBezier.p2.x0 + graphics.pixelsX / 7 * Math.cos(cBezier.t / 3);
+      cBezier.p2.y = cBezier.p2.y0 + graphics.pixelsX / 7 * Math.sin(cBezier.t / 7);
+    }
+  };
+
+  let maxSegments = 50;
+
+  const MATERIAL_DIFFUSE = 0;
+  const MATERIAL_SPECULAR = 1;
+  const MATERIAL_REFLECTIVE = 2;
+
   let canvas = document.getElementById('canvas-main');
   let gl = canvas.getContext('webgl');
+
+  let multiRayElem = document.getElementById('MultiRay');
+  let multiRay = multiRayElem.checked;
+
+  let sliderNormalXElem = document.getElementById('sliderNormalX');
+  let sliderNormalYElem = document.getElementById('sliderNormalY');
+  let sliderNormalZElem = document.getElementById('sliderNormalZ');
+
+  let sliderNormalXLableElem = document.getElementById('sliderNormalXLable');
+  let sliderNormalYLableElem = document.getElementById('sliderNormalYLable');
+  let sliderNormalZLableElem = document.getElementById('sliderNormalZLable');
 
   let previousTime = performance.now();
   let scene = {};
@@ -12,11 +45,25 @@ MySample.main = (function() {
   let shaders = {};
   let offsetX = 1.0/canvas.width;
   let offsetY = 1.0/canvas.height;
-  let circleDiffuse = {
+  let resolution = canvas.width;
+
+  let sphereDiffuse = {
     c : new Float32Array([0.0, 0.0, -10.0]),
     r : 1.0,
-    color : new Float32Array([0.0, 0.25, 0.0]),
-    material : 0,
+    color : new Float32Array([1.0, 1.0, 0.0]),
+    material : MATERIAL_SPECULAR,
+  };
+  let sphereReflective = {
+    c : new Float32Array([0.0, 0.0, -10.0]),
+    r : 0.5,
+    color : new Float32Array([0.0, 1.0, 0.0]),
+    material : MATERIAL_REFLECTIVE,
+  };
+  let plane = {
+    a : new Float32Array([0.0, -1.0, 0.0]),
+    n : normalize(new Float32Array([0.0, 1.0, 0.0])),
+    color : new Float32Array([1.0, 0.0, 0.0]),
+    material : MATERIAL_DIFFUSE,
   };
 
   //------------------------------------------------------------------
@@ -40,7 +87,7 @@ MySample.main = (function() {
 
     data.eye = new Float32Array([0.0, 0.0, 5.0]);
 
-    data.light = new Float32Array([5.0, 5.0, 25.0]);
+    data.light = new Float32Array([0.0, 5.0, 1.0]);
   }
 
   //------------------------------------------------------------------
@@ -113,11 +160,27 @@ MySample.main = (function() {
           shaders.locOffsetX = gl.getUniformLocation(shaders.shaderProgram, 'uOffsetX');
           shaders.locOffsetY = gl.getUniformLocation(shaders.shaderProgram, 'uOffsetY');
           shaders.locEye = gl.getUniformLocation(shaders.shaderProgram, 'uEye');
-          shaders.locSphereDiffuseCenter = gl.getUniformLocation(shaders.shaderProgram, 'uSphereDiffuse.c');
-          shaders.locSphereDiffuseRadius = gl.getUniformLocation(shaders.shaderProgram, 'uSphereDiffuse.r');
-          shaders.locSphereDiffuseColor = gl.getUniformLocation(shaders.shaderProgram, 'uSphereDiffuse.color');
+
+          shaders.locSphereDiffuseCenter   = gl.getUniformLocation(shaders.shaderProgram, 'uSphereDiffuse.c');
+          shaders.locSphereDiffuseRadius   = gl.getUniformLocation(shaders.shaderProgram, 'uSphereDiffuse.r');
+          shaders.locSphereDiffuseColor    = gl.getUniformLocation(shaders.shaderProgram, 'uSphereDiffuse.color');
           shaders.locSphereDiffuseMaterial = gl.getUniformLocation(shaders.shaderProgram, 'uSphereDiffuse.material');
+
+          shaders.locSphereReflectiveCenter   = gl.getUniformLocation(shaders.shaderProgram, 'uSphereReflective.c');
+          shaders.locSphereReflectiveRadius   = gl.getUniformLocation(shaders.shaderProgram, 'uSphereReflective.r');
+          shaders.locSphereReflectiveColor    = gl.getUniformLocation(shaders.shaderProgram, 'uSphereReflective.color');
+          shaders.locSphereReflectiveMaterial = gl.getUniformLocation(shaders.shaderProgram, 'uSphereReflective.material');
+
+          shaders.locPlanePoint    = gl.getUniformLocation(shaders.shaderProgram, 'uPlane.a');
+          shaders.locPlaneNormal   = gl.getUniformLocation(shaders.shaderProgram, 'uPlane.n');
+          shaders.locPlaneColor    = gl.getUniformLocation(shaders.shaderProgram, 'uPlane.color');
+          shaders.locPlaneMaterial = gl.getUniformLocation(shaders.shaderProgram, 'uPlane.material');
+
           shaders.locLight = gl.getUniformLocation(shaders.shaderProgram, 'uLightPos');
+
+          shaders.locSeed = gl.getUniformLocation(shaders.shaderProgram, 'uSeed');
+          shaders.locResolution = gl.getUniformLocation(shaders.shaderProgram, 'uResolution');
+          shaders.locMultiRay = gl.getUniformLocation(shaders.shaderProgram, 'uMultiRay');
 
           resolve();
         })
@@ -134,19 +197,58 @@ MySample.main = (function() {
   //
   //------------------------------------------------------------------
   let th = 0;
+  let segment = 0;
   function update(dt) {
     gl.uniform1f(shaders.locOffsetX, offsetX);
     gl.uniform1f(shaders.locOffsetY, offsetY);
     gl.uniform3fv(shaders.locEye, data.eye);
-    gl.uniform3fv(shaders.locSphereDiffuseCenter, circleDiffuse.c);
-    gl.uniform1f(shaders.locSphereDiffuseRadius, circleDiffuse.r);
-    gl.uniform3fv(shaders.locSphereDiffuseColor, circleDiffuse.color);
-    gl.uniform1i(shaders.locSphereDiffuseMaterial, circleDiffuse.material);
+
+    gl.uniform3fv(shaders.locSphereDiffuseCenter,   sphereDiffuse.c);
+    gl.uniform1f( shaders.locSphereDiffuseRadius,   sphereDiffuse.r);
+    gl.uniform3fv(shaders.locSphereDiffuseColor,    sphereDiffuse.color);
+    gl.uniform1i( shaders.locSphereDiffuseMaterial, sphereDiffuse.material);
+
+    gl.uniform3fv(shaders.locSphereReflectiveCenter,   sphereReflective.c);
+    gl.uniform1f( shaders.locSphereReflectiveRadius,   sphereReflective.r);
+    gl.uniform3fv(shaders.locSphereReflectiveColor,    sphereReflective.color);
+    gl.uniform1i( shaders.locSphereReflectiveMaterial, sphereReflective.material);
+
+    gl.uniform3fv(shaders.locPlanePoint,    plane.a);
+    gl.uniform3fv(shaders.locPlaneNormal,   plane.n);
+    gl.uniform3fv(shaders.locPlaneColor,    plane.color);
+    gl.uniform1i( shaders.locPlaneMaterial, plane.material);
+
     gl.uniform3fv(shaders.locLight, data.light);
+
+    let now = performance.now();
+    gl.uniform1f(shaders.locSeed, Math.random()*1000000);
+    //gl.uniform1f(shaders.locSeed, performance.now());
+
+    gl.uniform1f(shaders.locResolution, resolution);
+    gl.uniform1i(shaders.locMultiRay, multiRay);
 
     //data.light[0] = 5 * Math.cos(th);
     //data.light[1] = 5 * Math.sin(th);
-    //th += dt / 1000 * 2;
+    sphereDiffuse.c[0] = Math.cos(th);
+    sphereDiffuse.c[1] = Math.cos(th);
+    sphereDiffuse.c[2] = -10.0 + 2 * Math.sin(th);
+
+    let curve = drawCurveBezier(cBezier, segment);
+    sphereReflective.c[0] = curve.px;
+    sphereReflective.c[2] = curve.py;
+    th += dt / 1000;
+    segment = (segment + 1) % maxSegments;
+
+    multiRay = multiRayElem.checked;
+    plane.n[0] = sliderNormalXElem.value;
+    plane.n[1] = sliderNormalYElem.value;
+    plane.n[2] = sliderNormalZElem.value;
+    plane.n = normalize(plane.n);
+
+  sliderNormalXLableElem.innerText = sliderNormalXElem.value;
+  sliderNormalYLableElem.innerText = sliderNormalYElem.value;
+  sliderNormalZLableElem.innerText = sliderNormalZElem.value;
+
   }
 
   //------------------------------------------------------------------
@@ -197,6 +299,7 @@ MySample.main = (function() {
       associateShadersWithBuffers();
       console.log('initialization complete!');
       previousTime = performance.now();
+      setCurveSegments(maxSegments);
       requestAnimationFrame(animationLoop);
     });
 
