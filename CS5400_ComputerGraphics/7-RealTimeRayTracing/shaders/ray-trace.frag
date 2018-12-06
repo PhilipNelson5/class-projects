@@ -78,7 +78,7 @@ uniform bool uMultiRay;
 Sphere sky = Sphere(
     vec3(0.0, 0.0, 0.0),
     100.0,
-    vec3(0.0, 0.0, 0.0),
+    vec3(0.0, 1.0, 0.0),
     -1);
 uniform Sphere uSphereDiffuse;
 uniform Sphere uSphereReflective;
@@ -130,6 +130,14 @@ StackItem stackPop()
     return stack.items[STACK_POS_4];
   }
   // Danger Will Robinson, no return if stack underflow!!
+}
+
+//--------------------
+// Random Function
+//--------------------
+//float num = rand(gl_FragCoord.xy/800.0);
+float rand (vec2 st, float seed) {
+  return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * seed);
 }
 
 //------------------------------------------------------------------------------
@@ -242,8 +250,8 @@ Intersection intersectScene(Ray r)
   else
   {
     Intersection iSky = iSphere(r, sky);
-    vec3 loc = r.o + r.d * iSky.t;
-    vec3 norm = normalize(loc);
+    vec3 iloc = r.o + r.d * iSky.t;
+    vec3 norm = normalize(iloc) +.75;
     close = Intersection(false, 0.0, -1, vec3(0.0, 0.0, 0.0), norm);
   }
 
@@ -333,14 +341,6 @@ vec3 castRay(Ray ray)
     }
   }
   return vec3(0.0, 0.0, 0.0);
-}
-
-//--------------------
-// Random Function
-//--------------------
-//float num = rand(gl_FragCoord.xy/800.0);
-float rand (vec2 st, float seed) {
-  return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * seed);
 }
 
 //------------------------------------------------------------------------------
