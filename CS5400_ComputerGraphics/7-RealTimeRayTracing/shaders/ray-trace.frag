@@ -10,9 +10,10 @@ const int STACK_POS_4 = 4;
 const int SPHERE = 0;
 const int PLANE = 1;
 
-const int MATERIAL_DIFFUSE = 0;
-const int MATERIAL_SPECULAR = 1;
+const int MATERIAL_DIFFUSE =    0;
+const int MATERIAL_SPECULAR =   1;
 const int MATERIAL_REFLECTIVE = 2;
+const int MATERIAL_MIXTURE =    3;
 
 // ------------------------------------------------------------------
 //
@@ -36,8 +37,9 @@ struct Ray
 
 struct StackItem
 {
-  Ray data;
-  //vec3 color;
+  Ray ray;
+  vec3 color;
+  int material;
 };
 
 struct Stack
@@ -62,11 +64,11 @@ struct Plane
   int material;
 };
 
-//
+// Uniforms
 uniform float uOffsetX;
 uniform float uOffsetY;
 uniform vec3 uEye;
-float epsilon = 0.01;
+float epsilon = 0.001;
 uniform float uSeed;
 uniform float uResolution;
 uniform bool uMultiRay;
@@ -80,8 +82,8 @@ Sphere sky = Sphere(
     -1);
 uniform Sphere uSphereDiffuse;
 uniform Sphere uSphereReflective;
+uniform Sphere uSphereMixture;
 uniform Plane uPlane;
-const int NUM_OBJECTS = 3;
 
 //
 // Light
@@ -189,10 +191,12 @@ bool shadowIntersect(Ray r)
   Intersection i1 = iPlane(r, uPlane);
   Intersection i2 = iSphere(r, uSphereDiffuse);
   Intersection i3 = iSphere(r, uSphereReflective);
+  Intersection i4 = iSphere(r, uSphereMixture);
 
   return (i1.didIntersect && i1.t > 0.0)
     || (i2.didIntersect && i2.t > 0.0)
-    || (i3.didIntersect && i3.t > 0.0);
+    || (i3.didIntersect && i3.t > 0.0)
+    || (i4.didIntersect && i4.t > 0.0);
 }
 
 //------------------------------------------------------------------------------
@@ -205,12 +209,14 @@ Intersection intersectScene(Ray r)
   Intersection i1 = iPlane(r, uPlane);
   Intersection i2 = iSphere(r, uSphereDiffuse);
   Intersection i3 = iSphere(r, uSphereReflective);
+  Intersection i4 = iSphere(r, uSphereMixture);
 
   Intersection close;
 
   if((i1.didIntersect && i1.t > 0.0)
       || (i2.didIntersect && i2.t > 0.0)
       || (i3.didIntersect && i3.t > 0.0)
+      || (i4.didIntersect && i4.t > 0.0)
     )
   {
 
@@ -220,6 +226,8 @@ Intersection intersectScene(Ray r)
       close = i2;
     if(i3.didIntersect && i3.t > 0.0)
       close = i3;
+    if(i4.didIntersect && i4.t > 0.0)
+      close = i4;
 
     if(i1.didIntersect && i1.t > 0.0 && i1.t < close.t)
       close = i1;
@@ -227,6 +235,8 @@ Intersection intersectScene(Ray r)
       close = i2;
     if(i3.didIntersect && i3.t > 0.0 && i3.t < close.t)
       close = i3;
+    if(i3.didIntersect && i4.t > 0.0 && i4.t < close.t)
+      close = i4;
 
   }
   else
@@ -248,13 +258,15 @@ Intersection intersectScene(Ray r)
 //------------------------------------------------------------------------------
 vec3 castRay(Ray ray)
 {
-  stackPush(StackItem(ray));
+  stackPush(StackItem(ray, vec3(0.0, 0.0, 0.0), -1));
+  StackItem item;
   for (int stackTop = 0; stackTop < MAX_STACK_SIZE; stackTop++)
   {
     if (stackEmpty()) 
       break;
 
-    Ray r = stackPop().data;
+    item = stackPop();
+    Ray r = item.ray;
     Intersection inter = intersectScene(r);
 
     if(inter.didIntersect)
@@ -271,26 +283,48 @@ vec3 castRay(Ray ray)
           vec3 diffuse = dot(inter.normal, d) * inter.color;
           if(inter.material == MATERIAL_DIFFUSE)
           {
-            return diffuse;
+            return item.color + diffuse;
           }
 
           vec3 reflected = reflect(-d, inter.normal);
           vec3 V = normalize(uEye - o);
           vec3 specular = pow(dot(V, reflected), 100.0) * vec3(1.0, 1.0, 1.0);
-          return diffuse + specular;
-          //return specular;
-          //return diffuse;
-          //return inter.normal;
-          //return normalize(vec3(inter.t, 1.0, 1.0));
+
+          if(item.material == MATERIAL_MIXTURE)
+          {
+            return item.color + 0.2 * (diffuse + specular);
+          }
+
+          return item.color + diffuse + specular;
         }
         else
           return vec3(0.0, 0.0, 0.0);
       }
+
       if(inter.material == MATERIAL_REFLECTIVE)
       {
         vec3 o = r.o + r.d * inter.t;
         vec3 d = normalize(reflect(r.d, inter.normal));
-        stackPush(StackItem(Ray(o, d)));
+        stackPush(StackItem(Ray(o, d), item.color, MATERIAL_REFLECTIVE));
+      }
+
+      if(inter.material == MATERIAL_MIXTURE)
+      {
+        vec3 o = r.o + r.d * inter.t;
+        vec3 d = normalize(uLightPos - o);
+        Ray shadow = Ray(o, d);
+        shadow.o += shadow.d * epsilon;
+
+        if(!shadowIntersect(shadow))
+        {
+          vec3 diffuse = dot(inter.normal, d) * inter.color;
+          vec3 reflected = reflect(-d, inter.normal);
+          vec3 V = normalize(uEye - o);
+          vec3 specular = pow(dot(V, reflected), 100.0) * vec3(1.0, 1.0, 1.0);
+          item.color += 0.8 * (diffuse + specular);
+        }
+        d = normalize(reflect(r.d, inter.normal));
+        stackPush(StackItem(Ray(o, d), item.color, MATERIAL_MIXTURE));
       }
     }
     else

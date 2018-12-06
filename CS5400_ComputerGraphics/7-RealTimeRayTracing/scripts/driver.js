@@ -20,9 +20,10 @@ MySample.main = (function() {
 
   let maxSegments = 50;
 
-  const MATERIAL_DIFFUSE = 0;
-  const MATERIAL_SPECULAR = 1;
+  const MATERIAL_DIFFUSE =    0;
+  const MATERIAL_SPECULAR =   1;
   const MATERIAL_REFLECTIVE = 2;
+  const MATERIAL_MIXTURE =    3;
 
   let canvas = document.getElementById('canvas-main');
   let gl = canvas.getContext('webgl');
@@ -54,10 +55,16 @@ MySample.main = (function() {
     material : MATERIAL_SPECULAR,
   };
   let sphereReflective = {
+    c : new Float32Array([0.0, 1.0, -10.0]),
+    r : 0.5,
+    color : new Float32Array([0.0, 0.0, 0.0]),
+    material : MATERIAL_REFLECTIVE,
+  };
+  let sphereMixture = {
     c : new Float32Array([0.0, 0.0, -10.0]),
     r : 0.5,
     color : new Float32Array([0.0, 1.0, 0.0]),
-    material : MATERIAL_REFLECTIVE,
+    material : MATERIAL_MIXTURE,
   };
   let plane = {
     a : new Float32Array([0.0, -1.0, 0.0]),
@@ -171,6 +178,11 @@ MySample.main = (function() {
           shaders.locSphereReflectiveColor    = gl.getUniformLocation(shaders.shaderProgram, 'uSphereReflective.color');
           shaders.locSphereReflectiveMaterial = gl.getUniformLocation(shaders.shaderProgram, 'uSphereReflective.material');
 
+          shaders.locSphereMixtureCenter   = gl.getUniformLocation(shaders.shaderProgram, 'uSphereMixture.c');
+          shaders.locSphereMixtureRadius   = gl.getUniformLocation(shaders.shaderProgram, 'uSphereMixture.r');
+          shaders.locSphereMixtureColor    = gl.getUniformLocation(shaders.shaderProgram, 'uSphereMixture.color');
+          shaders.locSphereMixtureMaterial = gl.getUniformLocation(shaders.shaderProgram, 'uSphereMixture.material');
+
           shaders.locPlanePoint    = gl.getUniformLocation(shaders.shaderProgram, 'uPlane.a');
           shaders.locPlaneNormal   = gl.getUniformLocation(shaders.shaderProgram, 'uPlane.n');
           shaders.locPlaneColor    = gl.getUniformLocation(shaders.shaderProgram, 'uPlane.color');
@@ -213,6 +225,11 @@ MySample.main = (function() {
     gl.uniform3fv(shaders.locSphereReflectiveColor,    sphereReflective.color);
     gl.uniform1i( shaders.locSphereReflectiveMaterial, sphereReflective.material);
 
+    gl.uniform3fv(shaders.locSphereMixtureCenter,   sphereMixture.c);
+    gl.uniform1f( shaders.locSphereMixtureRadius,   sphereMixture.r);
+    gl.uniform3fv(shaders.locSphereMixtureColor,    sphereMixture.color);
+    gl.uniform1i( shaders.locSphereMixtureMaterial, sphereMixture.material);
+
     gl.uniform3fv(shaders.locPlanePoint,    plane.a);
     gl.uniform3fv(shaders.locPlaneNormal,   plane.n);
     gl.uniform3fv(shaders.locPlaneColor,    plane.color);
@@ -237,7 +254,7 @@ MySample.main = (function() {
     sphereReflective.c[0] = curve.px;
     sphereReflective.c[2] = curve.py;
     th += dt / 1000;
-    segment = (segment + 1) % maxSegments;
+    segment = (segment + Math.ceil(1*dt/1000)) % maxSegments;
 
     multiRay = multiRayElem.checked;
     plane.n[0] = sliderNormalXElem.value;
@@ -278,7 +295,7 @@ MySample.main = (function() {
   //
   //------------------------------------------------------------------
   function animationLoop(time) {
-    let elapsedTime = previousTime - time;
+    let elapsedTime = time - previousTime;
     previousTime = time;
 
     update(elapsedTime);
