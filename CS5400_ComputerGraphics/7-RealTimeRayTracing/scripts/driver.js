@@ -1,22 +1,47 @@
 
-MySample.main = (function() {
+MySample.main = (function(graphics, input) {
   'use strict';
 
+  //let cBezier = {
+  //p0: {x: 5, y: -15},
+  //p1: {x: -4, y: 0, x0: -4, y0: 0},
+  //p2: {x: 4, y: -15, x0: 4, y0: -15},
+  //p3: {x: -5, y: 0},
+  //t: 0,
+  //update: dt => {
+  //dt /= 1000;
+  //cBezier.t += dt * 5;
+  //cBezier.p1.x = cBezier.p1.x0 + graphics.pixelsX / 5 * Math.cos(cBezier.t / 2);
+  //cBezier.p1.y = cBezier.p1.y0 + graphics.pixelsX / 5 * Math.sin(cBezier.t / 2.5);
+  //cBezier.p2.x = cBezier.p2.x0 + graphics.pixelsX / 7 * Math.cos(cBezier.t / 3);
+  //cBezier.p2.y = cBezier.p2.y0 + graphics.pixelsX / 7 * Math.sin(cBezier.t / 7);
+  //}
+  //};
+
   let cBezier = {
-    p0: {x: 5, y: -15},
-    p1: {x: -4, y: 0, x0: -4, y0: 0},
-    p2: {x: 4, y: -15, x0: 4, y0: -15},
-    p3: {x: -5, y: 0},
-    t: 0,
-    update: dt => {
-      dt /= 1000;
-      cBezier.t += dt * 5;
-      cBezier.p1.x = cBezier.p1.x0 + graphics.pixelsX / 5 * Math.cos(cBezier.t / 2);
-      cBezier.p1.y = cBezier.p1.y0 + graphics.pixelsX / 5 * Math.sin(cBezier.t / 2.5);
-      cBezier.p2.x = cBezier.p2.x0 + graphics.pixelsX / 7 * Math.cos(cBezier.t / 3);
-      cBezier.p2.y = cBezier.p2.y0 + graphics.pixelsX / 7 * Math.sin(cBezier.t / 7);
+    p0: {
+      x: Math.trunc(graphics.pixelsX * 0.8),
+      y: Math.trunc(graphics.pixelsY * 0.2)
+    },
+    p1: {
+      x: Math.trunc(graphics.pixelsX * 0.01),
+      y: Math.trunc(graphics.pixelsY * 0.01),
+    },
+    p2: {
+      x: Math.trunc(graphics.pixelsX * 0.99),
+      y: Math.trunc(graphics.pixelsY * 0.99),
+    },
+    p3: {
+      x: Math.trunc(graphics.pixelsX * 0.8),
+      y: Math.trunc(graphics.pixelsY * 0.2)
     }
   };
+
+  const mouse = input.Mouse();
+  const keyboard = input.Keyboard();
+  let mouseCapture = false;
+  let target = null;
+  let m_x0, m_y0;
 
   let maxSegments = 50;
 
@@ -39,6 +64,14 @@ MySample.main = (function() {
   let sliderNormalYLableElem = document.getElementById('sliderNormalYLable');
   let sliderNormalZLableElem = document.getElementById('sliderNormalZLable');
 
+  let sliderSphereDiffuseRadiusElem = document.getElementById('sliderSphereDiffuseRadius');
+  let sliderSphereReflectiveRadiusElem = document.getElementById('sliderSphereReflectiveRadius');
+  let sliderSphereMixedRadiusElem = document.getElementById('sliderSphereMixedRadius');
+
+  let sliderDiffuseRadiusLabelElem = document.getElementById('sliderDiffuseRadiusLabel');
+  let sliderReflectiveRadiusLabelElem = document.getElementById('sliderReflectiveRadiusLabel');
+  let sliderMixedRadiusLabelElem = document.getElementById('sliderMixedRadiusLabel');
+
   let previousTime = performance.now();
   let scene = {};
   let data = [];
@@ -50,7 +83,7 @@ MySample.main = (function() {
 
   let sphereDiffuse = {
     c : new Float32Array([0.0, 0.0, -10.0]),
-    r : 1.0,
+    r : 0.25,
     color : new Float32Array([1.0, 1.0, 0.0]),
     material : MATERIAL_SPECULAR,
   };
@@ -203,6 +236,11 @@ MySample.main = (function() {
     });
   }
 
+  function interpolate(x, x0, x1, y0, y1)
+  {
+    return y0 + (x-x0)*(y1-y0)/(x1-x0);
+  }
+
   //------------------------------------------------------------------
   //
   // Scene updates go here.
@@ -211,6 +249,9 @@ MySample.main = (function() {
   let th = 0;
   let segment = 0;
   function update(dt) {
+    mouse.update(dt);
+    keyboard.update(dt);
+
     gl.uniform1f(shaders.locOffsetX, offsetX);
     gl.uniform1f(shaders.locOffsetY, offsetY);
     gl.uniform3fv(shaders.locEye, data.eye);
@@ -251,8 +292,12 @@ MySample.main = (function() {
     sphereDiffuse.c[2] = -10.0 + 2 * Math.sin(th);
 
     let curve = drawCurveBezier(cBezier, segment);
-    sphereReflective.c[0] = curve.px;
-    sphereReflective.c[2] = curve.py;
+    let px = curve.px;
+    px = interpolate(px, 0, graphics.pixelsX, -5, 5);
+    let py = curve.py; 
+    py = -interpolate(py, 0, graphics.pixelsY, -5, 5);
+    sphereReflective.c[0] = px;
+    sphereReflective.c[1] = py;
     th += dt / 1000;
     segment = (segment + Math.ceil(1*dt/1000)) % maxSegments;
 
@@ -262,10 +307,17 @@ MySample.main = (function() {
     plane.n[2] = sliderNormalZElem.value;
     plane.n = normalize(plane.n);
 
-  sliderNormalXLableElem.innerText = sliderNormalXElem.value;
-  sliderNormalYLableElem.innerText = sliderNormalYElem.value;
-  sliderNormalZLableElem.innerText = sliderNormalZElem.value;
+    sliderNormalXLableElem.innerText = sliderNormalXElem.value;
+    sliderNormalYLableElem.innerText = sliderNormalYElem.value;
+    sliderNormalZLableElem.innerText = sliderNormalZElem.value;
 
+    sliderDiffuseRadiusLabelElem.innerText = sliderSphereDiffuseRadiusElem.value;
+    sliderReflectiveRadiusLabelElem.innerText = sliderSphereReflectiveRadiusElem.value;
+    sliderMixedRadiusLabelElem.innerText = sliderSphereMixedRadiusElem.value;
+
+    sphereDiffuse.r = sliderSphereDiffuseRadiusElem.value;
+    sphereReflective.r = sliderSphereReflectiveRadiusElem.value;
+    sphereMixture.r = sliderSphereMixedRadiusElem.value;
   }
 
   //------------------------------------------------------------------
@@ -273,6 +325,10 @@ MySample.main = (function() {
   // Rendering code goes here
   //
   //------------------------------------------------------------------
+  let points = false;
+  let line = true;
+  let controls = true;
+
   function render() {
     gl.clearColor(
       0.3921568627450980392156862745098,
@@ -287,6 +343,18 @@ MySample.main = (function() {
     // This sets which buffer to use for the draw call in the render function.
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indexBuffer);
     gl.drawElements(gl.TRIANGLES, data.indices.length, gl.UNSIGNED_SHORT, 0);
+
+    graphics.clear(false);
+    graphics.drawCurve(graphics.Curve.BezierMatrix, cBezier, points, line, controls, 'rgb(255, 0, 0)');
+  }
+
+  function near(obj, x, y)
+  {
+    const dx = graphics.pixelsX*.025;
+    const dy = graphics.pixelsY*.025;
+    const inX = obj.x + dx > x && obj.x - dx < x;
+    const inY = obj.y + dy > y && obj.y - dy < y;
+    return inX && inY;
   }
 
   //------------------------------------------------------------------
@@ -316,8 +384,55 @@ MySample.main = (function() {
       associateShadersWithBuffers();
       console.log('initialization complete!');
       previousTime = performance.now();
+      console.log('initializing...');
+
       setCurveSegments(maxSegments);
+      graphics.curveSegments = maxSegments;
+
+      mouse.registerCommand('mousedown', function(e) {
+        mouseCapture = true;
+        m_x0 = e.clientX;
+        m_y0 = e.clientY;
+
+        if (near(cBezier.p0, m_x0, m_y0))
+        {
+          target = cBezier.p0;
+        }
+        else if (near(cBezier.p1, m_x0, m_y0))
+        {
+          target = cBezier.p1;
+        }
+        else if (near(cBezier.p2, m_x0, m_y0))
+        {
+          target = cBezier.p2;
+        }
+        else if (near(cBezier.p3, m_x0, m_y0))
+        {
+          target = cBezier.p3;
+        }
+      });
+
+      mouse.registerCommand('mouseup', function(e) {
+        void e;
+        mouseCapture = false;
+        target = null;
+      });
+
+      mouse.registerCommand('mousemove', function(e) {
+        if (mouseCapture) {
+          let dx = e.clientX - m_x0;
+          let dy = e.clientY - m_y0;
+          if (target)
+          {
+            target.x += dx;
+            target.y += dy;
+            m_x0 = e.clientX;
+            m_y0 = e.clientY;
+          }
+        }
+      });
+
       requestAnimationFrame(animationLoop);
     });
 
-}());
+}(MySample.graphics, MySample.input));

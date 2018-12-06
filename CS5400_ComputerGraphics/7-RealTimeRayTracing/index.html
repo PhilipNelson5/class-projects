@@ -7,7 +7,8 @@
   <body>
     <div display='flex' style='flex-direction: row'>
       <div>
-        <canvas id = "canvas-main" width = "800" height = "800"></canvas>
+        <canvas id = "canvas-curve" width = "900" height = "900" style = "background-color: #6495ed14"></canvas>
+        <canvas id = "canvas-main" width = "900" height = "900"></canvas>
       </div>
       <div>
         <table style="width:100%">
@@ -16,19 +17,33 @@
               <input type="checkbox" name="MultiRay" id="MultiRay" style="margin:2.5mm" unchecked> Cast Multiple Rays<br>
             </td>
           </tr>
-          <tr>
+          <tr> <!--  1  -->
             <td>
+              <p>Plane Normal</p>
               <input type="range" min="-1" max="1" value="0" class="slider" step="0.01" id="sliderNormalX"> <label id='sliderNormalXLable'>0</lable>
             </td>
+            <td>
+              <p>Sphere Radii</p>
+              <p style="display: inline">Diffuse Sphere</p>
+              <input type="range" min=".01" max="3" value="0.25" class="slider" step="0.01" id="sliderSphereDiffuseRadius"> <label id='sliderDiffuseRadiusLabel'>0</lable>
+            </td>
           </tr>
-          <tr>
+          <tr> <!--  2  -->
             <td>
               <input type="range" min="-1" max="1" value="1" class="slider" step="0.01" id="sliderNormalY"> <label id='sliderNormalYLable'>1</lable>
             </td>
+            <td>
+              <p style="display: inline">Reflective Sphere</p>
+              <input type="range" min=".01" max="3" value="0.5" class="slider" step="0.01" id="sliderSphereReflectiveRadius"> <label id='sliderReflectiveRadiusLabel'>0</lable>
+            </td>
           </tr>
-          <tr>
+          <tr> <!--  3  -->
             <td>
               <input type="range" min="-1" max="1" value="0" class="slider" step="0.01" id="sliderNormalZ"> <label id='sliderNormalZLable'>0</lable>
+            </td>
+            <td>
+              <p style="display: inline">Mixed Sphere</p>
+              <input type="range" min=".01" max="3" value="0.5" class="slider" step="0.01" id="sliderSphereMixedRadius"> <label id='sliderMixedRadiusLabel'>0</lable>
             </td>
           </tr>
           <tr>
@@ -43,6 +58,8 @@
 var MySample = {};
     </script>
     <script src = "scripts/utilities.js"></script>
+    <script src = "scripts/graphics.js"></script>
+    <script src = "scripts/input.js"></script>
     <script src = "scripts/curves.js"></script>
     <script src = "scripts/driver.js"></script>
   </body>
