@@ -36,6 +36,18 @@ MySample.main = (function(graphics, input) {
       y: Math.trunc(graphics.pixelsY * 0.2)
     }
   };
+  let cBezier2 = {
+    p0: cBezier.p3,
+    p1: {
+      x: Math.trunc(graphics.pixelsX * 0.5),
+      y: Math.trunc(graphics.pixelsY * 0.01),
+    },
+    p2: {
+      x: Math.trunc(graphics.pixelsX * 0.99),
+      y: Math.trunc(graphics.pixelsY * 0.5),
+    },
+    p3: cBezier.p0
+  };
 
   const mouse = input.Mouse();
   const keyboard = input.Keyboard();
@@ -248,6 +260,7 @@ MySample.main = (function(graphics, input) {
   //------------------------------------------------------------------
   let th = 0;
   let segment = 0;
+  let activeCurve = true;
   function update(dt) {
     mouse.update(dt);
     keyboard.update(dt);
@@ -291,7 +304,7 @@ MySample.main = (function(graphics, input) {
     sphereDiffuse.c[1] = Math.cos(th);
     sphereDiffuse.c[2] = -10.0 + 2 * Math.sin(th);
 
-    let curve = drawCurveBezier(cBezier, segment);
+    let curve = drawCurveBezier(activeCurve?cBezier:cBezier2, segment);
     let px = curve.px;
     px = interpolate(px, 0, graphics.pixelsX, -5, 5);
     let py = curve.py; 
@@ -299,7 +312,12 @@ MySample.main = (function(graphics, input) {
     sphereReflective.c[0] = px;
     sphereReflective.c[1] = py;
     th += dt / 1000;
-    segment = (segment + Math.ceil(1*dt/1000)) % maxSegments;
+    ++segment;
+    if (segment > maxSegments)
+    {
+      activeCurve = !activeCurve;
+      segment = 0;
+    }
 
     multiRay = multiRayElem.checked;
     plane.n[0] = sliderNormalXElem.value;
@@ -346,6 +364,7 @@ MySample.main = (function(graphics, input) {
 
     graphics.clear(false);
     graphics.drawCurve(graphics.Curve.BezierMatrix, cBezier, points, line, controls, 'rgb(255, 0, 0)');
+    graphics.drawCurve(graphics.Curve.BezierMatrix, cBezier2, points, line, controls, 'rgb(255, 0, 0)');
   }
 
   function near(obj, x, y)
@@ -409,6 +428,14 @@ MySample.main = (function(graphics, input) {
         else if (near(cBezier.p3, m_x0, m_y0))
         {
           target = cBezier.p3;
+        }
+        else if (near(cBezier2.p1, m_x0, m_y0))
+        {
+          target = cBezier2.p1;
+        }
+        else if (near(cBezier2.p2, m_x0, m_y0))
+        {
+          target = cBezier2.p2;
         }
       });
 

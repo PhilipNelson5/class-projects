@@ -296,7 +296,7 @@ vec3 castRay(Ray ray)
 
           vec3 reflected = reflect(-d, inter.normal);
           vec3 V = normalize(uEye - o);
-          vec3 specular = pow(dot(V, reflected), 100.0) * vec3(1.0, 1.0, 1.0);
+          vec3 specular = pow(dot(V, reflected), 50.0) * vec3(1.0, 1.0, 1.0);
 
           if(item.material == MATERIAL_MIXTURE)
           {
@@ -305,7 +305,7 @@ vec3 castRay(Ray ray)
 
           return item.color + diffuse + specular;
         }
-        else
+        else // Shadow Color
           return vec3(0.0, 0.0, 0.0);
       }
 
@@ -328,8 +328,8 @@ vec3 castRay(Ray ray)
           vec3 diffuse = dot(inter.normal, d) * inter.color;
           vec3 reflected = reflect(-d, inter.normal);
           vec3 V = normalize(uEye - o);
-          vec3 specular = pow(dot(V, reflected), 100.0) * vec3(1.0, 1.0, 1.0);
-          item.color += 0.8 * (diffuse + specular);
+          vec3 specular = pow(dot(V, reflected), 10.0) * vec3(0.5, 1.0, 0.5);
+          item.color += 0.8 * (diffuse*3.0 + specular*2.0);
         }
         d = normalize(reflect(r.d, inter.normal));
         stackPush(StackItem(Ray(o, d), item.color, MATERIAL_MIXTURE));
@@ -337,7 +337,7 @@ vec3 castRay(Ray ray)
     }
     else
     {
-      return inter.normal;
+      return inter.normal + vec3(0.0, 0.0, 0.75);
     }
   }
   return vec3(0.0, 0.0, 0.0);

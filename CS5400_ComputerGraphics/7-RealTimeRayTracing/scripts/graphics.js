@@ -418,13 +418,13 @@ MySample.graphics = (function (pixelsX, pixelsY) {
     if (showPoints) drawPoint(px0, py0, 'rgb(255, 0, 0)');
 
     if (showControl) {
+      drawLine(controls.p0.x, controls.p0.y, controls.p1.x, controls.p1.y, 'rgb(132, 143, 237)');
+      drawLine(controls.p1.x, controls.p1.y, controls.p2.x, controls.p2.y, 'rgb(132, 143, 237)');
+      drawLine(controls.p2.x, controls.p2.y, controls.p3.x, controls.p3.y, 'rgb(132, 143, 237)');
       drawPoint(controls.p0.x, controls.p0.y, 'rgb(255, 0, 0)');
       drawPoint(controls.p1.x, controls.p1.y, 'rgb(255, 0, 0)');
       drawPoint(controls.p2.x, controls.p2.y, 'rgb(255, 0, 0)');
       drawPoint(controls.p3.x, controls.p3.y, 'rgb(255, 0, 0)');
-      drawLine(controls.p0.x, controls.p0.y, controls.p1.x, controls.p1.y, 'rgb(255, 0, 0)');
-      drawLine(controls.p1.x, controls.p1.y, controls.p2.x, controls.p2.y, 'rgb(255, 0, 0)');
-      drawLine(controls.p2.x, controls.p2.y, controls.p3.x, controls.p3.y, 'rgb(255, 0, 0)');
     }
 
     for (let i = 1; i <= curveSegments; ++i) {
