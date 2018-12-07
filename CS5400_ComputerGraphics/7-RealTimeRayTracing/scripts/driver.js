@@ -2,49 +2,34 @@
 MySample.main = (function(graphics, input) {
   'use strict';
 
-  //let cBezier = {
-  //p0: {x: 5, y: -15},
-  //p1: {x: -4, y: 0, x0: -4, y0: 0},
-  //p2: {x: 4, y: -15, x0: 4, y0: -15},
-  //p3: {x: -5, y: 0},
-  //t: 0,
-  //update: dt => {
-  //dt /= 1000;
-  //cBezier.t += dt * 5;
-  //cBezier.p1.x = cBezier.p1.x0 + graphics.pixelsX / 5 * Math.cos(cBezier.t / 2);
-  //cBezier.p1.y = cBezier.p1.y0 + graphics.pixelsX / 5 * Math.sin(cBezier.t / 2.5);
-  //cBezier.p2.x = cBezier.p2.x0 + graphics.pixelsX / 7 * Math.cos(cBezier.t / 3);
-  //cBezier.p2.y = cBezier.p2.y0 + graphics.pixelsX / 7 * Math.sin(cBezier.t / 7);
-  //}
-  //};
-
   let cBezier = {
     p0: {
-      x: Math.trunc(graphics.pixelsX * 0.8),
-      y: Math.trunc(graphics.pixelsY * 0.2)
+      x: Math.trunc(graphics.pixelsX * 0.5),
+      y: Math.trunc(graphics.pixelsY * 0.325)
     },
     p1: {
-      x: Math.trunc(graphics.pixelsX * 0.01),
-      y: Math.trunc(graphics.pixelsY * 0.01),
-    },
-    p2: {
-      x: Math.trunc(graphics.pixelsX * 0.99),
+      x: Math.trunc(graphics.pixelsX * 0.125),
       y: Math.trunc(graphics.pixelsY * 0.99),
     },
+    p2: {
+      x: Math.trunc(graphics.pixelsX * 0.125),
+      y: Math.trunc(graphics.pixelsY * 0.01),
+    },
     p3: {
-      x: Math.trunc(graphics.pixelsX * 0.8),
-      y: Math.trunc(graphics.pixelsY * 0.2)
+      x: Math.trunc(graphics.pixelsX * 0.5),
+      y: Math.trunc(graphics.pixelsY * 0.675)
     }
   };
+
   let cBezier2 = {
     p0: cBezier.p3,
     p1: {
-      x: Math.trunc(graphics.pixelsX * 0.5),
+      x: Math.trunc(graphics.pixelsX * 0.875),
       y: Math.trunc(graphics.pixelsY * 0.01),
     },
     p2: {
-      x: Math.trunc(graphics.pixelsX * 0.99),
-      y: Math.trunc(graphics.pixelsY * 0.5),
+      x: Math.trunc(graphics.pixelsX * 0.875),
+      y: Math.trunc(graphics.pixelsY * 0.99),
     },
     p3: cBezier.p0
   };
@@ -76,13 +61,13 @@ MySample.main = (function(graphics, input) {
   let sliderNormalYLableElem = document.getElementById('sliderNormalYLable');
   let sliderNormalZLableElem = document.getElementById('sliderNormalZLable');
 
-  let sliderSphereDiffuseRadiusElem = document.getElementById('sliderSphereDiffuseRadius');
+  let sliderSphereDiffuseRadiusElem    = document.getElementById('sliderSphereDiffuseRadius');
   let sliderSphereReflectiveRadiusElem = document.getElementById('sliderSphereReflectiveRadius');
-  let sliderSphereMixedRadiusElem = document.getElementById('sliderSphereMixedRadius');
+  let sliderSphereMixedRadiusElem      = document.getElementById('sliderSphereMixedRadius');
 
-  let sliderDiffuseRadiusLabelElem = document.getElementById('sliderDiffuseRadiusLabel');
+  let sliderDiffuseRadiusLabelElem    = document.getElementById('sliderDiffuseRadiusLabel');
   let sliderReflectiveRadiusLabelElem = document.getElementById('sliderReflectiveRadiusLabel');
-  let sliderMixedRadiusLabelElem = document.getElementById('sliderMixedRadiusLabel');
+  let sliderMixedRadiusLabelElem      = document.getElementById('sliderMixedRadiusLabel');
 
   let previousTime = performance.now();
   let scene = {};
@@ -99,18 +84,21 @@ MySample.main = (function(graphics, input) {
     color : new Float32Array([1.0, 1.0, 0.0]),
     material : MATERIAL_SPECULAR,
   };
+
   let sphereReflective = {
     c : new Float32Array([0.0, 1.0, -10.0]),
     r : 0.5,
     color : new Float32Array([0.0, 0.0, 0.0]),
     material : MATERIAL_REFLECTIVE,
   };
+
   let sphereMixture = {
     c : new Float32Array([0.0, 0.0, -10.0]),
     r : 0.5,
     color : new Float32Array([0.0, 1.0, 0.0]),
     material : MATERIAL_MIXTURE,
   };
+
   let plane = {
     a : new Float32Array([0.0, -1.0, 0.0]),
     n : normalize(new Float32Array([0.0, 1.0, 0.0])),
@@ -125,10 +113,6 @@ MySample.main = (function(graphics, input) {
   //------------------------------------------------------------------
   function initializeData() {
     data.vertices = new Float32Array([
-      // -0.75, -0.75, 0.0,
-      // -0.75, 0.75, 0.0,
-      // 0.75, 0.75, 0.0,
-      // 0.75, -0.75, 0.0
       -1.0, -1.0, 0.0,
       -1.0,  1.0, 0.0,
       1.0,   1.0, 0.0,
@@ -184,30 +168,14 @@ MySample.main = (function(graphics, input) {
     return new Promise((resolve, reject) => {
       loadFileFromServer('shaders/ray-trace.vs')
         .then(source => {
-          shaders.vertexShader = gl.createShader(gl.VERTEX_SHADER);
-          gl.shaderSource(shaders.vertexShader, source);
-          gl.compileShader(shaders.vertexShader);
+          shaders.vertexShader = createShader(gl, gl.VERTEX_SHADER, source);
           return loadFileFromServer('shaders/ray-trace.frag');
         })
         .then(source => {
-          shaders.fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-          gl.shaderSource(shaders.fragmentShader, source);
-          gl.compileShader(shaders.fragmentShader);
+          shaders.fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, source);
         })
         .then(() => {
-          shaders.shaderProgram = gl.createProgram();
-          gl.attachShader(shaders.shaderProgram, shaders.vertexShader);
-          gl.attachShader(shaders.shaderProgram, shaders.fragmentShader);
-          gl.linkProgram(shaders.shaderProgram);
-
-          let errVertex = gl.getShaderInfoLog(shaders.vertexShader);
-          if (errVertex.length > 0) {
-            console.log('Vertex errors: ', errVertex);
-          }
-          let errFragment = gl.getShaderInfoLog(shaders.fragmentShader);
-          if (errFragment.length > 0) {
-            console.log('Frag errors: ', errFragment);
-          }
+          shaders.shaderProgram = createProgram(gl, shaders.vertexShader, shaders.fragmentShader);
 
           shaders.locOffsetX = gl.getUniformLocation(shaders.shaderProgram, 'uOffsetX');
           shaders.locOffsetY = gl.getUniformLocation(shaders.shaderProgram, 'uOffsetY');
@@ -293,13 +261,10 @@ MySample.main = (function(graphics, input) {
 
     let now = performance.now();
     gl.uniform1f(shaders.locSeed, Math.random()*1000000);
-    //gl.uniform1f(shaders.locSeed, performance.now());
 
     gl.uniform1f(shaders.locResolution, resolution);
     gl.uniform1i(shaders.locMultiRay, multiRay);
 
-    //data.light[0] = 5 * Math.cos(th);
-    //data.light[1] = 5 * Math.sin(th);
     sphereDiffuse.c[0] = Math.cos(th);
     sphereDiffuse.c[1] = Math.cos(th);
     sphereDiffuse.c[2] = -10.0 + 2 * Math.sin(th);
