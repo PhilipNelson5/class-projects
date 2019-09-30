@@ -1,0 +1,111 @@
+---
+title: Steepest Descent
+layout: default
+math: true
+---
+{% include mathjax.html %}
+<a href="https://philipnelson5.github.io/math4610/SoftwareManual"> Table of Contents </a>
+# Steepest Descent Software Manual
+
+**Routine Name:** steepest_descent
+
+**Author:** Philip Nelson
+
+**Language:** C++. The code can be compiled using the GNU C++ compiler (gcc). A make file is included to compile an example program
+
+For example,
+
+```
+make
+```
+
+will produce an executable **./conjugateGradient.out** that can be executed.
+
+**Description/Purpose:** The method of steepest descent involves calculating the gradient and taking incremental spats in the opposite direction. If found, the global minimum is the solution to the system of equations.
+
+**Input:** This routine takes two inputs, a matrix A, and a right hand side b
+
+**Output:** The routine returns the solution x to the equation A * x = b.
+
+**Usage/Example:**
+
+``` cpp
+int main()
+{
+  auto A = generate_square_symmetric_diagonally_dominant_matrix(4u);
+  auto b = generate_right_side(A);
+  auto x = steepest_descent(A, b);
+  auto Ax = A * x;
+
+  std::cout << " A\n" << A << std::endl;
+  std::cout << " x\n" << x << std::endl;
+  std::cout << " b\n" << b << std::endl;
+  std::cout << " A * x\n" << Ax << std::endl;
+}
+```
+
+**Output** from the lines above
+```
+ A
+|         10        -1         2         0 |
+|         -1        11        -1         3 |
+|          2        -1        10        -1 |
+|          0         3        -1         8 |
+
+ x
+[          1         2        -1         1 ]
+
+ b
+[          6        25       -11        15 ]
+
+ A * x
+[          6        25       -11        15 ]
+```
+
+_explanation of output_:
+
+First, the matrix A is generated and displayed. It is a square matrix with uniformly distributed numbers and is symmetric and diagonally dominant. Then the rhs is computed and x is solved for and displayed. Finally b is shown and A * x is shown. We can see that b == A * x which is good.
+
+**Implementation/Code:** The following is the code for conjugate_gradient
+
+``` cpp
+template <typename T>
+std::vector<T> steepest_descent(Matrix<T>& A,
+                                std::vector<T> const& b,
+                                unsigned int const& MAX_ITERATIONS = 1000u)
+{
+  static const T tol = std::get<1>(maceps<T>());
+  std::vector<T> x_k(A.size(), 0), x_k1(A.size(), 0);
+  std::vector<T> r_k = b;
+  std::vector<T> r_k1 = r_k, r_k2 = r_k;
+  std::vector<T> p_k = r_k, p_k1 = r_k;
+
+  for (auto k = 0u; k < MAX_ITERATIONS; ++k)
+  {
+    if (k != 0)
+    {
+      auto b_k = (r_k1 * r_k1) / (r_k2 * r_k2);
+      p_k = r_k1 + b_k * p_k1;
+    }
+
+    auto s_k = A * p_k;
+    auto a_k = r_k1 * r_k1 / (p_k * s_k);
+    x_k = x_k1 + a_k * p_k;
+    r_k = r_k1 - a_k * s_k;
+
+    if (allclose(x_k, x_k1, tol))
+    {
+      return x_k;
+    }
+
+    r_k2 = r_k1;
+    r_k1 = r_k;
+    x_k1 = x_k;
+    p_k1 = p_k;
+  }
+
+  return x_k;
+}
+```
+
+**Last Modified:** December 2018

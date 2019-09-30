@@ -1,0 +1,1 @@
+https://bisqwit.iki.fi/story/howto/openmp/
