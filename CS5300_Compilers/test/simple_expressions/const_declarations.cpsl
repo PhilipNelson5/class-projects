@@ -1,0 +1,12 @@
+const
+ int = 5;
+ char = 'a';
+ bool = true;
+ str = "Hello world";
+
+begin
+write("5=",int,'\n');
+write("a=",char,'\n');
+write("true=",bool,'\n');
+write("str=",str,'\n');
+end.

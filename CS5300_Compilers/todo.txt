@@ -1,0 +1,36 @@
+ S   C
+[X] [X] test/simple_expressions/assignment.cpsl
+[X] [X] test/simple_expressions/badidea.cpsl
+[X] [X] test/simple_expressions/const_declarations.cpsl
+[X] [X] test/simple_expressions/expressions.cpsl
+[X] [X] test/simple_expressions/hello.cpsl
+[X] [X] test/simple_expressions/io.cpsl
+[X] [X] test/simple_expressions/long_expression.cpsl
+[X] [X] test/simple_expressions/stop.cpsl
+
+[X] [X] test/udt/array_char.cpsl
+[X] [X] test/udt/array.cpsl
+[X] [X] test/udt/multi_array.cpsl
+[X] [X] test/udt/record_array.cpsl
+[X] [X] test/udt/record.cpsl
+[X] [X] test/udt/record_decl.cpsl
+[X] [X] test/udt/simple_array.cpsl
+[X] [X] test/udt/simple_record.cpsl
+
+[X] [X] test/control/factorial.cpsl
+[X] [x] test/control/for_down.cpsl
+[X] [X] test/control/for_to.cpsl
+[X] [X] test/control/ifelseif_nested.cpsl
+[X] [X] test/control/repeat.cpsl
+[X] [X] test/control/simple_while.cpsl
+[X] [X] test/control/while_and_if.cpsl
+[X] [X] test/control/while_nested.cpsl
+
+[X] [X] test/function/array_sum.cpsl
+[X] [X] test/function/function_with_args.cpsl
+[X] [X] test/function/hanoi.cpsl
+[X] [X] test/function/procedure_no_args.cpsl
+[X] [ ] test/function/sort.cpsl
+[X] [ ] test/function/swap.cpsl
+
+[X] [ ] test/syntax/expressions.cpsl

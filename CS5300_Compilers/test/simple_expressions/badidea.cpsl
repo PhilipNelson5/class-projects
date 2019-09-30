@@ -1,0 +1,25 @@
+const
+ true = 3<>3;
+ false = 3=3;
+
+type
+ i = integer;
+ c = char;
+ integer = char;
+ char = integer;
+
+var
+ i:i;
+ c:integer;
+
+begin
+ write(false,3<>3,'\n');
+ write(true,3=3,'\n');
+ i:=ord('A');
+ c:=chr(i);
+ write(i,' ',c,'\n');
+ write("Expected:\n");
+ write("10\n");
+ write("01\n");
+ write("65 A\n")
+end.

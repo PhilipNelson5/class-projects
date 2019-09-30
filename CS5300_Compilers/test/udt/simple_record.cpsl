@@ -1,0 +1,16 @@
+var
+ p : record x,y,z : integer; end;
+ x,y,z : integer;
+
+begin
+ x:= 1;
+ y:= 2;
+ z:= 3;
+ p.x := x * y;
+ p.y := y * z;
+ p.z := z * x;
+
+write("Result  : ");
+ write(p.x,' ',p.y,' ',p.z,'\n');
+write("Expected: 2 6 3\n");
+end.

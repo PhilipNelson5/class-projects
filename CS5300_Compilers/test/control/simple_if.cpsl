@@ -1,0 +1,20 @@
+VAR 
+  i : integer;
+
+BEGIN
+
+  write("enter an integer ");
+
+  read(i);
+
+  write("i = ", i, '\n');
+
+  if (i < 5)
+    then write("i less than 5!\n");
+  elseif (i > 5)
+    then write("i greater than 5!\n");
+  else
+    write("i equal to 5!\n");
+  end;
+
+END.

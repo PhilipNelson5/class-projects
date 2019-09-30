@@ -1,0 +1,43 @@
+* Do we need to use word boundaries on the regular expressions?
+  ex: 0x should not recognize as TOKEN::NUM_CONST TOKEN::ID
+  - ANSWER: That is not a lexical error, it is a syntactic error
+
+* BEGIN is defined as a macro in scanner.cpp so yeah?
+  - ANSWER: Make the tokens unique
+
+* What tokens do we define for delimiters? 
+  - ANSWER: Provide as much detail from the parser as possible,
+          everything should just get its own token
+
+* You use ?, *, + in the CPSL doc, does bison support this or do we need to express this another way.
+  - ANSWER: NO
+
+* How should the executable be named etc?
+  - ANSWER: cpsl < input.cpsl > output.asm
+          You can use MIPS comments 
+          Syntax errors should go to std::error
+          Make your own command line flags for debugging
+
+* Empty records are legal in CPSL and c/c++. What is an empty record or struct good for?
+  - ANSWER: Tag types.
+
+* Does every nonterminal symbol need a type?
+  - ANSWER: Yes, for explicitly building the tree they will be node types.
+
+* Is it a bad idea for the register pool to be a private static vector of registers with static functions that modify it?
+  - ANSWER: It's your world you are the creator.
+
+* Is it ok to have a class defined entirely in header files?
+  - ANSWER: Yes, Unity Builds for example, create one giant file for the compiler. Can help with optimization.
+
+* Bison does a LR parse so how do you avoid reversing lists?
+  - ANSWER: Push back to the list or vector;
+
+* Why does adding the operator<< to the header file make multiple definitions?
+  - ANSWER: Because the implementation gets included in every translation unit
+
+* Is it okay to print to std::cerr?
+  - ANSWER: Yes, that's fine.
+
+* Should pred and succ operators wrap when using characters?
+  - ANSWER: Nope.

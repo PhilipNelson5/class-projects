@@ -1,0 +1,10 @@
+PROCEDURE addPrint(a, b: integer);
+BEGIN
+  write(a);
+  write(b);
+  write(a + b);
+END;
+
+BEGIN
+  addPrint(2,3);
+END.
