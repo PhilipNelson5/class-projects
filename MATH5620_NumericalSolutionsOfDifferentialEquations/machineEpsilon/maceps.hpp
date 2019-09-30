@@ -1,3 +1,6 @@
+#ifndef MACEPS_HPP
+#define MACEPS_HPP
+
 #include <cmath>
 template <typename T>
 struct eps
@@ -22,3 +25,5 @@ eps<T> maceps()
 
   return eps(prec, e);
 }
+
+#endif

@@ -2,7 +2,7 @@ OBJS = main.cpp matrix.hpp
 
 CC = g++
 FLAGS = -std=c++17
-DEBUG_FLAGS = -Og -g3 -Wall -Wextra -Werror
+DEBUG_FLAGS = -Og -g3 -Wall -Wextra
 RELEASE_FLAGS = -O3
 
 release: $(OBJS)
