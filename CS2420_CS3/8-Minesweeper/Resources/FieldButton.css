@@ -1,0 +1,29 @@
+#cell_unclicked
+{
+    -fx-background-color: darkgrey;
+    -fx-border-color: black;
+}
+
+#cell_clicked
+{
+    -fx-background-color: lightsteelblue;
+    -fx-border-color: black;
+}
+
+#bomb_flagged
+{
+    -fx-background-color: springgreen;
+    -fx-border-color: black;
+}
+
+#bomb_unflagged
+{
+    -fx-background-color: red;
+    -fx-border-color: black;
+}
+
+#wrong_flag
+{
+    -fx-background-color: yellow;
+    -fx-border-color: black;
+}
