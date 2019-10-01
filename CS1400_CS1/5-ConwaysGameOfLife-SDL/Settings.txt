@@ -1,0 +1,23 @@
+OUTPUT_SCALE	10
+dead_CELL_color	100 200 255
+live_color_1	93 245 113
+live_color_2	93 149 245
+live_color_3	245 242 93
+live_color_4	245 189 93
+COLOR_DEPTH	255
+in_file_folder	Initials
+in_file		GliderGun.txt
+DELAY[multOf100] 0
+
+
+-->[PATTERN OPTIONS]<--
+
+GliderGun.txt
+DieHard.txt
+SpaceShip.txt
+Pulsar.txt
+StillLife_Boat.txt
+StillLife_Block.txt
+ShipTail.txt
+
+dead_CELL_color	100 200 255
