@@ -17,7 +17,11 @@ int main(void)
 
   // LOAD THE INITIAL STATE //
   fin.open("settings.txt");
-  if (!fin) std::cout << "Could not read from file!" << std::endl;
+  if (!fin)
+  {
+	  std::cout << "Could not read from settings.txt!" << std::endl;
+	  return EXIT_FAILURE;
+  }
 
   std::string ignore, in_file, in_file_folder, out_file_folder;
 
@@ -39,8 +43,12 @@ int main(void)
   fin >> PAUSE;
 
   fin.close();
-  fin.open(in_file_folder + "\\" + in_file);
-  if (!fin) std::cout << "Could not read from file!" << std::endl;
+  fin.open(in_file_folder + "/" + in_file);
+  if (!fin)
+  {
+	  std::cout << "Could not read from " << in_file_folder + "/" + in_file << "!" << std::endl;
+	  return EXIT_FAILURE;
+  }
 
   fin >> ignore;
   fin >> IMAGE_WIDTH;
