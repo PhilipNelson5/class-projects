@@ -1,0 +1,35 @@
+[X] Objects
+  [X] Roomba
+  [X] dirt
+  [X] extra dirt
+  [X] obstacle
+  [X] charging station
+  [X] drop-off
+
+[X] Room
+  [X] Drop off
+  [X] Odd shaped edges of room
+  [X] Obstacles (like furniture)
+  [X] Moving obstacles (like dogs)
+  [X] Varying amounts of dirt
+
+
+[X] The Roomba knows:
+  [X] its location
+  [X] the location of the charger
+
+[X] The Roomba can sense if it is picking up:
+  [X] any dirt at all
+  [X] excess dirt
+
+[X] The Roomba can sense another Roomba when it runs into it
+[X] The Roomba will have to go “much slower” on dirty areas.
+[X] The Roomba can detect:
+  [X] obstacles
+  [X] drop-offs
+
+[X] Develop a metric to determine the "goodness" of your rules.
+  [X] Given a specific amount of time, how well did it do?
+  [X] What percent of the accessible cells were reached?
+  [X] If cells had excess dirt, were they cleaned?
+

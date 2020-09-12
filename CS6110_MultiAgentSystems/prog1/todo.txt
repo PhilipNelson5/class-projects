@@ -1,0 +1,17 @@
+[X] 1. Change the name of the game (which displays at the beginning)
+[X] 2. Change the colors that display at the beginning.
+[X] 3. Use a "larger" grid.
+[X] 4. Have multiple apples on the grid.
+    New apples will be generated as they are eaten.
+[X] 5. Allow the user(s) to control two snakes using the arrow keys (for one snake)
+    and four other keys (for the other snake)
+[X] 6. The keypad arrow keys will be used to move both worms
+    in the same direction at the same time.
+    The keypad arrow key names are K_KP2, K_KP4, K_KP6, and K_KP8.
+[X] 7. Show the scores for both snakes.
+    You can use whatever scoring system you like.
+[X] 8. The snake dies when it hits a wall, the other snake, or itself.
+[X] 9. Implement some variation of this idea:
+    Allow the snakes to shoot each other.
+    If the snake is hit, it cuts him in pieces (based on where the ray hits him).
+    The tail is left behind as a stone. If a stone is hit by either snake, the snake dies.

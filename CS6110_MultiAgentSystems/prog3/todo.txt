@@ -1,0 +1,24 @@
+[X] Allow the matrix to re-populated with values in each of the following ways:
+  [X] The specific data values shown in Data Set 1 shown above.
+  [X] The specific data values shown in Data Set 2 shown above.
+  [X] User may enter own occurrences and preferences
+  [x] Random preferences and occurrences can be used.
+  [X] All voters have the same preference between two specific choices
+      (let user specify a relationship which all voters adhere to, like Bart > David).
+      Did your voting mechanisms preserve this order in the final ranking? (Pareto Optimal)
+  [X] Another option you consider interesting.
+
+[X] Implement 3
+  [-] Slater Ranking: find an ordering (no cycles) which has the fewest disagreements
+      with the majority graph. In output, label choices in Slater Ranking as 1, 2, ...7.
+  [-] Kemeny ranking; create an overall ranking of the candidates that has as few
+      disagreements as possible (where a disagreement is with a ranking on a pair of
+      candidates). In output, label choices in Kemeny Ranking as 1, 2, ...7.
+  [X] Bucklin ranking: start with k=1 and increase k gradually until some candidate is
+      among the top k candidates in more than half the votes; that candidate wins.
+      Identify the winner and the k required.
+  [X] Identify the winner using the Second order Copeland technique.
+  [X] Single Transferable Vote (STV, aka. Instant Runoff): candidate with lowest plurality
+      score drops out; if you voted for that candidate (as your first choice), your vote
+      transfers to the next (live) candidate on your list; repeat until one candidate
+      remains. In the output, the one listed as choice 7 is the first to drop out.
