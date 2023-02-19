@@ -1,0 +1,6 @@
+﻿---
+BasedOnStyle: Microsoft
+Standard: Cpp11
+TabWidth: '2'
+
+...

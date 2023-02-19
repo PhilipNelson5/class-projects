@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.14)
+
+project(Homework4 LANGUAGES CXX CUDA)
+enable_language(CUDA)
+
+set(CMAKE_CXX_STANDARD 14 CACHE INTERNAL "")
+set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE INTERNAL "")
+set(CMAKE_CXX_EXTENSIONS OFF CACHE INTERNAL "")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Werror")
+
+if(NOT DEFINED CMAKE_CUDA_STANDARD)
+	set(CMAKE_CUDA_STANDARD 14)
+	set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+endif()
+
+add_subdirectory(transpose)

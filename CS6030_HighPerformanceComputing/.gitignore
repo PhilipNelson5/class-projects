@@ -1,0 +1,12 @@
+.vscode
+release
+a.out
+build/
+*.tar.gz
+.obsidian
+*.swp
+
+*.mp4
+*.ppm
+*.png
+*.raw

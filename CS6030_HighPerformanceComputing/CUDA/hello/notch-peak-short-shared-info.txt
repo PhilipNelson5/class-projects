@@ -1,0 +1,21 @@
+There is 1 device supporting CUDA
+
+Device 0: "Tesla K80"
+  Major revision number:                         3
+  Minor revision number:                         7
+  Total amount of global memory:                 4209704960 bytes
+  Number of multiprocessors:                     13
+  Number of cores:                               104
+  Total amount of constant memory:               65536 bytes
+  Total amount of shared memory per block:       49152 bytes
+  Total number of registers available per block: 65536
+  Warp size:                                     32
+  Maximum number of threads per block:           1024
+  Maximum sizes of each dimension of a block:    1024 x 1024 x 64
+  Maximum sizes of each dimension of a grid:     2147483647 x 65535 x 65535
+  Maximum memory pitch:                          2147483647 bytes
+  Texture alignment:                             512 bytes
+  Clock rate:                                    0.82 GHz
+  Concurrent copy and execution:                 Yes
+
+TEST PASSED
