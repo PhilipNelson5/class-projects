@@ -1,0 +1,8 @@
+__pycache__/
+.ipynb_checkpoints/
+.vscode/
+data/
+
+1-Matplotlib/1.C.npy
+1-Matplotlib/3.A.2.png
+1-Matplotlib/output.png
